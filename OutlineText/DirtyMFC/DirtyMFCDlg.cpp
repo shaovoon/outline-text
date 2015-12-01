@@ -93,7 +93,7 @@ void CDirtyMFCDlg::OnPaint()
 		GetClientRect(&rect);
 		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
 		// Load the dirty image from file
-		Bitmap* canvasDirty = new Bitmap(L"..\\CommonImages\\dirty-texture.png");
+		auto canvasDirty = std::shared_ptr<Bitmap>(new Bitmap(L"..\\CommonImages\\dirty-texture.png"));
 
 		// Text context to store string and font info to be sent as parameter to Canvas methods
 		TextContext context;
@@ -107,16 +107,16 @@ void CDirtyMFCDlg::OnPaint()
 		context.ptDraw = Point(5, 70);
 
 		// Load the texture image from file
-		Bitmap* texture = new Bitmap(L"..\\CommonImages\\texture_blue.jpg");
+		auto texture = std::shared_ptr<Bitmap>(new Bitmap(L"..\\CommonImages\\texture_blue.jpg"));
 
 		auto texture2 = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the texture against the red dirty mask onto the 2nd texture
-		Canvas::ApplyImageToMask(texture, canvasDirty, texture2.get(), MaskColor::Red(), false );
+		Canvas::ApplyImageToMask(texture.get(), canvasDirty.get(), texture2.get(), MaskColor::Red(), false );
 		TextureBrush textureBrush(texture2.get());
 
 		auto textureShadow = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the gray color against the red dirty mask onto the shadow texture
-		Canvas::ApplyColorToMask(Color(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, textureShadow.get(), MaskColor::Red() );
+		Canvas::ApplyColorToMask(Color(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty.get(), textureShadow.get(), MaskColor::Red() );
 		// Create texture brush for the shadow
 		TextureBrush shadowBrush(textureShadow.get());
 
@@ -138,11 +138,6 @@ void CDirtyMFCDlg::OnPaint()
 		graphics.DrawImage(canvasTemp.get(), 3, 3, rect.Width()-3, rect.Height()-3);
 		// Then draw the rendered image onto window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
-
-		// Release all the resources
-		//============================
-		delete texture;
-		delete canvasDirty;
 	}
 }
 

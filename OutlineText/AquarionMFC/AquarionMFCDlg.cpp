@@ -134,7 +134,7 @@ void CAquarionMFCDlg::OnPaint()
 		// Generate the gradient image
 		//=============================
 		DrawGradient grad;
-		Bitmap* bmpGrad = new Bitmap(right - left, bottom - top, PixelFormat32bppARGB);
+		auto bmpGrad = std::shared_ptr<Bitmap>(new Bitmap(right - left, bottom - top, PixelFormat32bppARGB));
 		using namespace std;
 		vector<Color> vec;
 		vec.push_back(Color(255,0,0)); // Red
@@ -145,14 +145,14 @@ void CAquarionMFCDlg::OnPaint()
 		// Because Canvas::ApplyImageToMask requires the all images to have equal dimension,
 		// we need to blit our new gradient image onto a larger image to be same size as canvas image
 		//==============================================================================================
-		Bitmap* bmpGrad2 = new Bitmap(rect.Width(), rect.Height(), PixelFormat32bppARGB);
-		Graphics graphGrad(bmpGrad2);
+		auto bmpGrad2 = std::shared_ptr<Bitmap>(new Bitmap(rect.Width(), rect.Height(), PixelFormat32bppARGB));
+		Graphics graphGrad(bmpGrad2.get());
 		graphGrad.SetSmoothingMode(SmoothingModeAntiAlias);
 		graphGrad.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-		graphGrad.DrawImage(bmpGrad, (int)left, (int)top, (int)(right - left), (int)(bottom - top));
+		graphGrad.DrawImage(bmpGrad.get(), (int)left, (int)top, (int)(right - left), (int)(bottom - top));
 
 		// Apply the rainbow text against the blue mask onto the canvas
-		Canvas::ApplyImageToMask(bmpGrad2, maskOutline2.get(), canvas.get(), MaskColor::Blue(), false);
+		Canvas::ApplyImageToMask(bmpGrad2.get(), maskOutline2.get(), canvas.get(), MaskColor::Blue(), false);
 
 		// Draw the (white body and black outline) text onto the canvas
 		//==============================================================
@@ -161,11 +161,6 @@ void CAquarionMFCDlg::OnPaint()
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
-
-		// Release all the resources
-		//============================
-		delete bmpGrad;
-		delete bmpGrad2;
 	}
 }
 
