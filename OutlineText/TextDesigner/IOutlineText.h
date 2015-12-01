@@ -143,12 +143,6 @@ public:
 	//! Set the shadow bitmap with a color, width and height
 	virtual void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight) = 0;
 
-	//! Set text effect to nothing, sometimes example to get the shadow for OpenGL
-	virtual void SetNullTextEffect() = 0;
-
-	//! Set shadow to nothing, reseting previous shadow settings
-	virtual void SetNullShadow() = 0;
-	
 	//! Enable shadow
 	virtual void EnableShadow(bool bEnable) = 0;
 

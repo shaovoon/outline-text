@@ -6,98 +6,98 @@
 
 using namespace TextDesigner;
 
-ITextStrategy* Canvas::TextGlow(
+std::shared_ptr<ITextStrategy> Canvas::TextGlow(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextGlowStrategy* pStrat = new TextGlowStrategy();
+	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
 	pStrat->Init(clrText,clrOutline,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextGlow(
+std::shared_ptr<ITextStrategy> Canvas::TextGlow(
 	Gdiplus::Brush* pbrushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextGlowStrategy* pStrat = new TextGlowStrategy();
+	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
 	pStrat->Init(pbrushText,clrOutline,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextOutline(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextOutlineStrategy* pStrat = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
 	pStrat->Init(clrText,clrOutline,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextOutline(
 	Gdiplus::Brush* pbrushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextOutlineStrategy* pStrat = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
 	pStrat->Init(pbrushText,clrOutline,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextGradOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
-	TextGradOutlineStrategy* pStrat = new TextGradOutlineStrategy();
+	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
 	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextGradOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 	Gdiplus::Brush* pbrushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
-	TextGradOutlineStrategy* pStrat = new TextGradOutlineStrategy();
+	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
 	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextNoOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextNoOutline(
 	Gdiplus::Color clrText)
 {
-	TextNoOutlineStrategy* pStrat = new TextNoOutlineStrategy();
+	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
 	pStrat->Init(clrText);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextNoOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextNoOutline(
 	Gdiplus::Brush* pbrushText)
 {
-	TextNoOutlineStrategy* pStrat = new TextNoOutlineStrategy();
+	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
 	pStrat->Init(pbrushText);
 
 	return pStrat;
 }
 
-ITextStrategy* Canvas::TextOnlyOutline(
+std::shared_ptr<ITextStrategy> Canvas::TextOnlyOutline(
 	Gdiplus::Color clrOutline, 
 	int nThickness,
 	bool bRoundedEdge)
 {
-	TextOnlyOutlineStrategy* pStrat = new TextOnlyOutlineStrategy();
+	std::shared_ptr<TextOnlyOutlineStrategy> pStrat = std::make_shared<TextOnlyOutlineStrategy>();
 	pStrat->Init(clrOutline,nThickness,bRoundedEdge);
 
 	return pStrat;
@@ -202,15 +202,12 @@ Gdiplus::Bitmap* Canvas::GenImage(int width, int height, Gdiplus::Color clr, BYT
 }
 
 Gdiplus::Bitmap* Canvas::GenMask(
-	ITextStrategy* pStrategy, 
+	std::shared_ptr<ITextStrategy>& pStrategy, 
 	int width, 
 	int height, 
 	Gdiplus::Point offset,
-	TextContext* pTextContext)
+	TextContext& textContext)
 {
-	if(pStrategy==NULL||pTextContext==NULL)
-		return NULL;
-
 	Gdiplus::Bitmap* pBmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
 
 	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp));
@@ -218,27 +215,24 @@ Gdiplus::Bitmap* Canvas::GenMask(
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 
 	pStrategy->DrawString(&graphics,
-		pTextContext->pFontFamily, 
-		pTextContext->fontStyle, 
-		pTextContext->nfontSize, 
-		pTextContext->pszText, 
-		Gdiplus::Point(pTextContext->ptDraw.X + offset.X, pTextContext->ptDraw.Y + offset.Y),
-		&(pTextContext->strFormat));
+		textContext.pFontFamily, 
+		textContext.fontStyle, 
+		textContext.nfontSize, 
+		textContext.pszText, 
+		Gdiplus::Point(textContext.ptDraw.X + offset.X, textContext.ptDraw.Y + offset.Y),
+		&(textContext.strFormat));
 
 	return pBmp;
 }
 
 Gdiplus::Bitmap* Canvas::GenMask(
-	ITextStrategy* pStrategy, 
+	std::shared_ptr<ITextStrategy>& pStrategy, 
 	int width, 
 	int height, 
 	Gdiplus::Point offset,
-	TextContext* pTextContext,
+	TextContext& textContext,
 	Gdiplus::Matrix& mat)
 {
-	if(pStrategy==NULL||pTextContext==NULL)
-		return NULL;
-
 	Gdiplus::Bitmap* pBmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
 
 	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp));
@@ -247,12 +241,12 @@ Gdiplus::Bitmap* Canvas::GenMask(
 	graphics.SetTransform(&mat);
 
 	pStrategy->DrawString(&graphics,
-		pTextContext->pFontFamily, 
-		pTextContext->fontStyle, 
-		pTextContext->nfontSize, 
-		pTextContext->pszText, 
-		Gdiplus::Point(pTextContext->ptDraw.X + offset.X, pTextContext->ptDraw.Y + offset.Y),
-		&(pTextContext->strFormat));
+		textContext.pFontFamily, 
+		textContext.fontStyle, 
+		textContext.nfontSize, 
+		textContext.pszText, 
+		Gdiplus::Point(textContext.ptDraw.X + offset.X, textContext.ptDraw.Y + offset.Y),
+		&(textContext.strFormat));
 
 	graphics.ResetTransform();
 
@@ -720,12 +714,12 @@ bool Canvas::ApplyShadowToMask(
 }
 
 bool Canvas::DrawTextImage(
-	ITextStrategy* pStrategy, 
+	std::shared_ptr<ITextStrategy>& pStrategy, 
 	Gdiplus::Bitmap* pImage, 
 	Gdiplus::Point offset,
-	TextContext* pTextContext)
+	TextContext& textContext)
 {
-	if(pStrategy==NULL||pImage==NULL||pTextContext==NULL)
+	if(pImage==NULL)
 		return false;
 
 	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage));
@@ -733,24 +727,24 @@ bool Canvas::DrawTextImage(
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 
 	bool bRet = pStrategy->DrawString(&graphics,
-		pTextContext->pFontFamily, 
-		pTextContext->fontStyle, 
-		pTextContext->nfontSize, 
-		pTextContext->pszText, 
-		Gdiplus::Point(pTextContext->ptDraw.X + offset.X, pTextContext->ptDraw.Y + offset.Y),
-		&(pTextContext->strFormat));
+		textContext.pFontFamily, 
+		textContext.fontStyle, 
+		textContext.nfontSize, 
+		textContext.pszText, 
+		Gdiplus::Point(textContext.ptDraw.X + offset.X, textContext.ptDraw.Y + offset.Y),
+		&(textContext.strFormat));
 
 	return bRet;
 }
 
 bool Canvas::DrawTextImage(
-	ITextStrategy* pStrategy, 
+	std::shared_ptr<ITextStrategy>& pStrategy, 
 	Gdiplus::Bitmap* pImage, 
 	Gdiplus::Point offset,
-	TextContext* pTextContext,
+	TextContext& textContext,
 	Gdiplus::Matrix& mat)
 {
-	if(pStrategy==NULL||pImage==NULL||pTextContext==NULL)
+	if(pImage==NULL)
 		return false;
 
 	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage));
@@ -759,12 +753,12 @@ bool Canvas::DrawTextImage(
 	graphics.SetTransform(&mat);
 
 	bool bRet = pStrategy->DrawString(&graphics,
-		pTextContext->pFontFamily, 
-		pTextContext->fontStyle, 
-		pTextContext->nfontSize, 
-		pTextContext->pszText, 
-		Gdiplus::Point(pTextContext->ptDraw.X + offset.X, pTextContext->ptDraw.Y + offset.Y),
-		&(pTextContext->strFormat));
+		textContext.pFontFamily, 
+		textContext.fontStyle, 
+		textContext.nfontSize, 
+		textContext.pszText, 
+		Gdiplus::Point(textContext.ptDraw.X + offset.X, textContext.ptDraw.Y + offset.Y),
+		&(textContext.strFormat));
 
 	graphics.ResetTransform();
 

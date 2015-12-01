@@ -109,7 +109,7 @@ void CFake3DMFCDlg::OnPaint()
 		context.ptDraw = Point(0, 0);
 
 		// the single mask outline
-		Bitmap* maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), &context);
+		Bitmap* maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context);
 		// the mask to store all the single mask blitted diagonally
 		Bitmap* maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
 
@@ -152,7 +152,7 @@ void CFake3DMFCDlg::OnPaint()
 		// Create strategy and mask image for the text body
 		//===================================================
 		auto strategyText = Canvas::TextNoOutline(MaskColor::Blue());
-		Bitmap* maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), &context);
+		Bitmap* maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context);
 
 		// Measure the dimension required for text body using the mask
 		//=============================================================
@@ -174,7 +174,7 @@ void CFake3DMFCDlg::OnPaint()
 		auto strategyText2 = Canvas::TextNoOutline(&gradTextbrush);
 
 		// Draw the newly created strategy onto the canvas
-		Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), &context);
+		Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
@@ -189,10 +189,6 @@ void CFake3DMFCDlg::OnPaint()
 		delete maskText;
 
 		delete canvas;
-
-		delete strategyText;
-		delete strategyText2;
-		delete strategyOutline;
 	}
 }
 

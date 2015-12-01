@@ -132,7 +132,6 @@ void CMyScrollView::OnDraw(CDC* pDC)
 			m_PngOutlineText.EnableShadow(m_bEnableShadow);
 			if(m_bEnableShadow)
 			{
-				m_PngOutlineText.SetNullShadow();
 				if(m_bExtrudedText)
 				{
 					m_PngOutlineText.Extrude(
@@ -653,7 +652,6 @@ void CMyScrollView::OnDraw(CDC* pDC)
 			m_OutlineText.EnableShadow(m_bEnableShadow);
 			if(m_bEnableShadow)
 			{
-				m_OutlineText.SetNullShadow();
 				if(m_bExtrudedText)
 				{
 					m_OutlineText.Extrude(

@@ -121,7 +121,7 @@ void CAquarionMFCDlg::OnPaint()
 
 		// Generate the mask image for measuring the size of the text image required
 		//============================================================================
-		Bitmap* maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), &context);
+		Bitmap* maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), context);
 
 		UINT top = 0;
 		UINT bottom = 0;
@@ -157,7 +157,7 @@ void CAquarionMFCDlg::OnPaint()
 		// Draw the (white body and black outline) text onto the canvas
 		//==============================================================
 		auto strategyOutline1 = Canvas::TextOutline(Color(255,255,255), Color(0,0,0), 4);
-		Canvas::DrawTextImage(strategyOutline1, canvas, Point(0,0), &context);
+		Canvas::DrawTextImage(strategyOutline1, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
@@ -169,8 +169,6 @@ void CAquarionMFCDlg::OnPaint()
 		delete canvas;
 		
 		delete maskOutline2;
-		delete strategyOutline2;
-		delete strategyOutline1;
 	}
 }
 

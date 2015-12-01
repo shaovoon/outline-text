@@ -125,14 +125,14 @@ void CDirtyMFCDlg::OnPaint()
 
 		Bitmap* canvasTemp = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the shadow image first onto the temp canvas
-		Canvas::DrawTextImage(strategyShadow, canvasTemp, Point(0, 0), &context);
+		Canvas::DrawTextImage(strategyShadow, canvasTemp, Point(0, 0), context);
 
 		// Create strategy for the text body
 		auto strategy = Canvas::TextNoOutline(&textureBrush);
 
 		// Create image brush for the shadow
 		//=======================================
-		Canvas::DrawTextImage(strategy, canvas, Point(0,0), &context);
+		Canvas::DrawTextImage(strategy, canvas, Point(0,0), context);
 
 		// Draw the shadow image (canvasTemp) shifted -3, -3
 		graphics.DrawImage(canvasTemp, 3, 3, rect.Width()-3, rect.Height()-3);
@@ -150,9 +150,6 @@ void CDirtyMFCDlg::OnPaint()
 		delete canvas;
 
 		delete canvasTemp;
-
-		delete strategyShadow;
-		delete strategy;
 	}
 }
 

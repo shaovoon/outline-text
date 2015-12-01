@@ -116,23 +116,23 @@ void CFakeBeveledMFCDlg::OnPaint()
 
 		// Draw the main outline
 		//==========================================================
-		ITextStrategy* mainOutline = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 4);
-		Canvas::DrawTextImage(mainOutline, canvas, Point(4,4), &context);
+		auto mainOutline = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 4);
+		Canvas::DrawTextImage(mainOutline, canvas, Point(4,4), context);
 
 		// Draw the small bright outline shifted (-2, -2)
 		//==========================================================
-		ITextStrategy* mainBright = Canvas::TextOutline(Color(252,173,250), Color(252,173,250), 2);
-		Canvas::DrawTextImage(mainBright, canvas, Point(2,2), &context);
+		auto mainBright = Canvas::TextOutline(Color(252,173,250), Color(252,173,250), 2);
+		Canvas::DrawTextImage(mainBright, canvas, Point(2,2), context);
 
 		// Draw the small dark outline shifted (+2, +2)
 		//==========================================================
-		ITextStrategy* mainDark = Canvas::TextOutline(Color(126,5,123), Color(126,5,123), 2);
-		Canvas::DrawTextImage(mainDark, canvas, Point(6,6), &context);
+		auto mainDark = Canvas::TextOutline(Color(126,5,123), Color(126,5,123), 2);
+		Canvas::DrawTextImage(mainDark, canvas, Point(6,6), context);
 
 		// Draw the smallest outline (color same as main outline)
 		//==========================================================
-		ITextStrategy* mainInner = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 2);
-		Canvas::DrawTextImage(mainInner, canvas, Point(4,4), &context);
+		auto mainInner = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 2);
+		Canvas::DrawTextImage(mainInner, canvas, Point(4,4), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
@@ -140,12 +140,6 @@ void CFakeBeveledMFCDlg::OnPaint()
 		// Release all the resources
 		//============================
 		delete canvas;
-
-		delete mainOutline;
-		delete mainBright;
-		delete mainDark;
-		delete mainInner;
-
 	}
 }
 

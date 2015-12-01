@@ -11,6 +11,7 @@ http://www.codeproject.com/info/cpol10.aspx
 #ifndef _OUTLINETEXT_H_
 #define _OUTLINETEXT_H_
 
+#include <memory>
 #include <Gdiplus.h>
 #include "IOutlineText.h"
 #include "ITextStrategy.h"
@@ -158,12 +159,6 @@ public:
 	//! Set the shadow bitmap with a color, width and height
 	void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight);
 
-	//! Set text effect to nothing
-	void SetNullTextEffect();
-
-	//! Set shadow to nothing, reseting previous shadow settings
-	void SetNullShadow();
-	
 	//! Enable shadow
 	void EnableShadow(bool bEnable);
 
@@ -479,11 +474,11 @@ protected:
 	inline UINT Alphablend(UINT dest, UINT source, BYTE nAlpha);
 	
 	//! Text effect strategy polymorphic pointer
-	ITextStrategy* m_pTextStrategy;
+	std::shared_ptr<ITextStrategy> m_pTextStrategy;
 	//! Shadow effect strategy polymorphic pointer to draw the outline(Right now only 1 effect, TextOutlineStrategy)
-	ITextStrategy* m_pShadowStrategy;
+	std::shared_ptr<ITextStrategy> m_pShadowStrategy;
 	//! Object to draw the text body, not the outline
-	ITextStrategy* m_pFontBodyShadow;
+	std::shared_ptr<ITextStrategy> m_pFontBodyShadow;
 	//! Specify how much to offset the shadow relatively.
 	Gdiplus::Point m_ptShadowOffset;
 	//! Shadow color

@@ -10,6 +10,7 @@ http://www.codeproject.com/info/cpol10.aspx
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
 
+#include <memory>
 #include <Gdiplus.h>
 #include "IOutlineText.h"
 #include "ITextStrategy.h"
@@ -67,7 +68,7 @@ public:
 	@param nThickness is the thickness of the outline in pixels
 	@return valid ITextStrategy pointer if successful
 	*/
-	static ITextStrategy* TextGlow(
+	static std::shared_ptr<ITextStrategy> TextGlow(
 		Gdiplus::Color clrText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
@@ -79,7 +80,7 @@ public:
 	@param nThickness is the thickness of the outline in pixels
 	@return valid ITextStrategy pointer if successful
 	*/
-	static ITextStrategy* TextGlow(
+	static std::shared_ptr<ITextStrategy> TextGlow(
 		Gdiplus::Brush* pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
@@ -91,7 +92,7 @@ public:
 	@param nThickness is the thickness of the outline in pixels
 	@return valid ITextStrategy pointer if successful
 	*/
-	static ITextStrategy* TextOutline(
+	static std::shared_ptr<ITextStrategy> TextOutline(
 		Gdiplus::Color clrText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
@@ -103,7 +104,7 @@ public:
 	@param nThickness is the thickness of the outline in pixels
 	@return valid ITextStrategy pointer if successful
 	*/
-	static ITextStrategy* TextOutline(
+	static std::shared_ptr<ITextStrategy> TextOutline(
 		Gdiplus::Brush* pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
@@ -115,7 +116,7 @@ public:
 	@param[in]		clrOutline2 is the outer outline color
 	@param[in]		nThickness is the outline thickness
 	*/
-	static ITextStrategy* TextGradOutline(
+	static std::shared_ptr<ITextStrategy> TextGradOutline(
 		Gdiplus::Color clrText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
@@ -128,7 +129,7 @@ public:
 	@param[in]		clrOutline2 is the outer outline color
 	@param[in]		nThickness is the outline thickness
 	*/
-	static ITextStrategy* TextGradOutline(
+	static std::shared_ptr<ITextStrategy> TextGradOutline(
 		Gdiplus::Brush* pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
@@ -138,13 +139,13 @@ public:
 	
 	@param[in]		clrText is the text color
 	*/
-	static ITextStrategy* TextNoOutline(Gdiplus::Color clrText);
+	static std::shared_ptr<ITextStrategy> TextNoOutline(Gdiplus::Color clrText);
 
 	/** Setting just Text effect with no outline
 	
 	@param[in]		pbrushText is the text brush
 	*/
-	static ITextStrategy* TextNoOutline(Gdiplus::Brush* pbrushText);
+	static std::shared_ptr<ITextStrategy> TextNoOutline(Gdiplus::Brush* pbrushText);
 
 	/** Setting Outlined Text effect with no text fill
 	
@@ -152,7 +153,7 @@ public:
 	@param[in]		nThickness is the outline thickness
 	@param[in]		bRoundedEdge specifies rounded or sharp edges
 	*/
-	static ITextStrategy* TextOnlyOutline(
+	static std::shared_ptr<ITextStrategy> TextOnlyOutline(
 		Gdiplus::Color clrOutline, 
 		int nThickness,
 		bool bRoundedEdge);
@@ -204,11 +205,11 @@ public:
 	@return a valid mask image if successful
 	*/
 	static Gdiplus::Bitmap* GenMask(
-		ITextStrategy* pStrategy, 
+		std::shared_ptr<ITextStrategy>& pStrategy, 
 		int width, 
 		int height, 
 		Gdiplus::Point offset,
-		TextContext* pTextContext);
+		TextContext& textContext);
 
 	/** Generate mask image of the text strategy.
 
@@ -221,11 +222,11 @@ public:
 	@return a valid mask image if successful
 	*/
 	static Gdiplus::Bitmap* GenMask(
-		ITextStrategy* pStrategy, 
+		std::shared_ptr<ITextStrategy>& pStrategy, 
 		int width, 
 		int height, 
 		Gdiplus::Point offset,
-		TextContext* pTextContext,
+		TextContext& textContext,
 		Gdiplus::Matrix& mat);
 
 	/** Measure the mask image based on the mask color.
@@ -333,10 +334,10 @@ public:
 	@return true if successful
 	*/
 	static bool DrawTextImage(
-		ITextStrategy* pStrategy, 
+		std::shared_ptr<ITextStrategy>& pStrategy, 
 		Gdiplus::Bitmap* pImage, 
 		Gdiplus::Point offset,
-		TextContext* pTextContext);
+		TextContext& textContext);
 
 	/** Draw outline on image
 
@@ -348,10 +349,10 @@ public:
 	@return true if successful
 	*/
 	static bool DrawTextImage(
-		ITextStrategy* pStrategy, 
+		std::shared_ptr<ITextStrategy>& pStrategy, 
 		Gdiplus::Bitmap* pImage, 
 		Gdiplus::Point offset,
-		TextContext* pTextContext,
+		TextContext& textContext,
 		Gdiplus::Matrix& mat);
 
 private:

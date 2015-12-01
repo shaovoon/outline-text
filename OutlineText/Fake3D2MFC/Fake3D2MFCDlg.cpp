@@ -158,7 +158,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	auto strategyOutline = Canvas::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
 
 	// the single mask outline
-	Bitmap* maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), &context, mat);
+	Bitmap* maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context, mat);
 	// the mask to store all the single mask blitted diagonally
 	Bitmap* maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
 
@@ -201,7 +201,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	// Create strategy and mask image for the text body
 	//===================================================
 	auto strategyText = Canvas::TextNoOutline(MaskColor::Blue());
-	Bitmap* maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), &context, mat);
+	Bitmap* maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context, mat);
 
 	// Measure the dimension required for text body using the mask
 	//=============================================================
@@ -223,7 +223,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	auto strategyText2 = Canvas::TextNoOutline(&gradTextbrush);
 
 	// Draw the newly created strategy onto the canvas
-	Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), &context, mat);
+	Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context, mat);
 
 	// Finally blit the rendered canvas onto the window
 	graphics.DrawImage(canvas, x_offset, 0, rect.Width(), rect.Height());
@@ -233,13 +233,8 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 
 	delete maskText;
 
-	delete strategyText;
-	delete strategyText2;
-
 	delete maskOutline;
 	delete maskOutlineAll;
-
-	delete strategyOutline;
 
 	delete canvas;
 }

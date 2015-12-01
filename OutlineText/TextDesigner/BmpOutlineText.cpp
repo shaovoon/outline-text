@@ -403,7 +403,6 @@ bool BmpOutlineText::DrawString(
 
 	if(bShadow)
 	{
-		m_PngShadow.SetNullTextEffect();
 		m_PngShadow.EnableShadow(true);
 		m_PngShadow.Shadow(clrShadow, nThickness, Gdiplus::Point(nShadowOffsetX, nShadowOffsetY));
 		m_PngShadow.SetShadowBkgd(Gdiplus::Color(0,0,0), nWidth, nHeight);
@@ -483,7 +482,6 @@ bool BmpOutlineText::DrawString(
 
 	if(bShadow)
 	{
-		m_PngShadow.SetNullTextEffect();
 		m_PngShadow.EnableShadow(true);
 		m_PngShadow.Shadow(clrShadow, nThickness, Gdiplus::Point(nShadowOffsetX, nShadowOffsetY));
 		m_PngShadow.SetShadowBkgd(Gdiplus::Color(0,0,0), nWidth, nHeight);
@@ -558,7 +556,6 @@ bool BmpOutlineText::GdiDrawString(
 
 	if(bShadow)
 	{
-		m_PngShadow.SetNullTextEffect();
 		m_PngShadow.EnableShadow(true);
 		m_PngShadow.Shadow(clrShadow, nThickness, Gdiplus::Point(nShadowOffsetX, nShadowOffsetY));
 		m_PngShadow.SetShadowBkgd(Gdiplus::Color(0,0,0), nWidth, nHeight);
@@ -628,7 +625,6 @@ bool BmpOutlineText::GdiDrawString(
 
 	if(bShadow)
 	{
-		m_PngShadow.SetNullTextEffect();
 		m_PngShadow.EnableShadow(true);
 		m_PngShadow.Shadow(clrShadow, nThickness, Gdiplus::Point(nShadowOffsetX, nShadowOffsetY));
 		m_PngShadow.SetShadowBkgd(Gdiplus::Color(0,0,0), nWidth, nHeight);

@@ -15,11 +15,6 @@ using namespace TextDesigner;
 
 PngOutlineText::PngOutlineText(void)
 :
-m_pTextStrategy(NULL),
-m_pShadowStrategy(NULL),
-m_pShadowStrategyMask(NULL),
-m_pFontBodyShadow(NULL),
-m_pFontBodyShadowMask(NULL),
 m_pBkgdBitmap(NULL),
 m_pPngBitmap(NULL),
 m_clrShadow(Gdiplus::Color(0,0,0)),
@@ -50,41 +45,16 @@ PngOutlineText& PngOutlineText::operator=(PngOutlineText& rhs)
 
 void PngOutlineText::Init(PngOutlineText* rhs)
 {
-	if(m_pTextStrategy)
-	{
-		delete m_pTextStrategy;
-		m_pTextStrategy = NULL;
-	}
-	if(m_pShadowStrategy)
-	{
-		delete m_pShadowStrategy;
-		m_pShadowStrategy = NULL;
-	}
-	if(m_pShadowStrategyMask)
-	{
-		delete m_pShadowStrategyMask;
-		m_pShadowStrategyMask = NULL;
-	}
-	if(m_pFontBodyShadow)
-	{
-		delete m_pFontBodyShadow;
-		m_pFontBodyShadow = NULL;
-	}
-	if(m_pFontBodyShadowMask)
-	{
-		delete m_pFontBodyShadowMask;
-		m_pFontBodyShadowMask = NULL;
-	}
 	if(m_pReflectionPngBitmap)
 	{
 		delete m_pReflectionPngBitmap;
 		m_pReflectionPngBitmap = NULL;
 	}
-	if (rhs->m_pTextStrategy != NULL) m_pTextStrategy = rhs->m_pTextStrategy->Clone();
-	if (rhs->m_pShadowStrategy != NULL) m_pShadowStrategy = rhs->m_pShadowStrategy->Clone();
-	if (rhs->m_pShadowStrategyMask != NULL) m_pShadowStrategyMask = rhs->m_pShadowStrategyMask->Clone();
-	if (rhs->m_pFontBodyShadow != NULL) m_pFontBodyShadow = rhs->m_pFontBodyShadow->Clone();
-	if (rhs->m_pFontBodyShadowMask != NULL) m_pFontBodyShadowMask = rhs->m_pFontBodyShadowMask->Clone();
+	m_pTextStrategy = std::shared_ptr<ITextStrategy>(rhs->m_pTextStrategy->Clone());
+	m_pShadowStrategy = std::shared_ptr<ITextStrategy>(rhs->m_pShadowStrategy->Clone());
+	m_pShadowStrategyMask = std::shared_ptr<ITextStrategy>(rhs->m_pShadowStrategyMask->Clone());
+	m_pFontBodyShadow = std::shared_ptr<ITextStrategy>(rhs->m_pFontBodyShadow->Clone());
+	m_pFontBodyShadowMask = std::shared_ptr<ITextStrategy>(rhs->m_pFontBodyShadowMask->Clone());
 	m_pBkgdBitmap = rhs->m_pBkgdBitmap;
 	if(rhs->m_pPngBitmap!=NULL)
 	{
@@ -110,31 +80,6 @@ void PngOutlineText::Init(PngOutlineText* rhs)
 
 PngOutlineText::~PngOutlineText(void)
 {
-	if(m_pTextStrategy)
-	{
-		delete m_pTextStrategy;
-		m_pTextStrategy = NULL;
-	}
-	if(m_pShadowStrategy)
-	{
-		delete m_pShadowStrategy;
-		m_pShadowStrategy = NULL;
-	}
-	if(m_pShadowStrategyMask)
-	{
-		delete m_pShadowStrategyMask;
-		m_pShadowStrategyMask = NULL;
-	}
-	if(m_pFontBodyShadow)
-	{
-		delete m_pFontBodyShadow;
-		m_pFontBodyShadow = NULL;
-	}
-	if(m_pFontBodyShadowMask)
-	{
-		delete m_pFontBodyShadowMask;
-		m_pFontBodyShadowMask = NULL;
-	}
 	if(m_pReflectionPngBitmap)
 	{
 		delete m_pReflectionPngBitmap;
@@ -152,11 +97,8 @@ void PngOutlineText::TextGlow(
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextGlowStrategy* pStrat = new TextGlowStrategy();
+	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
 	pStrat->Init(clrText,clrOutline,nThickness);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -166,11 +108,8 @@ void PngOutlineText::TextGlow(
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextGlowStrategy* pStrat = new TextGlowStrategy();
+	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
 	pStrat->Init(pbrushText,clrOutline,nThickness);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -180,12 +119,9 @@ void PngOutlineText::TextOutline(
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextOutlineStrategy* pStrat = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
 	pStrat->Init(clrText,clrOutline,nThickness);
 
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
-
 	m_pTextStrategy = pStrat;
 }
 
@@ -194,14 +130,10 @@ void PngOutlineText::TextOutline(
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
-	TextOutlineStrategy* pStrat = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
 	pStrat->Init(pbrushText,clrOutline,nThickness);
 
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
-
 	m_pTextStrategy = pStrat;
-
 }
 
 void PngOutlineText::TextDblOutline(
@@ -211,11 +143,8 @@ void PngOutlineText::TextDblOutline(
 	int nThickness1, 
 	int nThickness2)
 {
-	TextDblOutlineStrategy* pStrat = new TextDblOutlineStrategy();
+	std::shared_ptr<TextDblOutlineStrategy> pStrat = std::make_shared<TextDblOutlineStrategy>();
 	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness1,nThickness2);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -227,11 +156,8 @@ void PngOutlineText::TextDblOutline(
 	int nThickness1, 
 	int nThickness2)
 {
-	TextDblOutlineStrategy* pStrat = new TextDblOutlineStrategy();
+	std::shared_ptr<TextDblOutlineStrategy> pStrat = std::make_shared<TextDblOutlineStrategy>();
 	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -243,11 +169,8 @@ void PngOutlineText::TextDblGlow(
 	int nThickness1, 
 	int nThickness2)
 {
-	TextDblGlowStrategy* pStrat = new TextDblGlowStrategy();
+	std::shared_ptr<TextDblGlowStrategy> pStrat = std::make_shared<TextDblGlowStrategy>();
 	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness1,nThickness2);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -259,11 +182,8 @@ void PngOutlineText::TextDblGlow(
 	int nThickness1, 
 	int nThickness2)
 {
-	TextDblGlowStrategy* pStrat = new TextDblGlowStrategy();
+	std::shared_ptr<TextDblGlowStrategy> pStrat = std::make_shared<TextDblGlowStrategy>();
 	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -274,12 +194,9 @@ void PngOutlineText::TextGradOutline(
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
-	TextGradOutlineStrategy* pStrat = new TextGradOutlineStrategy();
+	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
 	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness);
 
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
-
 	m_pTextStrategy = pStrat;
 }
 
@@ -289,11 +206,8 @@ void PngOutlineText::TextGradOutline(
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
-	TextGradOutlineStrategy* pStrat = new TextGradOutlineStrategy();
+	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
 	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -301,11 +215,8 @@ void PngOutlineText::TextGradOutline(
 void PngOutlineText::TextNoOutline(
 	Gdiplus::Color clrText)
 {
-	TextNoOutlineStrategy* pStrat = new TextNoOutlineStrategy();
+	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
 	pStrat->Init(clrText);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -313,11 +224,8 @@ void PngOutlineText::TextNoOutline(
 void PngOutlineText::TextNoOutline(
 	Gdiplus::Brush* pbrushText)
 {
-	TextNoOutlineStrategy* pStrat = new TextNoOutlineStrategy();
+	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
 	pStrat->Init(pbrushText);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -327,11 +235,8 @@ void PngOutlineText::TextOnlyOutline(
 	int nThickness,
 	bool bRoundedEdge)
 {
-	TextOnlyOutlineStrategy* pStrat = new TextOnlyOutlineStrategy();
+	std::shared_ptr<TextOnlyOutlineStrategy> pStrat = std::make_shared<TextOnlyOutlineStrategy>();
 	pStrat->Init(clrOutline,nThickness,bRoundedEdge);
-
-	if(m_pTextStrategy)
-		delete m_pTextStrategy;
 
 	m_pTextStrategy = pStrat;
 }
@@ -341,39 +246,27 @@ void PngOutlineText::Shadow(
 	int nThickness,
 	Gdiplus::Point ptOffset)
 {
-	TextOutlineStrategy* pStrat = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
 	pStrat->Init(Gdiplus::Color(0,0,0,0),color,nThickness);
-
-	if(m_pShadowStrategy)
-		delete m_pShadowStrategy;
 
 	m_ptShadowOffset = ptOffset;
 	m_pShadowStrategy = pStrat;
 
-	TextOutlineStrategy* pStrat2 = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pStrat2 = std::make_shared<TextOutlineStrategy>();
 	pStrat2->Init(
 		Gdiplus::Color(0,0,0,0),
 		Gdiplus::Color(color.GetAlpha(),255,255,255),
 		nThickness);
 
-	if(m_pShadowStrategyMask)
-		delete m_pShadowStrategyMask;
-
 	m_pShadowStrategyMask = pStrat2;
 
 	m_clrShadow = color;
 
-	if(m_pFontBodyShadow)
-		delete m_pFontBodyShadow;
-
-	TextOutlineStrategy* pFontBodyShadow = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pFontBodyShadow = std::make_shared<TextOutlineStrategy>();
 	pFontBodyShadow->Init(Gdiplus::Color(255,255,255),Gdiplus::Color(0,0,0,0),0);
 	m_pFontBodyShadow = pFontBodyShadow;
 
-	if(m_pFontBodyShadowMask)
-		delete m_pFontBodyShadowMask;
-
-	TextOutlineStrategy* pFontBodyShadowMask = new TextOutlineStrategy();
+	std::shared_ptr<TextOutlineStrategy> pFontBodyShadowMask = std::make_shared<TextOutlineStrategy>();
 	pFontBodyShadowMask->Init(Gdiplus::Color(color.GetAlpha(),255,255,255),Gdiplus::Color(0,0,0,0),0);
 	m_pFontBodyShadowMask = pFontBodyShadowMask;
 	m_bDiffuseShadow = false;
@@ -384,41 +277,29 @@ void PngOutlineText::DiffusedShadow(
 	int nThickness,
 	Gdiplus::Point ptOffset)
 {
-	DiffusedShadowStrategy* pStrat = new DiffusedShadowStrategy();
+	std::shared_ptr<DiffusedShadowStrategy> pStrat = std::make_shared<DiffusedShadowStrategy>();
 	pStrat->Init(Gdiplus::Color(0,0,0,0),color,nThickness,false);
-
-	if(m_pShadowStrategy)
-		delete m_pShadowStrategy;
 
 	m_ptShadowOffset = ptOffset;
 	m_pShadowStrategy = pStrat;
 
-	DiffusedShadowStrategy* pStrat2 = new DiffusedShadowStrategy();
+	std::shared_ptr<DiffusedShadowStrategy> pStrat2 = std::make_shared<DiffusedShadowStrategy>();
 	pStrat2->Init(
 		Gdiplus::Color(0,0,0,0),
 		Gdiplus::Color(color.GetAlpha(),255,255,255),
 		nThickness,
 		true);
 
-	if(m_pShadowStrategyMask)
-		delete m_pShadowStrategyMask;
-
 	m_pShadowStrategyMask = pStrat2;
 
 	m_clrShadow = color;
 
-	if(m_pFontBodyShadow)
-		delete m_pFontBodyShadow;
-
-	DiffusedShadowStrategy* pFontBodyShadow = new DiffusedShadowStrategy();
+	std::shared_ptr<DiffusedShadowStrategy> pFontBodyShadow = std::make_shared<DiffusedShadowStrategy>();
 	pFontBodyShadow->Init(Gdiplus::Color(255,255,255),Gdiplus::Color(0,0,0,0),nThickness,false);
 
 	m_pFontBodyShadow = pFontBodyShadow;
 
-	if(m_pFontBodyShadowMask)
-		delete m_pFontBodyShadowMask;
-
-	DiffusedShadowStrategy* pFontBodyShadowMask = new DiffusedShadowStrategy();
+	std::shared_ptr<DiffusedShadowStrategy> pFontBodyShadowMask = std::make_shared<DiffusedShadowStrategy>();
 	pFontBodyShadowMask->Init(Gdiplus::Color(color.GetAlpha(),255,255,255),Gdiplus::Color(0,0,0,0),
 		nThickness,false);
 
@@ -433,41 +314,29 @@ void PngOutlineText::Extrude(
 	int nThickness,
 	Gdiplus::Point ptOffset)
 {
-	ExtrudeStrategy* pStrat = new ExtrudeStrategy();
+	std::shared_ptr<ExtrudeStrategy> pStrat = std::make_shared<ExtrudeStrategy>();
 	pStrat->Init(Gdiplus::Color(0,0,0,0), color, nThickness, ptOffset.X, ptOffset.Y);
-
-	if(m_pShadowStrategy)
-		delete m_pShadowStrategy;
 
 	m_ptShadowOffset = ptOffset;
 	m_pShadowStrategy = pStrat;
 
-	ExtrudeStrategy* pStrat2 = new ExtrudeStrategy();
+	std::shared_ptr<ExtrudeStrategy> pStrat2 = std::make_shared<ExtrudeStrategy>();
 	pStrat2->Init(
 		Gdiplus::Color(0,0,0,0),
 		Gdiplus::Color(color.GetAlpha(),255,255,255),
 		nThickness,
 		ptOffset.X, ptOffset.Y);
 
-	if(m_pShadowStrategyMask)
-		delete m_pShadowStrategyMask;
-
 	m_pShadowStrategyMask = pStrat2;
 
 	m_clrShadow = color;
 
-	if(m_pFontBodyShadow)
-		delete m_pFontBodyShadow;
-
-	ExtrudeStrategy* pFontBodyShadow = new ExtrudeStrategy();
+	std::shared_ptr<ExtrudeStrategy> pFontBodyShadow = std::make_shared<ExtrudeStrategy>();
 	pFontBodyShadow->Init(Gdiplus::Color(255,255,255),Gdiplus::Color(0,0,0,0), nThickness, ptOffset.X, ptOffset.Y);
 
 	m_pFontBodyShadow = pFontBodyShadow;
 
-	if(m_pFontBodyShadowMask)
-		delete m_pFontBodyShadowMask;
-
-	ExtrudeStrategy* pFontBodyShadowMask = new ExtrudeStrategy();
+	std::shared_ptr<ExtrudeStrategy> pFontBodyShadowMask = std::make_shared<ExtrudeStrategy>();
 	pFontBodyShadowMask->Init(Gdiplus::Color(color.GetAlpha(),255,255,255), Gdiplus::Color(0,0,0,0), 
 		nThickness, ptOffset.X, ptOffset.Y);
 
@@ -507,39 +376,6 @@ void PngOutlineText::SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeig
 	Gdiplus::Graphics graphics((Gdiplus::Image*)(m_pBkgdBitmap));
 	Gdiplus::SolidBrush brush(clrBkgd);
 	graphics.FillRectangle(&brush, 0, 0, m_pBkgdBitmap->GetWidth(), m_pBkgdBitmap->GetHeight() );
-}
-
-void PngOutlineText::SetNullTextEffect()
-{
-	if(m_pTextStrategy)
-	{
-		delete m_pTextStrategy;
-		m_pTextStrategy = NULL;
-	}
-}
-
-void PngOutlineText::SetNullShadow()
-{
-	//if(m_pBkgdBitmap)
-	//{
-	//	delete m_pBkgdBitmap;
-	//	m_pBkgdBitmap = NULL;
-	//}
-	if(m_pFontBodyShadow)
-	{
-		delete m_pFontBodyShadow;
-		m_pFontBodyShadow = NULL;
-	}
-	if(m_pShadowStrategy)
-	{
-		delete m_pShadowStrategy;
-		m_pShadowStrategy = NULL;
-	}
-	if(m_pShadowStrategyMask)
-	{
-		delete m_pShadowStrategyMask;
-		m_pShadowStrategyMask = NULL;
-	}
 }
 
 void PngOutlineText::EnableShadow(bool bEnable)

@@ -85,8 +85,6 @@ void CScratchPadDlg::OnPaint()
 	m_PngOutlineText.EnableReflection(false);
 
 	m_PngOutlineText.EnableShadow(true);
-	//Rem to SetNullShadow() to release memory if a previous shadow has been set.
-	m_PngOutlineText.SetNullShadow();
 	m_PngOutlineText.Shadow(
 		Gdiplus::Color(128,0,0,0), 8, 
 		Gdiplus::Point(4,4));

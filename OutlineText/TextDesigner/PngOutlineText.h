@@ -164,12 +164,6 @@ public:
 	//! Set the shadow bitmap with a color, width and height
 	void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight);
 
-	//! Set text effect to nothing
-	void SetNullTextEffect();
-
-	//! Set shadow to nothing, reseting previous shadow settings
-	void SetNullShadow();
-	
 	//! Enable shadow
 	void EnableShadow(bool bEnable);
 
@@ -555,15 +549,15 @@ protected:
 	bool ProcessReflection();
 	
 	//! Text effect strategy polymorphic pointer
-	ITextStrategy* m_pTextStrategy;
+	std::shared_ptr<ITextStrategy> m_pTextStrategy;
 	//! Shadow effect strategy polymorphic pointer to draw the outline(Right now only 1 effect, TextOutlineStrategy)
-	ITextStrategy* m_pShadowStrategy;
+	std::shared_ptr<ITextStrategy> m_pShadowStrategy;
 	//! Shadow effect strategy alpha mask polymorphic pointer to draw the outline
-	ITextStrategy* m_pShadowStrategyMask;
+	std::shared_ptr<ITextStrategy> m_pShadowStrategyMask;
 	//! Object to draw the text body, not the outline
-	ITextStrategy* m_pFontBodyShadow;
+	std::shared_ptr<ITextStrategy> m_pFontBodyShadow;
 	//! Object to draw the text body alpha mask, not the outline
-	ITextStrategy* m_pFontBodyShadowMask;
+	std::shared_ptr<ITextStrategy> m_pFontBodyShadowMask;
 	//! Specify how much to offset the shadow relatively.
 	Gdiplus::Point m_ptShadowOffset;
 	//! Shadow color
