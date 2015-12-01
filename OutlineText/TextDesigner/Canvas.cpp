@@ -103,26 +103,23 @@ std::shared_ptr<ITextStrategy> Canvas::TextOnlyOutline(
 	return pStrat;
 }
 
-Gdiplus::Bitmap* Canvas::GenImage(int width, int height)
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height)
 {
-	return new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
+	return std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 }
 
-Gdiplus::Bitmap* Canvas::GenImage(int width, int height, std::vector<Gdiplus::Color>& vec, bool bHorizontal)
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, std::vector<Gdiplus::Color>& vec, bool bHorizontal)
 {
-	Gdiplus::Bitmap* bmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
+	std::shared_ptr<Gdiplus::Bitmap> bmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 
 	DrawGradient::Draw(*bmp, vec, bHorizontal);
 
 	return bmp;
 }
 
-Gdiplus::Bitmap* Canvas::GenImage(int width, int height, Gdiplus::Color clr)
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus::Color clr)
 {
-	Gdiplus::Bitmap* bmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
-
-	if(bmp==NULL)
-		return NULL;
+	std::shared_ptr<Gdiplus::Bitmap> bmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 
 	UINT* pixels = NULL;
 
@@ -159,12 +156,9 @@ Gdiplus::Bitmap* Canvas::GenImage(int width, int height, Gdiplus::Color clr)
 	return bmp;
 }
 
-Gdiplus::Bitmap* Canvas::GenImage(int width, int height, Gdiplus::Color clr, BYTE alpha)
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus::Color clr, BYTE alpha)
 {
-	Gdiplus::Bitmap* bmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
-
-	if(bmp==NULL)
-		return NULL;
+	std::shared_ptr<Gdiplus::Bitmap> bmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 
 	UINT* pixels = NULL;
 
@@ -201,16 +195,16 @@ Gdiplus::Bitmap* Canvas::GenImage(int width, int height, Gdiplus::Color clr, BYT
 	return bmp;
 }
 
-Gdiplus::Bitmap* Canvas::GenMask(
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenMask(
 	std::shared_ptr<ITextStrategy>& pStrategy, 
 	int width, 
 	int height, 
 	Gdiplus::Point offset,
 	TextContext& textContext)
 {
-	Gdiplus::Bitmap* pBmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
+	std::shared_ptr<Gdiplus::Bitmap> pBmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp.get()));
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 
@@ -225,7 +219,7 @@ Gdiplus::Bitmap* Canvas::GenMask(
 	return pBmp;
 }
 
-Gdiplus::Bitmap* Canvas::GenMask(
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenMask(
 	std::shared_ptr<ITextStrategy>& pStrategy, 
 	int width, 
 	int height, 
@@ -233,9 +227,9 @@ Gdiplus::Bitmap* Canvas::GenMask(
 	TextContext& textContext,
 	Gdiplus::Matrix& mat)
 {
-	Gdiplus::Bitmap* pBmp = new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB);
+	std::shared_ptr<Gdiplus::Bitmap> pBmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(pBmp.get()));
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 	graphics.SetTransform(&mat);

@@ -95,7 +95,7 @@ void CAquarionMFCDlg::OnPaint()
 
 		CRect rect;
 		GetClientRect(&rect);
-		Bitmap* canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
+		auto canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
 
 		// Text context to store string and font info to be sent as parameter to Canvas methods
 		TextContext context;
@@ -121,13 +121,13 @@ void CAquarionMFCDlg::OnPaint()
 
 		// Generate the mask image for measuring the size of the text image required
 		//============================================================================
-		Bitmap* maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), context);
+		auto maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), context);
 
 		UINT top = 0;
 		UINT bottom = 0;
 		UINT left = 0;
 		UINT right = 0;
-		Canvas::MeasureMaskLength(maskOutline2, MaskColor::Blue(), top, left, bottom, right);
+		Canvas::MeasureMaskLength(maskOutline2.get(), MaskColor::Blue(), top, left, bottom, right);
 		right += 2;
 		bottom += 2;
 
@@ -152,23 +152,20 @@ void CAquarionMFCDlg::OnPaint()
 		graphGrad.DrawImage(bmpGrad, (int)left, (int)top, (int)(right - left), (int)(bottom - top));
 
 		// Apply the rainbow text against the blue mask onto the canvas
-		Canvas::ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor::Blue(), false);
+		Canvas::ApplyImageToMask(bmpGrad2, maskOutline2.get(), canvas.get(), MaskColor::Blue(), false);
 
 		// Draw the (white body and black outline) text onto the canvas
 		//==============================================================
 		auto strategyOutline1 = Canvas::TextOutline(Color(255,255,255), Color(0,0,0), 4);
-		Canvas::DrawTextImage(strategyOutline1, canvas, Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline1, canvas.get(), Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
-		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
+		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
 
 		// Release all the resources
 		//============================
 		delete bmpGrad;
 		delete bmpGrad2;
-		delete canvas;
-		
-		delete maskOutline2;
 	}
 }
 

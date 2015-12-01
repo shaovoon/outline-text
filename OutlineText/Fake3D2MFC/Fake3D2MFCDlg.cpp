@@ -152,21 +152,21 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	using namespace Gdiplus;
 	using namespace TextDesigner;
 
-	Bitmap* canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
+	auto canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
 
 	// Create the outline strategy which is going to shift blit diagonally
 	auto strategyOutline = Canvas::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
 
 	// the single mask outline
-	Bitmap* maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context, mat);
+	auto maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context, mat);
 	// the mask to store all the single mask blitted diagonally
-	Bitmap* maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
+	auto maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
 
-	Graphics graphMaskAll(maskOutlineAll);
+	Graphics graphMaskAll(maskOutlineAll.get());
 
 	// blit diagonally
 	for(int i=0; i<8; ++i)
-		graphMaskAll.DrawImage(maskOutline, -i, -i, rect.Width(), rect.Height());
+		graphMaskAll.DrawImage(maskOutline.get(), -i, -i, rect.Width(), rect.Height());
 
 	// Measure the dimension of the big mask in order to generate the correct sized gradient image
 	//=============================================================================================
@@ -174,13 +174,13 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	UINT bottom = 0;
 	UINT left = 0;
 	UINT right = 0;
-	Canvas::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
+	Canvas::MeasureMaskLength(maskOutlineAll.get(), MaskColor::Blue(), top, left, bottom, right);
 	right += 2;
 	bottom += 2;
 
 	// Generate the gradient image for the diagonal outline
 	//=======================================================
-	Bitmap* gradImage = Canvas::GenImage(right-left, bottom-top);
+	auto gradImage = Canvas::GenImage(right-left, bottom-top);
 
 	std::vector<Color> vecColors;
 	vecColors.push_back(Color::Purple);
@@ -190,18 +190,18 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	// Because Canvas::ApplyImageToMask requires all image to have same dimensions,
 	// we have to blit our small gradient image onto a temp image as big as the canvas
 	//===================================================================================
-	Bitmap* gradBlitted = Canvas::GenImage(rect.Width(), rect.Height());
+	auto gradBlitted = Canvas::GenImage(rect.Width(), rect.Height());
 
-	Graphics graphgradBlitted(gradBlitted);
+	Graphics graphgradBlitted(gradBlitted.get());
 
-	graphgradBlitted.DrawImage(gradImage, (int)left, (int)top, (int)(gradImage->GetWidth()), (int)(gradImage->GetHeight()));
+	graphgradBlitted.DrawImage(gradImage.get(), (int)left, (int)top, (int)(gradImage->GetWidth()), (int)(gradImage->GetHeight()));
 
-	Canvas::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
+	Canvas::ApplyImageToMask(gradBlitted.get(), maskOutlineAll.get(), canvas.get(), MaskColor::Blue(), false);
 
 	// Create strategy and mask image for the text body
 	//===================================================
 	auto strategyText = Canvas::TextNoOutline(MaskColor::Blue());
-	Bitmap* maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context, mat);
+	auto maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context, mat);
 
 	// Measure the dimension required for text body using the mask
 	//=============================================================
@@ -209,7 +209,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	bottom = 0;
 	left = 0;
 	right = 0;
-	Canvas::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
+	Canvas::MeasureMaskLength(maskText.get(), MaskColor::Blue(), top, left, bottom, right);
 	top -= 2;
 	left -= 2;
 
@@ -223,18 +223,8 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	auto strategyText2 = Canvas::TextNoOutline(&gradTextbrush);
 
 	// Draw the newly created strategy onto the canvas
-	Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context, mat);
+	Canvas::DrawTextImage(strategyText2, canvas.get(), Point(0,0), context, mat);
 
 	// Finally blit the rendered canvas onto the window
-	graphics.DrawImage(canvas, x_offset, 0, rect.Width(), rect.Height());
-
-	delete gradImage;
-	delete gradBlitted;
-
-	delete maskText;
-
-	delete maskOutline;
-	delete maskOutlineAll;
-
-	delete canvas;
+	graphics.DrawImage(canvas.get(), x_offset, 0, rect.Width(), rect.Height());
 }

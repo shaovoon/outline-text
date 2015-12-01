@@ -91,7 +91,7 @@ void CDirtyMFCDlg::OnPaint()
 
 		CRect rect;
 		GetClientRect(&rect);
-		Bitmap* canvas = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
 		// Load the dirty image from file
 		Bitmap* canvasDirty = new Bitmap(L"..\\CommonImages\\dirty-texture.png");
 
@@ -109,47 +109,40 @@ void CDirtyMFCDlg::OnPaint()
 		// Load the texture image from file
 		Bitmap* texture = new Bitmap(L"..\\CommonImages\\texture_blue.jpg");
 
-		Bitmap* texture2 = Canvas::GenImage(rect.Width(), rect.Height());
+		auto texture2 = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the texture against the red dirty mask onto the 2nd texture
-		Canvas::ApplyImageToMask(texture, canvasDirty, texture2, MaskColor::Red(), false );
-		TextureBrush textureBrush(texture2);
+		Canvas::ApplyImageToMask(texture, canvasDirty, texture2.get(), MaskColor::Red(), false );
+		TextureBrush textureBrush(texture2.get());
 
-		Bitmap* textureShadow = Canvas::GenImage(rect.Width(), rect.Height());
+		auto textureShadow = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the gray color against the red dirty mask onto the shadow texture
-		Canvas::ApplyColorToMask(Color(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, textureShadow, MaskColor::Red() );
+		Canvas::ApplyColorToMask(Color(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, textureShadow.get(), MaskColor::Red() );
 		// Create texture brush for the shadow
-		TextureBrush shadowBrush(textureShadow);
+		TextureBrush shadowBrush(textureShadow.get());
 
 		// Create strategy for the shadow with the shadow brush
 		auto strategyShadow = Canvas::TextNoOutline(&shadowBrush);
 
-		Bitmap* canvasTemp = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvasTemp = Canvas::GenImage(rect.Width(), rect.Height());
 		// Draw the shadow image first onto the temp canvas
-		Canvas::DrawTextImage(strategyShadow, canvasTemp, Point(0, 0), context);
+		Canvas::DrawTextImage(strategyShadow, canvasTemp.get(), Point(0, 0), context);
 
 		// Create strategy for the text body
 		auto strategy = Canvas::TextNoOutline(&textureBrush);
 
 		// Create image brush for the shadow
 		//=======================================
-		Canvas::DrawTextImage(strategy, canvas, Point(0,0), context);
+		Canvas::DrawTextImage(strategy, canvas.get(), Point(0,0), context);
 
 		// Draw the shadow image (canvasTemp) shifted -3, -3
-		graphics.DrawImage(canvasTemp, 3, 3, rect.Width()-3, rect.Height()-3);
+		graphics.DrawImage(canvasTemp.get(), 3, 3, rect.Width()-3, rect.Height()-3);
 		// Then draw the rendered image onto window
-		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
+		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
 
 		// Release all the resources
 		//============================
 		delete texture;
-		delete texture2;
-		delete textureShadow;
-
 		delete canvasDirty;
-
-		delete canvas;
-
-		delete canvasTemp;
 	}
 }
 

@@ -90,7 +90,7 @@ void CFakeBeveledMFCDlg::OnPaint()
 
 		CRect rect;
 		GetClientRect(&rect);
-		Bitmap* canvas = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
 
 		// Text context to store string and font info to be sent as parameter to Canvas methods
 		TextContext context;
@@ -117,29 +117,25 @@ void CFakeBeveledMFCDlg::OnPaint()
 		// Draw the main outline
 		//==========================================================
 		auto mainOutline = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 4);
-		Canvas::DrawTextImage(mainOutline, canvas, Point(4,4), context);
+		Canvas::DrawTextImage(mainOutline, canvas.get(), Point(4,4), context);
 
 		// Draw the small bright outline shifted (-2, -2)
 		//==========================================================
 		auto mainBright = Canvas::TextOutline(Color(252,173,250), Color(252,173,250), 2);
-		Canvas::DrawTextImage(mainBright, canvas, Point(2,2), context);
+		Canvas::DrawTextImage(mainBright, canvas.get(), Point(2,2), context);
 
 		// Draw the small dark outline shifted (+2, +2)
 		//==========================================================
 		auto mainDark = Canvas::TextOutline(Color(126,5,123), Color(126,5,123), 2);
-		Canvas::DrawTextImage(mainDark, canvas, Point(6,6), context);
+		Canvas::DrawTextImage(mainDark, canvas.get(), Point(6,6), context);
 
 		// Draw the smallest outline (color same as main outline)
 		//==========================================================
 		auto mainInner = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 2);
-		Canvas::DrawTextImage(mainInner, canvas, Point(4,4), context);
+		Canvas::DrawTextImage(mainInner, canvas.get(), Point(4,4), context);
 
 		// Finally blit the rendered canvas onto the window
-		graphics.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
-
-		// Release all the resources
-		//============================
-		delete canvas;
+		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
 	}
 }
 

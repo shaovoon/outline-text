@@ -95,7 +95,7 @@ void CHollowTextMFCDlg::OnPaint()
 
 		CRect rect;
 		GetClientRect(&rect);
-		Bitmap* canvas = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
 		// Text context to store string and font info to be sent as parameter to Canvas methods
 		TextContext context;
 
@@ -108,7 +108,7 @@ void CHollowTextMFCDlg::OnPaint()
 		context.pszText = L"CUTOUT";
 		context.ptDraw = Point(0, 0);
 
-		Bitmap* hollowImage = Canvas::GenImage(rect.Width(), rect.Height());
+		auto hollowImage = Canvas::GenImage(rect.Width(), rect.Height());
 		// Algorithm to shift the shadow outline in and then out continuous
 		int shift=0;
 		if(m_nTimerLoop>=0&&m_nTimerLoop<=2)
@@ -117,42 +117,35 @@ void CHollowTextMFCDlg::OnPaint()
 			shift = 2 - (m_nTimerLoop - 2);
 
 		// Draw the hollow (shadow) outline by shifting accordingly
-		Canvas::DrawTextImage(strategyOutline, hollowImage, Point(2+shift,2+shift), context);
+		Canvas::DrawTextImage(strategyOutline, hollowImage.get(), Point(2+shift,2+shift), context);
 
 		// Generate the green mask for the cutout holes in the text
 		//============================================================
-		Bitmap* maskImage = Canvas::GenImage(rect.Width(), rect.Height());
+		auto maskImage = Canvas::GenImage(rect.Width(), rect.Height());
 		auto strategyMask = Canvas::TextOutline(MaskColor::Green(), MaskColor::Green(), 0);
-		Canvas::DrawTextImage(strategyMask, maskImage, Point(0,0), context);
+		Canvas::DrawTextImage(strategyMask, maskImage.get(), Point(0,0), context);
 
 		// Apply the hollowed image against the green mask on the canvas
-		Canvas::ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor::Green(), false);
+		Canvas::ApplyImageToMask(hollowImage.get(), maskImage.get(), canvas.get(), MaskColor::Green(), false);
 
 		// Create a double-buffer to blit onto the window for non-flickering, instead of clearing the window
-		Bitmap* backBuffer = Canvas::GenImage(rect.Width(), rect.Height(), Color(0,0,0), 255);
+		auto backBuffer = Canvas::GenImage(rect.Width(), rect.Height(), Color(0,0,0), 255);
 
 		// Create a black outline only strategy and blit it onto the canvas to cover 
 		// the unnatural outline from the gradient shadow
 		//=============================================================================
 		auto strategyOutlineOnly = Canvas::TextOnlyOutline(Color(0,0,0), 2, false);
-		Canvas::DrawTextImage(strategyOutlineOnly, canvas, Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutlineOnly, canvas.get(), Point(0,0), context);
 
 		// Draw the transparent canvas onto the back buffer
 		//===================================================
-		Graphics graphics2(backBuffer);
+		Graphics graphics2(backBuffer.get());
 		graphics2.SetSmoothingMode(SmoothingModeAntiAlias);
 		graphics2.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-		graphics2.DrawImage(canvas, 0, 0, rect.Width(), rect.Height());
+		graphics2.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
 
 		// Finally blit the rendered image onto the window
-		graphics.DrawImage(backBuffer, 0, 0, rect.Width(), rect.Height());
-
-		// Release all the resources
-		//============================
-		delete hollowImage;
-		delete maskImage;
-		delete canvas;
-		delete backBuffer;
+		graphics.DrawImage(backBuffer.get(), 0, 0, rect.Width(), rect.Height());
 	}
 }
 

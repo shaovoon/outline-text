@@ -164,7 +164,7 @@ public:
 	@param height is the image height
 	@return a valid canvas image if successful
 	*/
-	static Gdiplus::Bitmap* GenImage(int width, int height);
+	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height);
 	
 	/** Generate a canvas image with gradients based on width and height
 
@@ -174,7 +174,7 @@ public:
 	@param bHorizontal specifies whether the gradient is horizontal
 	@return a valid canvas image if successful
 	*/
-	static Gdiplus::Bitmap* GenImage(int width, int height, std::vector<Gdiplus::Color>& vec, bool bHorizontal);
+	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height, std::vector<Gdiplus::Color>& vec, bool bHorizontal);
 
 	/** Generate a canvas image based on color, width and height
 
@@ -183,7 +183,7 @@ public:
 	@param clr is the color to paint the image
 	@return a valid canvas image if successful
 	*/
-	static Gdiplus::Bitmap* GenImage(int width, int height, Gdiplus::Color clr);
+	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height, Gdiplus::Color clr);
 
 	/** Generate a canvas image based on color, width and height
 
@@ -193,7 +193,7 @@ public:
 	@param alpha is alpha of the color to paint the image
 	@return a valid canvas image if successful
 	*/
-	static Gdiplus::Bitmap* GenImage(int width, int height, Gdiplus::Color clr, BYTE alpha=0xff);
+	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height, Gdiplus::Color clr, BYTE alpha=0xff);
 
 	/** Generate mask image of the text strategy.
 
@@ -204,7 +204,7 @@ public:
 	@param pTextContext is text context
 	@return a valid mask image if successful
 	*/
-	static Gdiplus::Bitmap* GenMask(
+	static std::shared_ptr<Gdiplus::Bitmap> GenMask(
 		std::shared_ptr<ITextStrategy>& pStrategy, 
 		int width, 
 		int height, 
@@ -221,7 +221,7 @@ public:
 	@param mat is transform matrix
 	@return a valid mask image if successful
 	*/
-	static Gdiplus::Bitmap* GenMask(
+	static std::shared_ptr<Gdiplus::Bitmap> GenMask(
 		std::shared_ptr<ITextStrategy>& pStrategy, 
 		int width, 
 		int height, 
