@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>TextDesigner</ProjectName>
+    <ProjectGuid>{F21CE92F-240D-48FE-8B73-56A63D4536B0}</ProjectGuid>
+    <RootNamespace>TextDesigner</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30128.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BmpOutlineText.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="DiffusedShadowStrategy.cpp" />
+    <ClCompile Include="DrawGradient.cpp" />
+    <ClCompile Include="ExtrudeStrategy.cpp" />
+    <ClCompile Include="GDIPath.cpp" />
+    <ClCompile Include="IOutlineText.cpp" />
+    <ClCompile Include="ITextStrategy.cpp" />
+    <ClCompile Include="MaskColor.cpp" />
+    <ClCompile Include="NonSystemFontLoader.cpp" />
+    <ClCompile Include="OutlineText.cpp" />
+    <ClCompile Include="PngOutlineText.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TextDblGlowStrategy.cpp" />
+    <ClCompile Include="TextDblOutlineStrategy.cpp" />
+    <ClCompile Include="TextGlowStrategy.cpp" />
+    <ClCompile Include="TextGradOutlineStrategy.cpp" />
+    <ClCompile Include="TextImplGetHeight.cpp" />
+    <ClCompile Include="TextNoOutlineStrategy.cpp" />
+    <ClCompile Include="TextOnlyOutlineStrategy.cpp" />
+    <ClCompile Include="TextOutlineStrategy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BmpOutlineText.h" />
+    <ClInclude Include="Canvas.h" />
+    <ClInclude Include="DiffusedShadowStrategy.h" />
+    <ClInclude Include="DrawGradient.h" />
+    <ClInclude Include="ExtrudeStrategy.h" />
+    <ClInclude Include="GDIPath.h" />
+    <ClInclude Include="IOutlineText.h" />
+    <ClInclude Include="ITextStrategy.h" />
+    <ClInclude Include="MaskColor.h" />
+    <ClInclude Include="NonSystemFontLoader.h" />
+    <ClInclude Include="OutlineText.h" />
+    <ClInclude Include="PngOutlineText.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TextDblGlowStrategy.h" />
+    <ClInclude Include="TextDblOutlineStrategy.h" />
+    <ClInclude Include="TextGlowStrategy.h" />
+    <ClInclude Include="TextGradOutlineStrategy.h" />
+    <ClInclude Include="TextImplGetHeight.h" />
+    <ClInclude Include="TextNoOutlineStrategy.h" />
+    <ClInclude Include="TextOnlyOutlineStrategy.h" />
+    <ClInclude Include="TextOutlineStrategy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

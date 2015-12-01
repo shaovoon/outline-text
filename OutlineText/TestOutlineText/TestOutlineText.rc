@@ -1,0 +1,242 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\TestOutlineText.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\TestOutlineText.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TESTOUTLINETEXT_DIALOG DIALOGEX 0, 0, 595, 288
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Outline Text Demo"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "Text Path:",IDC_STATIC,7,9,35,8
+    COMBOBOX        IDC_CBO_TEXT_PATH,46,7,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Text Effect:",IDC_STATIC,100,9,40,8
+    COMBOBOX        IDC_CBO_TEXT_EFFECT,143,7,67,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Text:",IDC_STATIC,217,10,18,8
+    EDITTEXT        IDC_EDT_TEXT,240,7,274,14,ES_AUTOHSCROLL
+    LTEXT           "Font:",IDC_STATIC,9,28,18,8
+    EDITTEXT        IDC_EDT_FONT,30,26,105,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Font...",IDC_BTN_FONT,142,26,38,14
+    LTEXT           "Text Color:",IDC_STATIC,256,29,37,8
+    PUSHBUTTON      " ",IDC_BTN_TEXT_COLOR,294,26,34,14
+    LTEXT           "PosX:",IDC_STATIC,415,28,19,8
+    LTEXT           "PosY:",IDC_STATIC,473,28,19,8
+    EDITTEXT        IDC_EDT_POSX,439,26,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDT_POSY,495,26,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Angle:        ",IDC_STATIC_ANGLE,532,28,23,8
+    EDITTEXT        IDC_EDT_ANGLE,558,26,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Bkgd Image:",IDC_STATIC,7,49,41,8
+    PUSHBUTTON      "...",IDC_BTN_IMAGEBROWSE,51,46,20,14
+    LTEXT           "Bkgd Color:",IDC_STATIC,76,49,38,8
+    PUSHBUTTON      "",IDC_BTN_BKGD_COLOR,114,46,34,14
+    LTEXT           "Outline Color1:",IDC_STATIC_OUTLINE_COLOR1,7,67,49,8
+    PUSHBUTTON      "",IDC_BTN_OUTLINE_COLOR1,60,65,34,14
+    LTEXT           "Thickness1:",IDC_STATIC_THICK1,100,67,38,8
+    EDITTEXT        IDC_EDT_THICK1,141,65,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Alpha1:",IDC_STATIC_ALPHA1,185,67,26,8
+    EDITTEXT        IDC_EDT_ALPHA1,213,65,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "(0-255)0 is fully transparent, 255 is opaque",IDC_STATIC_ALPHATEXT1,253,67,140,8
+    LTEXT           "Outline Color2:",IDC_STATIC_OUTLINE_COLOR2,7,85,49,8
+    PUSHBUTTON      "",IDC_BTN_OUTLINE_COLOR2,60,83,34,14
+    LTEXT           "Thickness2:",IDC_STATIC_THICK2,100,85,38,8
+    EDITTEXT        IDC_EDT_THICK2,141,83,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Alpha2:",IDC_STATIC_ALPHA2,185,85,26,8
+    EDITTEXT        IDC_EDT_ALPHA2,213,83,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "(0-255)0 is fully transparent, 255 is opaque",IDC_STATIC_ALPHATEXT2,253,85,140,8
+    LTEXT           "Shadow Color:",IDC_STATIC_SHADOW_COLOR,7,102,48,8
+    PUSHBUTTON      "",IDC_BTN_SHADOW_COLOR,60,100,34,14
+    LTEXT           "Thickness:",IDC_STATIC_SHADOW_THICK,100,102,34,8
+    EDITTEXT        IDC_EDT_SHADOW_THICK,141,100,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Alpha:",IDC_STATIC_SHADOW_ALPHA,185,103,22,8
+    EDITTEXT        IDC_EDT_SHADOW_ALPHA,213,100,36,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "OffsetX:",IDC_STATIC_SHADOW_OFFSETX,254,102,28,8
+    LTEXT           "OffsetY:",IDC_STATIC_SHADOW_OFFSETY,325,102,28,8
+    EDITTEXT        IDC_EDT_SHADOW_OFFSETX,284,100,36,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDT_SHADOW_OFFSETY,357,100,36,14,ES_AUTOHSCROLL
+    CONTROL         "Enable",IDC_CHK_ENABLE_SHADOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,403,103,37,10
+    CONTROL         "Enable PNG Rendering",IDC_CHK_ENABLE_PNG_RENDERING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,154,48,87,10
+    DEFPUSHBUTTON   "Render",IDC_BTN_RENDER,547,7,41,14
+    CONTROL         "Diffused Shadow",IDC_CHK_DIFFUSED_SHADOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,443,103,70,10
+    CONTROL         "Extruded Text",IDC_CHK_EXTRUDED_TEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,516,103,62,10
+    LTEXT           "Text Color2:   ",IDC_STATIC_TEXT_COLOR2,332,29,47,8
+    PUSHBUTTON      "",IDC_BTN_TEXT_COLOR3,377,26,34,14
+    CONTROL         "Gradient Text",IDC_CHK_GRADIENT_TEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,190,29,60,10
+    CONTROL         "Enable PNG Reflection",IDC_CHK_REFLECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,247,48,87,10
+    PUSHBUTTON      "Reflection Settings...",IDC_BTN_RELECT_SETTINGS,331,46,90,14
+    PUSHBUTTON      "Save PNG Img",IDC_BTN_SAVE_PNG,428,46,68,14
+    PUSHBUTTON      "Save Reflective Img",IDC_BTN_SAVE_REFLECTIVE_PNG,502,46,86,14
+END
+
+IDD_DLG_REFLECT_SETTINGS DIALOGEX 0, 0, 175, 134
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Reflection Settings"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,28,101,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,98,100,50,14
+    LTEXT           "Start Transparency(0.0 - 1.0) :",IDC_STATIC,22,16,101,8
+    LTEXT           "End Transparency(0.0 - 1.0) :",IDC_STATIC,26,34,97,8
+    LTEXT           "Reflective Image Shown(0.0 - 1.0) :",IDC_STATIC,7,52,116,8
+    LTEXT           "Gap between 2 Images in pixels :",IDC_STATIC,16,71,107,8
+    EDITTEXT        IDC_EDT_START_ALPHA,127,12,34,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDT_END_ALPHA,127,31,34,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDT_SHOWN,127,49,34,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDT_GAP,127,67,34,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TestOutlineText.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "TestOutlineText.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_TESTOUTLINETEXT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 588
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 281
+        HORZGUIDE, 26
+        HORZGUIDE, 46
+        HORZGUIDE, 65
+        HORZGUIDE, 83
+        HORZGUIDE, 100
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\TestOutlineText.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

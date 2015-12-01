@@ -1,0 +1,79 @@
+Version 2 Preview 6
++ Added GDI path to C# library
+
+Version 2 Preview 5
++ Added Fake3D Part 2 projects.
+
+Version 2 Preview 4
++ Added comments for all the demos
+
+Version 0.3.7 (16th minor release)
++ Faked 3D, Faked Beveled and Hollow Text demos
+
+Version 0.3.6 (15th minor release)
++ New Canvas and MaskColor classes for C++ MFC, C# Winform and C# WPF(new) libraries.
++ Aquarion, Be Happy and Dirty demos
+
+Version 0.3.5 (14th minor release)
++ Some bug fixes
+
+Version 0.3.4 (13th minor release)
++ New BmpOutlineText class to do perfect gradient.
+
+Version 0.3.3 (12th minor release)
++ Memory leaks fix
++ New double glow effect
+
+Version 0.3.2 (11th minor release)
++ Reflection for PngOutlineText. Yay!!
++ Fixed VSync function which may be null in OpenGL demo.
++ Added 2 effects such as NoOutline(normal text with no outline) and OnlyOutline(just outline without text body)
++ Fixed the PngOutlineText gradient problems in TestOutlineText demo application.
++ Automatically adjusted the alpha channel in TestOutlineText demo application when different effect is selected.
+
+Version 0.3.1 (10th minor release)
++ Fixed the gradient brush being too big for the text, resulting in not much gradient shown in the text.
++ Gradient outline effect from the inner color to the outer color
+
+Version 0.3.0 (9th minor release)
++ Added the ability to select brush, such as gradient brush or texture brush for the text body.
++ Added CSharp library, TextDesignerCSLibrary. Managed C++ dotNetOutline library is obsolete and will be removed soon.
+
+Version 0.2.9 (8th minor release)
++ Added 3D Text to OutlineText, PngOutlineText, dotNetOutlineText and dotNetPngOutlineText
++ Set the namespace for C++ classes to "TextDesign", in order not to clash with the TextDesigner namespace in .NET
++ Added WYSIWYG code sample for Extrude(3D Text feature).
+
+Version 0.2.8 (7th minor release)
++ Solved the bug of incorrect DrawImage position for the C++ and C# sample code for the PngOutlineText
+
+Version 0.2.7 (6th minor release)
++ Changed the PngOutlineText that user must call Graphics::DrawImage method now. DrawString and GdiDrawString methods doesn't render now.
++ Changed the TestOutlineText to use MeasureString and GdiMeasureString for PngOutlineText code to use a small rectangle for rendering than the whole client rectangle.
++ Added a GdiMeasureStringRealHeight method as a hack for the rotated italic text for PngOutlineText.
+
+Version 0.2.6 (5th minor release)
++ Added C# sample code generation which the C# code is copied to the clipboard.(Beta)
+
+Version 0.2.5
++ Added C++ sample code generation which the C++ code is copied to the clipboard.(Beta)
+
+Version 0.2.4 (4th minor release)
++ OpenGL demo generated those text PNG images dynamically, instead of reading from pre-rendered PNG image files.
+  Noticable pause at the start of the demo(grey window) because of PNG image generated in memory.
+
+Version 0.2.3
++ Added GdiMeasureString and MeasureString methods to .Net classes
++ Added diffused shadow methods to .Net classes
++ Made dotNetOutlineText class and dotNetPngOutlineText class inherited from the interface class. 
+
+Version 0.2.2 (3rd minor release)
++ Added diffused shadow
+
+Version 0.2.1 (2nd minor release)
++ Fixed path memory leaks in GdiDrawString methods.
++ Added GdiMeasureString and MeasureString.
++ Made OutlineText class and PngOutlineText class inherited from the abstract class. 
+
+Version 0.2.0
++ First public release
