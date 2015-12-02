@@ -146,7 +146,7 @@ bool CaptureScreenShot(
 bool GenerateTextBitmap(
 	Gdiplus::Graphics* pGraphics,
 	const std::wstring& szText, 
-	Gdiplus::Bitmap** pbmp, 
+	std::shared_ptr<Gdiplus::Bitmap>& pbmp, 
 	bool bPurple);
 
 bool LoadOneTextBitmap( 
@@ -198,14 +198,16 @@ void TextThread(void* p);
 
 struct tagTextStruct
 {
+	tagTextStruct(const std::wstring& text, std::shared_ptr<Gdiplus::Bitmap>& bmp, bool purple)
+		: szText(text), pbmp(bmp), bPurple(purple) {}
 	std::wstring szText;
-	Gdiplus::Bitmap* pbmp;
+	std::shared_ptr<Gdiplus::Bitmap>& pbmp;
 	bool bPurple;
 };
 
 bool GenerateTextBitmapThread(
 							  const std::wstring& szText, 
-							  Gdiplus::Bitmap** pbmp, 
+							  std::shared_ptr<Gdiplus::Bitmap>& pbmp, 
 							  bool bPurple);
 
 
@@ -1162,29 +1164,17 @@ bool LoadBitmaps()
 	//}
 
 
-	Gdiplus::Bitmap* pText1=NULL;
-	tagTextStruct st1;
-	st1.szText = L"Figuring It Out";
-	st1.pbmp = pText1;
-	st1.bPurple = false;
+	std::shared_ptr<Gdiplus::Bitmap> pText1;
+	tagTextStruct st1(L"Figuring It Out", pText1, false);
 	HANDLE hThread1 = (HANDLE)_beginthread(TextThread, 0, (void*)(&st1));
-	Gdiplus::Bitmap* pText2=NULL;
-	tagTextStruct st2;
-	st2.szText = L"Thinking Of You";
-	st2.pbmp = pText2;
-	st2.bPurple = true;
+	std::shared_ptr<Gdiplus::Bitmap> pText2;
+	tagTextStruct st2(L"Thinking Of You", pText2, true);
 	HANDLE hThread2 = (HANDLE)_beginthread(TextThread, 0, (void*)(&st2));
-	Gdiplus::Bitmap* pText3=NULL;
-	tagTextStruct st3;
-	st3.szText = L"Smiling At You";
-	st3.pbmp = pText3;
-	st3.bPurple = false;
+	std::shared_ptr<Gdiplus::Bitmap> pText3;
+	tagTextStruct st3(L"Smiling At You", pText3, false);
 	HANDLE hThread3 = (HANDLE)_beginthread(TextThread, 0, (void*)(&st3));
-	Gdiplus::Bitmap* pText4=NULL;
-	tagTextStruct st4;
-	st4.szText = L"Happy Times";
-	st4.pbmp = pText4;
-	st4.bPurple = true;
+	std::shared_ptr<Gdiplus::Bitmap> pText4;
+	tagTextStruct st4(L"Happy Times", pText4, true);
 	HANDLE hThread4 = (HANDLE)_beginthread(TextThread, 0, (void*)(&st4));
 
 
@@ -1195,33 +1185,18 @@ bool LoadBitmaps()
 	handles[3] = hThread4;
 	WaitForMultipleObjects(4, handles, TRUE, INFINITE);
 
-	bRet = LoadOneTextBitmap( g_bmpTextInfo1, st1.pbmp );
-	if(pText1)
-	{
-		delete pText1;
-		pText1 = NULL;
-	}
+	bRet = LoadOneTextBitmap( g_bmpTextInfo1, st1.pbmp.get() );
 
-	bRet = LoadOneTextBitmap( g_bmpTextInfo2, st2.pbmp );
-	if(pText2)
-	{
-		delete pText2;
-		pText2 = NULL;
-	}
+	bRet = LoadOneTextBitmap( g_bmpTextInfo2, st2.pbmp.get() );
 
-	bRet = LoadOneTextBitmap( g_bmpTextInfo3, st3.pbmp );
-	if(pText3)
-	{
-		delete pText3;
-		pText3 = NULL;
-	}
+	bRet = LoadOneTextBitmap( g_bmpTextInfo3, st3.pbmp.get() );
 
-	bRet = LoadOneTextBitmap( g_bmpTextInfo4, st4.pbmp );
-	if(pText4)
-	{
-		delete pText4;
-		pText4 = NULL;
-	}
+	bRet = LoadOneTextBitmap( g_bmpTextInfo4, st4.pbmp.get() );
+
+	st1.pbmp.reset();
+	st2.pbmp.reset();
+	st3.pbmp.reset();
+	st4.pbmp.reset();
 
 	// Shutdown GDI+
    GdiplusShutdown(gdiplusToken);
@@ -1962,7 +1937,7 @@ void SetVSyncState(bool enable)
 bool GenerateTextBitmap(
 	Gdiplus::Graphics* pGraphics,
 	const std::wstring& szText, 
-	Gdiplus::Bitmap** pbmp, 
+	std::shared_ptr<Gdiplus::Bitmap>& pbmp, 
 	bool bPurple)
 {    
 	using namespace Gdiplus;
@@ -1985,12 +1960,12 @@ bool GenerateTextBitmap(
 	text.MeasureString(pGraphics,&fontFamily,FontStyleBold, 
 		72, szText.c_str(), Gdiplus::Point(0,0), &strformat,
 		NULL, NULL, &fWidth, &fHeight);
-	*pbmp = new Bitmap(fWidth+8.0f, fHeight+8.0f, PixelFormat32bppARGB);
+	pbmp = std::shared_ptr<Gdiplus::Bitmap>(new Bitmap(fWidth+8.0f, fHeight+8.0f, PixelFormat32bppARGB));
 
-	if(!*pbmp)
+	if(pbmp==NULL)
 		return false;
 
-	text.SetPngImage(*pbmp);
+	text.SetPngImage(pbmp);
 	text.DrawString(pGraphics,&fontFamily,FontStyleBold, 
 		72, szText.c_str(), Gdiplus::Point(0,0), &strformat);
 
@@ -2000,12 +1975,12 @@ bool GenerateTextBitmap(
 void TextThread(void* p)
 {
 	tagTextStruct* st = (tagTextStruct*)(p);
-	GenerateTextBitmapThread(st->szText, &(st->pbmp), st->bPurple);
+	GenerateTextBitmapThread(st->szText, st->pbmp, st->bPurple);
 }
 
 bool GenerateTextBitmapThread(
 	const std::wstring& szText, 
-	Gdiplus::Bitmap** pbmp, 
+	std::shared_ptr<Gdiplus::Bitmap>& pbmp, 
 	bool bPurple)
 {    
 	using namespace Gdiplus;
@@ -2040,12 +2015,12 @@ bool GenerateTextBitmapThread(
 	text.MeasureString(pGraphics,&fontFamily,FontStyleBold, 
 		72, szText.c_str(), Gdiplus::Point(0,0), &strformat,
 		NULL, NULL, &fWidth, &fHeight);
-	*pbmp = new Bitmap(fWidth+8.0f, fHeight+8.0f, PixelFormat32bppARGB);
+	pbmp = std::shared_ptr<Gdiplus::Bitmap>(new Bitmap(fWidth+8.0f, fHeight+8.0f, PixelFormat32bppARGB));
 
-	if(!*pbmp)
+	if(pbmp==NULL)
 		return false;
 
-	text.SetPngImage(*pbmp);
+	text.SetPngImage(pbmp);
 	text.DrawString(pGraphics,&fontFamily,FontStyleBold, 
 		72, szText.c_str(), Gdiplus::Point(0,0), &strformat);
 

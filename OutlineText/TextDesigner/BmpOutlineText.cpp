@@ -15,16 +15,6 @@ BmpOutlineText::BmpOutlineText(void)
 
 BmpOutlineText::~BmpOutlineText(void)
 {
-	if(m_pbmpMask)
-	{
-		delete m_pbmpMask;
-		m_pbmpMask = NULL;
-	}
-	if(m_pbmpShadow)
-	{
-		delete m_pbmpShadow;
-		m_pbmpShadow = NULL;
-	}
 }
 
 Gdiplus::Bitmap* BmpOutlineText::Render(
@@ -40,11 +30,11 @@ Gdiplus::Bitmap* BmpOutlineText::Render(
 	if(!pbmpOutline)
 		return NULL;
 
-	m_pbmpResult = new Gdiplus::Bitmap(pbmpOutline->GetWidth()+nOutlineX, pbmpOutline->GetHeight()+nOutlineY, PixelFormat32bppARGB);
+	m_pbmpResult = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(pbmpOutline->GetWidth()+nOutlineX, pbmpOutline->GetHeight()+nOutlineY, PixelFormat32bppARGB));
 
 	
 	using namespace Gdiplus;
-	Bitmap* png = m_PngOutlineText.GetPngImage();
+	std::shared_ptr<Bitmap> png = m_PngOutlineText.GetPngImage();
 	BitmapData bitmapDataResult;
 	BitmapData bitmapDataText;
 	BitmapData bitmapDataOutline;
@@ -202,9 +192,7 @@ Gdiplus::Bitmap* BmpOutlineText::Render(
 	m_pbmpResult->UnlockBits(
 		&bitmapDataResult );
 
-
-
-	return m_pbmpResult;
+	return m_pbmpResult.get();
 }
 
 bool BmpOutlineText::DrawString(
@@ -228,13 +216,10 @@ bool BmpOutlineText::DrawString(
 	m_PngOutlineText.EnableReflection(false);
 	m_PngOutlineText.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -274,13 +259,10 @@ bool BmpOutlineText::DrawString(
 	m_PngOutlineText.EnableReflection(false);
 	m_PngOutlineText.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -316,13 +298,10 @@ bool BmpOutlineText::GdiDrawString(
 	m_PngOutlineText.EnableReflection(false);
 	m_PngOutlineText.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -355,13 +334,10 @@ bool BmpOutlineText::GdiDrawString(
 	m_PngOutlineText.EnableReflection(false);
 	m_PngOutlineText.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -411,13 +387,10 @@ bool BmpOutlineText::DrawString(
 		m_PngShadow.EnableShadow(false);
 
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -434,10 +407,7 @@ bool BmpOutlineText::DrawString(
 
 	if(bShadow)
 	{
-		if(m_pbmpShadow)
-			delete m_pbmpShadow;
-
-		m_pbmpShadow = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+		m_pbmpShadow = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 		m_PngShadow.SetPngImage(m_pbmpShadow);
 
@@ -489,13 +459,10 @@ bool BmpOutlineText::DrawString(
 	else
 		m_PngShadow.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -512,10 +479,7 @@ bool BmpOutlineText::DrawString(
 
 	if(bShadow)
 	{
-		if(m_pbmpShadow)
-			delete m_pbmpShadow;
-
-		m_pbmpShadow = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+		m_pbmpShadow = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 		m_PngShadow.SetPngImage(m_pbmpShadow);
 
@@ -563,13 +527,10 @@ bool BmpOutlineText::GdiDrawString(
 	else
 		m_PngShadow.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -583,10 +544,7 @@ bool BmpOutlineText::GdiDrawString(
 
 	if(bShadow)
 	{
-		if(m_pbmpShadow)
-			delete m_pbmpShadow;
-
-		m_pbmpShadow = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+		m_pbmpShadow = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 		m_PngShadow.SetPngImage(m_pbmpShadow);
 
@@ -632,13 +590,10 @@ bool BmpOutlineText::GdiDrawString(
 	else
 		m_PngShadow.EnableShadow(false);
 
-	if(m_pbmpMask)
-		delete m_pbmpMask;
-
-	m_pbmpMask = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pbmpMask = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
-	Graphics graph(m_pbmpMask);
+	Graphics graph(m_pbmpMask.get());
 	SolidBrush brush(m_clrBkgd);
 	graph.FillRectangle(&brush, 0, 0, m_pbmpMask->GetWidth(), m_pbmpMask->GetHeight());
 
@@ -652,10 +607,7 @@ bool BmpOutlineText::GdiDrawString(
 
 	if(bShadow)
 	{
-		if(m_pbmpShadow)
-			delete m_pbmpShadow;
-
-		m_pbmpShadow = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+		m_pbmpShadow = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 		m_PngShadow.SetPngImage(m_pbmpShadow);
 

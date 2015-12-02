@@ -51,11 +51,6 @@ void OutlineText::Init(OutlineText* rhs)
 
 OutlineText::~OutlineText(void)
 {
-	if(m_pBkgdBitmap)
-	{
-		delete m_pBkgdBitmap;
-		m_pBkgdBitmap = NULL;
-	}
 }
 
 void OutlineText::TextGlow(
@@ -70,12 +65,12 @@ void OutlineText::TextGlow(
 }
 
 void OutlineText::TextGlow(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -92,12 +87,12 @@ void OutlineText::TextOutline(
 }
 
 void OutlineText::TextOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -116,14 +111,14 @@ void OutlineText::TextDblOutline(
 }
 
 void OutlineText::TextDblOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness1, 
 	int nThickness2)
 {
 	std::shared_ptr<TextDblOutlineStrategy> pStrat = std::make_shared<TextDblOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
 
 	m_pTextStrategy = pStrat;
 }
@@ -142,14 +137,14 @@ void OutlineText::TextDblGlow(
 }
 
 void OutlineText::TextDblGlow(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness1, 
 	int nThickness2)
 {
 	std::shared_ptr<TextDblGlowStrategy> pStrat = std::make_shared<TextDblGlowStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
 
 	m_pTextStrategy = pStrat;
 }
@@ -167,13 +162,13 @@ void OutlineText::TextGradOutline(
 }
 
 void OutlineText::TextGradOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -186,10 +181,10 @@ void OutlineText::TextNoOutline(Gdiplus::Color clrText)
 	m_pTextStrategy = pStrat;
 }
 
-void OutlineText::TextNoOutline(Gdiplus::Brush* pbrushText)
+void OutlineText::TextNoOutline(Gdiplus::Brush& brushText)
 {
 	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
-	pStrat->Init(pbrushText);
+	pStrat->Init(&brushText);
 
 	m_pTextStrategy = pStrat;
 }
@@ -434,24 +429,18 @@ bool OutlineText::GdiDrawString(
 	return false;
 }
 
-void OutlineText::SetShadowBkgd(Gdiplus::Bitmap* pBitmap)
+void OutlineText::SetShadowBkgd(std::shared_ptr<Gdiplus::Bitmap>& pBitmap)
 {
-	if(m_pBkgdBitmap&&pBitmap!=m_pBkgdBitmap)
-		delete m_pBkgdBitmap;
-
 	m_pBkgdBitmap = pBitmap;
 }
 
 void OutlineText::SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight)
 {
-	if(m_pBkgdBitmap)
-		delete m_pBkgdBitmap;
-
-	m_pBkgdBitmap = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pBkgdBitmap = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(m_pBkgdBitmap));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(m_pBkgdBitmap.get()));
 	Gdiplus::SolidBrush brush(clrBkgd);
 	graphics.FillRectangle(&brush, 0, 0, m_pBkgdBitmap->GetWidth(), m_pBkgdBitmap->GetHeight() );
 }

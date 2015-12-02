@@ -18,12 +18,12 @@ std::shared_ptr<ITextStrategy> Canvas::TextGlow(
 }
 
 std::shared_ptr<ITextStrategy> Canvas::TextGlow(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	return pStrat;
 }
@@ -40,12 +40,12 @@ std::shared_ptr<ITextStrategy> Canvas::TextOutline(
 }
 
 std::shared_ptr<ITextStrategy> Canvas::TextOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	return pStrat;
 }
@@ -63,13 +63,13 @@ std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 }
 
 std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
 
 	return pStrat;
 }
@@ -84,10 +84,10 @@ std::shared_ptr<ITextStrategy> Canvas::TextNoOutline(
 }
 
 std::shared_ptr<ITextStrategy> Canvas::TextNoOutline(
-	Gdiplus::Brush* pbrushText)
+	Gdiplus::Brush& brushText)
 {
 	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
-	pStrat->Init(pbrushText);
+	pStrat->Init(&brushText);
 
 	return pStrat;
 }
@@ -248,7 +248,7 @@ std::shared_ptr<Gdiplus::Bitmap> Canvas::GenMask(
 }
 
 bool Canvas::MeasureMaskLength(
-	Gdiplus::Bitmap* pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
 	Gdiplus::Color maskColor,
 	UINT& top,
 	UINT& left,
@@ -319,9 +319,9 @@ bool Canvas::MeasureMaskLength(
 }
 
 bool Canvas::ApplyImageToMask(
-	Gdiplus::Bitmap* pImage, 
-	Gdiplus::Bitmap* pMask, 
-	Gdiplus::Bitmap* pCanvas, 
+	std::shared_ptr<Gdiplus::Bitmap>& pImage, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 	Gdiplus::Color maskColor,
 	bool NoAlphaAtBoundary)
 {
@@ -413,8 +413,8 @@ bool Canvas::ApplyImageToMask(
 
 bool Canvas::ApplyColorToMask(
 	Gdiplus::Color clr, 
-	Gdiplus::Bitmap* pMask, 
-	Gdiplus::Bitmap* pCanvas, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 	Gdiplus::Color maskColor)
 {
 	if(pMask==NULL||pCanvas==NULL)
@@ -484,8 +484,8 @@ bool Canvas::ApplyColorToMask(
 
 bool Canvas::ApplyColorToMask(
 	Gdiplus::Color clr, 
-	Gdiplus::Bitmap* pMask, 
-	Gdiplus::Bitmap* pCanvas, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 	Gdiplus::Color maskColor,
 	Gdiplus::Point offset)
 {
@@ -557,8 +557,8 @@ bool Canvas::ApplyColorToMask(
 
 bool Canvas::ApplyShadowToMask(
 	Gdiplus::Color clrShadow, 
-	Gdiplus::Bitmap* pMask, 
-	Gdiplus::Bitmap* pCanvas, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 	Gdiplus::Color maskColor)
 {
 	if(pMask==NULL||pCanvas==NULL)
@@ -632,8 +632,8 @@ bool Canvas::ApplyShadowToMask(
 
 bool Canvas::ApplyShadowToMask(
 	Gdiplus::Color clrShadow, 
-	Gdiplus::Bitmap* pMask, 
-	Gdiplus::Bitmap* pCanvas, 
+	std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+	std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 	Gdiplus::Color maskColor,
 	Gdiplus::Point offset)
 {
@@ -709,14 +709,14 @@ bool Canvas::ApplyShadowToMask(
 
 bool Canvas::DrawTextImage(
 	std::shared_ptr<ITextStrategy>& pStrategy, 
-	Gdiplus::Bitmap* pImage, 
+	std::shared_ptr<Gdiplus::Bitmap>& pImage, 
 	Gdiplus::Point offset,
 	TextContext& textContext)
 {
 	if(pImage==NULL)
 		return false;
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage.get()));
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 
@@ -733,7 +733,7 @@ bool Canvas::DrawTextImage(
 
 bool Canvas::DrawTextImage(
 	std::shared_ptr<ITextStrategy>& pStrategy, 
-	Gdiplus::Bitmap* pImage, 
+	std::shared_ptr<Gdiplus::Bitmap>& pImage, 
 	Gdiplus::Point offset,
 	TextContext& textContext,
 	Gdiplus::Matrix& mat)
@@ -741,7 +741,7 @@ bool Canvas::DrawTextImage(
 	if(pImage==NULL)
 		return false;
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage.get()));
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 	graphics.SetTransform(&mat);

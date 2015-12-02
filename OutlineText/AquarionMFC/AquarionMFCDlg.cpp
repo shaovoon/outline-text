@@ -127,7 +127,7 @@ void CAquarionMFCDlg::OnPaint()
 		UINT bottom = 0;
 		UINT left = 0;
 		UINT right = 0;
-		Canvas::MeasureMaskLength(maskOutline2.get(), MaskColor::Blue(), top, left, bottom, right);
+		Canvas::MeasureMaskLength(maskOutline2, MaskColor::Blue(), top, left, bottom, right);
 		right += 2;
 		bottom += 2;
 
@@ -152,12 +152,12 @@ void CAquarionMFCDlg::OnPaint()
 		graphGrad.DrawImage(bmpGrad.get(), (int)left, (int)top, (int)(right - left), (int)(bottom - top));
 
 		// Apply the rainbow text against the blue mask onto the canvas
-		Canvas::ApplyImageToMask(bmpGrad2.get(), maskOutline2.get(), canvas.get(), MaskColor::Blue(), false);
+		Canvas::ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor::Blue(), false);
 
 		// Draw the (white body and black outline) text onto the canvas
 		//==============================================================
 		auto strategyOutline1 = Canvas::TextOutline(Color(255,255,255), Color(0,0,0), 4);
-		Canvas::DrawTextImage(strategyOutline1, canvas.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline1, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

@@ -114,36 +114,25 @@ void CScratchPadDlg::OnPaint()
 	m_PngOutlineText.SetShadowBkgd(m_clrBkgd,(int)fDestWidth,(int)fDestHeight);
 
 	bool m_bDirty = true;
-	Bitmap* m_pPngImage = NULL;
+	std::shared_ptr<Bitmap> m_pPngImage;
 	if(m_bDirty == false&&m_pPngImage)
 	{
-		graphics.DrawImage(m_pPngImage,10,10,m_pPngImage->GetWidth(),m_pPngImage->GetHeight());
+		graphics.DrawImage(m_pPngImage.get(),10,10,m_pPngImage->GetWidth(),m_pPngImage->GetHeight());
 		return;
 	}
 
-	if(m_pPngImage)
-	{
-		delete m_pPngImage;
-		m_pPngImage = NULL;
-	}
-	m_pPngImage = new Gdiplus::Bitmap(fDestWidth,fDestHeight,PixelFormat32bppARGB);
+	m_pPngImage = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(fDestWidth,fDestHeight,PixelFormat32bppARGB));
 	m_PngOutlineText.SetPngImage(m_pPngImage);
 	LinearGradientBrush gradientBrush(Gdiplus::Rect(fStartX, fStartY, fDestWidth - (fStartX + 10), fDestHeight - (fStartY + 10)),
 		Color(255, 128, 64), Color(255, 0, 0), LinearGradientModeVertical );
 	m_PngOutlineText.TextGradOutline(
-		&gradientBrush, 
+		gradientBrush, 
 		Color(255,64,0,64), 
 		Color(255,255,128,255), 
 		10);
 	m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, L"TEXT DESIGNER", 
 		Gdiplus::Point(10, 10));
-	graphics.DrawImage(m_pPngImage, 0, 0, m_pPngImage->GetWidth(), m_pPngImage->GetHeight());
-
-	if(m_pPngImage)
-	{
-		delete m_pPngImage;
-		m_pPngImage = NULL;
-	}
+	graphics.DrawImage(m_pPngImage.get(), 0, 0, m_pPngImage->GetWidth(), m_pPngImage->GetHeight());
 
 }
 // The system calls this function to obtain the cursor to display while the user drags

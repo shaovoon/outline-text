@@ -11,6 +11,7 @@ http://www.codeproject.com/info/cpol10.aspx
 #ifndef _IOUTLINETEXT_H_
 #define _IOUTLINETEXT_H_
 
+#include <memory>
 #include <Gdiplus.h>
 
 namespace TextDesigner
@@ -36,7 +37,7 @@ public:
 		int nThickness) = 0;
 
 	virtual void TextGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness) = 0;
 
@@ -52,7 +53,7 @@ public:
 		int nThickness) = 0;
 
 	virtual void TextOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness) = 0;
 
@@ -72,7 +73,7 @@ public:
 		int nThickness2) = 0;
 
 	virtual void TextDblOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -94,7 +95,7 @@ public:
 		int nThickness2) = 0;
 
 	virtual void TextDblGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -114,7 +115,7 @@ public:
 		int nThickness) = 0;
 
 	virtual void TextGradOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness) = 0;
@@ -124,7 +125,7 @@ public:
 	@param[in]		clrText is the text color
 	*/
 	virtual void TextNoOutline(Gdiplus::Color clrText) = 0;
-	virtual void TextNoOutline(Gdiplus::Brush* pbrushText) = 0;
+	virtual void TextNoOutline(Gdiplus::Brush& brushText) = 0;
 
 	/** Setting Outlined Text effect with no text fill
 	
@@ -138,7 +139,7 @@ public:
 		bool bRoundedEdge) = 0;
 
 	//! Set the shadow bitmap with a bitmap
-	virtual void SetShadowBkgd(Gdiplus::Bitmap* pBitmap) = 0;
+	virtual void SetShadowBkgd(std::shared_ptr<Gdiplus::Bitmap>& pBitmap) = 0;
 
 	//! Set the shadow bitmap with a color, width and height
 	virtual void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight) = 0;
@@ -340,7 +341,7 @@ public:
 	/** Measure String using a rectangle. Using GDI paths, instead of GDI+ paths
 
 	@param[in]		pGraphics is the graphics context
-	@param[in]		pLogFont is the LOGFONT from which the font will becreated.
+	@param[in]		pLogFont is the LOGFONT from which the font will be created.
 	@param[in]		pszText is the text which is displayed.
 	@param[in]		rtDraw is the rectangle where the whole drawing will be centralized
 	@param[out]		pfDestWidth is the destination pixels width

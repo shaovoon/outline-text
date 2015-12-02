@@ -49,7 +49,7 @@ public:
 	void SetShadowAlpha(int nAlpha);
 	void SetShadowOffsetX(int nOffsetX);
 	void SetShadowOffsetY(int nOffsetY);
-	void SetShadowBkgdBmp(Gdiplus::Bitmap* pBmp);
+	void SetShadowBkgdBmp(std::shared_ptr<Gdiplus::Bitmap>& pBmp);
 	void SetShadowColor(Gdiplus::Color color);
 	void SetShadowThickness(int nThick);
 	void EnablePngRendering(bool bEnable);
@@ -112,7 +112,7 @@ public:
 protected:
 	CMyScrollView();           // protected constructor used by dynamic creation
 	virtual ~CMyScrollView();
-	Gdiplus::Bitmap* m_pImage;
+	std::shared_ptr<Gdiplus::Bitmap> m_pImage;
 	Gdiplus::Color m_clrBkgd;
 	Gdiplus::Color m_clrText;
 	Gdiplus::Color m_clrText2;
@@ -137,10 +137,10 @@ protected:
 	int m_nShadowOffsetY;
 	int m_nShadowAlpha;
 	bool m_bEnableShadow;
-	Gdiplus::Bitmap* m_pShadowBkgdBmp;
+	std::shared_ptr<Gdiplus::Bitmap> m_pShadowBkgdBmp;
 	Gdiplus::Color m_clrShadow;
 	int m_nShadowThickness;
-	Gdiplus::Bitmap* m_pPngImage;
+	std::shared_ptr<Gdiplus::Bitmap> m_pPngImage;
 	bool m_bPngImage;
 	bool m_bTextGradient;
 	bool m_bDirty;
@@ -149,7 +149,7 @@ protected:
 	bool m_bDiffusedShadow;
 	bool m_bExtrudedText;
 	CString m_szImageFile;
-	Gdiplus::LinearGradientBrush* m_pGradientBrush;
+	std::shared_ptr<Gdiplus::LinearGradientBrush> m_pGradientBrush;
 	float m_fStartAlpha;
 	float m_fEndAlpha;
 	float m_fShown;

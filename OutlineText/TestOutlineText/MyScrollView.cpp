@@ -54,26 +54,6 @@ m_bEnableReflection(false)
 
 CMyScrollView::~CMyScrollView()
 {
-	if(m_pImage)
-	{
-		//delete m_pImage; // ownership passed to the OutlineText object
-		m_pImage = NULL;
-	}
-	if(m_pPngImage)
-	{
-		delete m_pPngImage;
-		m_pPngImage = NULL;
-	}
-	if(m_pBkgdBmp)
-	{
-		delete m_pBkgdBmp;
-		m_pBkgdBmp = NULL;
-	}
-	if(m_pGradientBrush)
-	{
-		//delete m_pGradientBrush; // ownership passed to the OutlineText object
-		m_pGradientBrush = NULL;
-	}
 }
 
 
@@ -116,7 +96,7 @@ void CMyScrollView::OnDraw(CDC* pDC)
 
 			if(m_pImage)
 			{
-				graphics.DrawImage(m_pImage,0,0,m_pImage->GetWidth(),m_pImage->GetHeight());
+				graphics.DrawImage(m_pImage.get(),0,0,m_pImage->GetWidth(),m_pImage->GetHeight());
 			}
 
 			SetTextEffect(&m_PngOutlineText, NULL);
@@ -221,19 +201,13 @@ void CMyScrollView::OnDraw(CDC* pDC)
 				//	return;
 				//}
 
-				if(m_bDirty&&m_pPngImage)
-				{
-					delete m_pPngImage;
-					m_pPngImage = NULL;
-				}
-
 				float fWidth=0.0f;
 				float fHeight=0.0f;
 				m_PngOutlineText.MeasureString(&graphics,&fontFamily,fontStyle, 
 					m_nFontSize, m_szText, Gdiplus::Point(0,0), &strFormat,
 					NULL, NULL, &fWidth, &fHeight);
-				if(!m_pPngImage)
-					m_pPngImage = new Bitmap(fWidth, fHeight, PixelFormat32bppARGB);
+				if(m_bDirty)
+					m_pPngImage = std::shared_ptr<Bitmap>(new Bitmap(fWidth, fHeight, PixelFormat32bppARGB));
 
 				if(!m_pPngImage)
 					return;
@@ -274,26 +248,26 @@ void CMyScrollView::OnDraw(CDC* pDC)
 								m_pGradientBrush = NULL;
 							}
 
-							m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+							m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 								fDestWidth - fStartX, fDestHeight - fStartY),
 								Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 								Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-								LinearGradientModeVertical);
+								LinearGradientModeVertical));
 
-							SetTextEffect(&m_PngOutlineText, m_pGradientBrush);
+							SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());
 					    }
 						m_PngOutlineText.DrawString(
 							&graphics,&fontFamily,fontStyle,m_nFontSize,m_szText,Gdiplus::Point(0,0), &strFormat);
 					}
-					graphics.DrawImage(m_pPngImage, (float)m_nTextPosX, (float)m_nTextPosY, 
+					graphics.DrawImage(m_pPngImage.get(), (float)m_nTextPosX, (float)m_nTextPosY, 
 						(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 					if(m_bEnableReflection)
 					{
-						Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+						std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 						if(pReflectBmp)
 						{
-							graphics.DrawImage(pReflectBmp, (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
+							graphics.DrawImage(pReflectBmp.get(), (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
 								(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 						}
 					}
@@ -333,26 +307,26 @@ void CMyScrollView::OnDraw(CDC* pDC)
 								m_pGradientBrush = NULL;
 							}
 
-							m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY,
+							m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY,
 								fDestWidth - fStartX, fDestHeight - fStartY),
 								Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 								Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-								LinearGradientModeVertical);
+								LinearGradientModeVertical));
 
-							SetTextEffect(&m_PngOutlineText, m_pGradientBrush);
+							SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());
 						}
 						m_PngOutlineText.DrawString(
 							&graphics,&fontFamily,fontStyle,m_nFontSize,m_szText,Gdiplus::Point(nShadowOffsetX,nShadowOffsetY), &strFormat);
 					}
-					graphics.DrawImage(m_pPngImage, (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY), 
+					graphics.DrawImage(m_pPngImage.get(), (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY), 
 						(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 					if(m_bEnableReflection)
 					{
-						Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+						std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 						if(pReflectBmp)
 						{
-							graphics.DrawImage(pReflectBmp, (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
+							graphics.DrawImage(pReflectBmp.get(), (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
 								(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 						}
 					}
@@ -368,12 +342,6 @@ void CMyScrollView::OnDraw(CDC* pDC)
 				//	TRACE(_T("End of Text Rendering\n");
 				//	return;
 				//}
-
-				if(m_bDirty&&m_pPngImage)
-				{
-					delete m_pPngImage;
-					m_pPngImage = NULL;
-				}
 
 				m_LogFont.lfOrientation = m_nTextAngle;
 				m_LogFont.lfEscapement = m_nTextAngle;
@@ -392,15 +360,15 @@ void CMyScrollView::OnDraw(CDC* pDC)
 					m_LogFont.lfEscapement = m_nTextAngle;
 					m_PngOutlineText.GdiMeasureString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(0,0),
 						NULL, NULL, &fWidthBig, &fHeightBig);
-					if(!m_pPngImage)
-						m_pPngImage = new Bitmap(fWidthBig+10.0f, fHeightBig+10.0f, PixelFormat32bppARGB);
+					if(m_bDirty)
+						m_pPngImage = std::shared_ptr<Gdiplus::Bitmap>(new Bitmap(fWidthBig+10.0f, fHeightBig+10.0f, PixelFormat32bppARGB));
 				}
 				else
 				{
 					m_PngOutlineText.GdiMeasureString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(0,0),
 						NULL, NULL, &fWidth, &fHeight);
 					if(!m_pPngImage)
-						m_pPngImage = new Bitmap(fWidth, fHeight, PixelFormat32bppARGB);
+						m_pPngImage = std::shared_ptr<Gdiplus::Bitmap>(new Bitmap(fWidth, fHeight, PixelFormat32bppARGB));
 				}
 
 				if(!m_pPngImage)
@@ -435,33 +403,27 @@ void CMyScrollView::OnDraw(CDC* pDC)
 									&fDestWidth,
 									&fDestHeight);
 
-								if(m_pGradientBrush)
-								{
-									//delete m_pGradientBrush;
-									m_pGradientBrush = NULL;
-								}
-
-								m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+								m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 									fDestWidth - fStartX, fDestHeight - fStartY),
 									Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 									Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-									LinearGradientModeVertical);
+									LinearGradientModeVertical));
 
-							SetTextEffect(&m_PngOutlineText, m_pGradientBrush);							}
+								SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());							}
 							m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(0,fHeightBig-fHeight-5.0f));
 						}
 						//SolidBrush brGreen(Color(0,255,0));
 						//graphics.FillRectangle(&brGreen,(float)m_nTextPosX, (float)(m_nTextPosY-(fHeightBig-fHeight-5.0f)), 
 						//	(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
-						graphics.DrawImage(m_pPngImage, (float)m_nTextPosX, (float)(m_nTextPosY-(fHeightBig-fHeight-5.0f)), 
+						graphics.DrawImage(m_pPngImage.get(), (float)m_nTextPosX, (float)(m_nTextPosY-(fHeightBig-fHeight-5.0f)), 
 							(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 						if(m_bEnableReflection)
 						{
-							Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+							std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 							if(pReflectBmp)
 							{
-								graphics.DrawImage(pReflectBmp, (float)m_nTextPosX, (float)m_nTextPosY-(fHeightBig-fHeight-5.0f)+pReflectBmp->GetHeight()+m_nGap, 
+								graphics.DrawImage(pReflectBmp.get(), (float)m_nTextPosX, (float)m_nTextPosY-(fHeightBig-fHeight-5.0f)+pReflectBmp->GetHeight()+m_nGap, 
 									(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 							}
 						}
@@ -493,25 +455,25 @@ void CMyScrollView::OnDraw(CDC* pDC)
 									m_pGradientBrush = NULL;
 								}
 
-								m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+								m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 									fDestWidth - fStartX, fDestHeight - fStartY),
 									Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 									Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-									LinearGradientModeVertical);
+									LinearGradientModeVertical));
 
-								SetTextEffect(&m_PngOutlineText, m_pGradientBrush);
+								SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());
 							}
 							m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(0,0));
 						}
-						graphics.DrawImage(m_pPngImage, (float)m_nTextPosX, (float)m_nTextPosY, 
+						graphics.DrawImage(m_pPngImage.get(), (float)m_nTextPosX, (float)m_nTextPosY, 
 							(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 						if(m_bEnableReflection)
 						{
-							Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+							std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 							if(pReflectBmp)
 							{
-								graphics.DrawImage(pReflectBmp, (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
+								graphics.DrawImage(pReflectBmp.get(), (float)m_nTextPosX, (float)m_nTextPosY+pReflectBmp->GetHeight()+m_nGap, 
 									(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 							}
 						}
@@ -551,25 +513,25 @@ void CMyScrollView::OnDraw(CDC* pDC)
 									m_pGradientBrush = NULL;
 								}
 
-								m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+								m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 									fDestWidth - fStartX, fDestHeight - fStartY),
 									Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 									Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-									LinearGradientModeVertical);
+									LinearGradientModeVertical));
 
-								SetTextEffect(&m_PngOutlineText, m_pGradientBrush);
+								SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());
 							}
 							m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(nShadowOffsetX,nShadowOffsetY+(fHeightBig-fHeight-5.0f)));
 						}
-						graphics.DrawImage(m_pPngImage, (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY-(fHeightBig-fHeight-5.0f)), 
+						graphics.DrawImage(m_pPngImage.get(), (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY-(fHeightBig-fHeight-5.0f)), 
 							(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 						if(m_bEnableReflection)
 						{
-							Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+							std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 							if(pReflectBmp)
 							{
-								graphics.DrawImage(pReflectBmp, (float)(m_nTextPosX-nShadowOffsetX), (float)m_nTextPosY-nShadowOffsetY-(fHeightBig-fHeight-5.0f)+pReflectBmp->GetHeight()+m_nGap, 
+								graphics.DrawImage(pReflectBmp.get(), (float)(m_nTextPosX-nShadowOffsetX), (float)m_nTextPosY-nShadowOffsetY-(fHeightBig-fHeight-5.0f)+pReflectBmp->GetHeight()+m_nGap, 
 									(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 							}
 						}
@@ -607,24 +569,24 @@ void CMyScrollView::OnDraw(CDC* pDC)
 									m_pGradientBrush = NULL;
 								}
 
-								m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+								m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 									fDestWidth - fStartX, fDestHeight - fStartY),
 									Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 									Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-									LinearGradientModeVertical);
+									LinearGradientModeVertical));
 
-							SetTextEffect(&m_PngOutlineText, m_pGradientBrush);							}
+								SetTextEffect(&m_PngOutlineText, m_pGradientBrush.get());							}
 							m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(nShadowOffsetX,nShadowOffsetY));
 						}
-						graphics.DrawImage(m_pPngImage, (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY), 
+						graphics.DrawImage(m_pPngImage.get(), (float)(m_nTextPosX-nShadowOffsetX), (float)(m_nTextPosY-nShadowOffsetY), 
 							(float)m_pPngImage->GetWidth(), (float)m_pPngImage->GetHeight());
 
 						if(m_bEnableReflection)
 						{
-							Bitmap* pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
+							std::shared_ptr<Bitmap> pReflectBmp = m_PngOutlineText.GetReflectionPngImage();
 							if(pReflectBmp)
 							{
-								graphics.DrawImage(pReflectBmp, (float)(m_nTextPosX-nShadowOffsetX), (float)m_nTextPosY-nShadowOffsetY+pReflectBmp->GetHeight()+m_nGap, 
+								graphics.DrawImage(pReflectBmp.get(), (float)(m_nTextPosX-nShadowOffsetX), (float)m_nTextPosY-nShadowOffsetY+pReflectBmp->GetHeight()+m_nGap, 
 									(float)pReflectBmp->GetWidth(), (float)pReflectBmp->GetHeight());
 							}
 						}
@@ -644,7 +606,7 @@ void CMyScrollView::OnDraw(CDC* pDC)
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 			if(m_pImage)
 			{
-				graphics.DrawImage(m_pImage,0,0,m_pImage->GetWidth(),m_pImage->GetHeight());
+				graphics.DrawImage(m_pImage.get(),0,0,m_pImage->GetWidth(),m_pImage->GetHeight());
 			}
 
 			SetTextEffect(&m_OutlineText, NULL);
@@ -760,16 +722,16 @@ void CMyScrollView::OnDraw(CDC* pDC)
 						m_pGradientBrush = NULL;
 					}
 
-					m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+					m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 						fDestWidth - fStartX, fDestHeight - fStartY),
 						Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 						Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-						LinearGradientModeVertical);
+						LinearGradientModeVertical));
 
 					//graphics.FillRectangle(m_pGradientBrush, Gdiplus::Rect(fStartX, fStartY, 
 					//	fDestWidth - (fStartX - m_nTextPosX), fDestHeight - (fStartY - m_nTextPosY)));
 
-					SetTextEffect(&m_OutlineText, m_pGradientBrush);
+					SetTextEffect(&m_OutlineText, m_pGradientBrush.get());
 				}
 
 				m_OutlineText.DrawString(
@@ -802,13 +764,13 @@ void CMyScrollView::OnDraw(CDC* pDC)
 						m_pGradientBrush = NULL;
 					}
 
-					m_pGradientBrush = new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
+					m_pGradientBrush = std::shared_ptr<LinearGradientBrush>(new LinearGradientBrush(Gdiplus::Rect(fStartX, fStartY, 
 						fDestWidth - (fStartX - m_nTextPosX), fDestHeight - (fStartY - m_nTextPosY)),
 						Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 						Color(m_clrText2.GetR(),m_clrText2.GetG(),m_clrText2.GetB()),
-						LinearGradientModeVertical);
+						LinearGradientModeVertical));
 
-					SetTextEffect(&m_OutlineText, m_pGradientBrush);
+					SetTextEffect(&m_OutlineText, m_pGradientBrush.get());
 				}
 				m_OutlineText.GdiDrawString(&graphics, &m_LogFont, m_szText,Gdiplus::Point(m_nTextPosX,m_nTextPosY));
 			}
@@ -842,15 +804,9 @@ CString CMyScrollView::GetImage()
 
 bool CMyScrollView::SetImage(const wchar_t* pszFile)
 {
-	if(m_pImage)
-	{
-		delete m_pImage;
-		m_pImage = NULL;
-	}
-
 	m_szImageFile = pszFile;
 
-	m_pImage = Gdiplus::Bitmap::FromFile(pszFile);
+	m_pImage = std::shared_ptr<Gdiplus::Bitmap>(Gdiplus::Bitmap::FromFile(pszFile));
 
 	CSize sizeTotal;
 	sizeTotal.cx = m_pImage->GetWidth();
@@ -873,7 +829,6 @@ void CMyScrollView::SetBkgdColor(Gdiplus::Color color)
 {
 	if(m_pImage)
 	{
-		delete m_pImage;
 		m_pImage = NULL;
 	}
 
@@ -1237,20 +1192,11 @@ void CMyScrollView::SetShadowOffsetY(int nOffsetY)
 
 Gdiplus::Bitmap* CMyScrollView::GetShadowBkgdBmp()
 {
-	return m_pShadowBkgdBmp;
+	return m_pShadowBkgdBmp.get();
 }
 
-void CMyScrollView::SetShadowBkgdBmp(Gdiplus::Bitmap* pBmp)
+void CMyScrollView::SetShadowBkgdBmp(std::shared_ptr<Gdiplus::Bitmap>& pBmp)
 {
-	//if(m_pShadowBkgdBmp)
-	//{
-	//	if(m_pShadowBkgdBmp!=pBmp)
-	//	{
-	//		delete m_pShadowBkgdBmp;
-	//		m_pShadowBkgdBmp = NULL;
-	//	}
-	//}
-
 	m_pShadowBkgdBmp = pBmp;
 	m_bDirty = true;
 	Invalidate(FALSE);
@@ -1479,7 +1425,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		{
 			TRACE(_T("Single Outline Effect with brush\n"));
 			pOutlineText->TextOutline(
-				pBrush,
+				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				m_nOutlineThickness1);
 		}
@@ -1487,7 +1433,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		{
 			TRACE(_T("Double Outline Effect with brush\n"));
 			pOutlineText->TextDblOutline(
-				pBrush,
+				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				Color(m_nOutlineAlpha2, m_clrOutline2.GetR(),m_clrOutline2.GetG(),m_clrOutline2.GetB()),
 				m_nOutlineThickness1,
@@ -1497,7 +1443,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		{
 			TRACE(_T("Text Glow Effect with brush\n"));
 			pOutlineText->TextGlow(
-				pBrush,
+				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				m_nOutlineThickness1);
 		}
@@ -1505,7 +1451,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		{
 			TRACE(_T("Gradient Outline Effect with brush\n"));
 			pOutlineText->TextGradOutline(
-				pBrush,
+				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				Color(m_nOutlineAlpha2, m_clrOutline2.GetR(),m_clrOutline2.GetG(),m_clrOutline2.GetB()),
 				m_nOutlineThickness1+m_nOutlineThickness2);
@@ -1513,7 +1459,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		else if(m_TextEffect==NoOutline)
 		{
 			TRACE(_T("No Outline Effect with brush\n"));
-			pOutlineText->TextNoOutline(pBrush);
+			pOutlineText->TextNoOutline(*pBrush);
 		}
 		else if(m_TextEffect==OnlyOutline)
 		{
@@ -1527,7 +1473,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 		{
 			TRACE(_T("Double Glow Effect with brush\n"));
 			pOutlineText->TextDblGlow(
-				pBrush,
+				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				Color(m_nOutlineAlpha2, m_clrOutline2.GetR(),m_clrOutline2.GetG(),m_clrOutline2.GetB()),
 				m_nOutlineThickness1,

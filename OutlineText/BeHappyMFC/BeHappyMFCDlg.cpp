@@ -123,11 +123,11 @@ void CBeHappyMFCDlg::OnPaint()
 		// Create the outer strategy
 		auto strategyOutline2 = Canvas::TextOutline(Color::LightSeaGreen, Color::LightSeaGreen, 16);
 		// Draw the bE text (outer green outline)
-		Canvas::DrawTextImage(strategyOutline2, canvasOuter.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (outer green outline)
-		Canvas::DrawTextImage(strategyOutline2, canvasOuter.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
 
 		// blit the canvasOuter all the way down (5 pixels down)
 		//========================================================
@@ -148,11 +148,11 @@ void CBeHappyMFCDlg::OnPaint()
 		// Create the inner white strategy
 		auto strategyOutline1 = Canvas::TextOutline(Color::White, Color::White, 8);
 		// Draw the bE text (inner white outline)
-		Canvas::DrawTextImage(strategyOutline1, canvasInner.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (inner white outline)
-		Canvas::DrawTextImage(strategyOutline1, canvasInner.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
 
 		// blit the canvasInner all the way down (5 pixels down)
 		//========================================================
@@ -170,12 +170,12 @@ void CBeHappyMFCDlg::OnPaint()
 		context.pszText = L"bE";
 		context.ptDraw = Point(55, 0);
 		// Draw the bE text (text body)
-		Canvas::DrawTextImage(strategyOutline, canvas.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
 
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (text body)
-		Canvas::DrawTextImage(strategyOutline, canvas.get(), Point(0,0), context);
+		Canvas::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

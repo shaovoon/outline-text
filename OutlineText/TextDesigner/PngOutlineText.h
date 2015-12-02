@@ -51,7 +51,7 @@ public:
 		int nThickness);
 
 	void TextGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -67,7 +67,7 @@ public:
 		int nThickness);
 
 	void TextOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -87,7 +87,7 @@ public:
 		int nThickness2);
 
 	void TextDblOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -109,7 +109,7 @@ public:
 		int nThickness2);
 
 	void TextDblGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -129,7 +129,7 @@ public:
 		int nThickness);
 
 	void TextGradOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness);
@@ -139,7 +139,7 @@ public:
 	@param[in]		clrText is the text color
 	*/
 	void TextNoOutline(Gdiplus::Color clrText);
-	void TextNoOutline(Gdiplus::Brush* pbrushText);
+	void TextNoOutline(Gdiplus::Brush& brushText);
 
 	/** Setting Outlined Text effect with no text fill
 	
@@ -153,13 +153,13 @@ public:
 		bool bRoundedEdge);
 
 	//! Set destination bitmap
-	void SetPngImage(Gdiplus::Bitmap* pBitmap);
+	void SetPngImage(std::shared_ptr<Gdiplus::Bitmap>& pBitmap);
 
 	//! Get destination bitmap
-	Gdiplus::Bitmap* GetPngImage();
+	std::shared_ptr<Gdiplus::Bitmap> GetPngImage();
 
 	//! Set the shadow bitmap with a bitmap
-	void SetShadowBkgd(Gdiplus::Bitmap* pBitmap);
+	void SetShadowBkgd(std::shared_ptr<Gdiplus::Bitmap>& pBitmap);
 
 	//! Set the shadow bitmap with a color, width and height
 	void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight);
@@ -182,7 +182,7 @@ public:
 	*/
 	void Reflection(float fBegAlpha, float fEndAlpha, float fShown);
 
-	Gdiplus::Bitmap* GetReflectionPngImage() { if(m_bEnableReflection) return m_pReflectionPngBitmap; return NULL; }
+	std::shared_ptr<Gdiplus::Bitmap> GetReflectionPngImage() { if(m_bEnableReflection) return m_pReflectionPngBitmap; return std::shared_ptr<Gdiplus::Bitmap>(); }
 
 	/** Shadow Settings
 	
@@ -563,11 +563,11 @@ protected:
 	//! Shadow color
 	Gdiplus::Color m_clrShadow;
 	//! Background Bitmap for the shadow because shadow is transparent.
-	Gdiplus::Bitmap* m_pBkgdBitmap;
+	std::shared_ptr<Gdiplus::Bitmap> m_pBkgdBitmap;
 	//! Destination Bitmap to be rendered to.
-	Gdiplus::Bitmap* m_pPngBitmap;
+	std::shared_ptr<Gdiplus::Bitmap> m_pPngBitmap;
 	//! Reflection Bitmap to be rendered to.
-	Gdiplus::Bitmap* m_pReflectionPngBitmap;
+	std::shared_ptr<Gdiplus::Bitmap> m_pReflectionPngBitmap;
 	//! Enable Reflection
 	bool m_bEnableReflection;
 	//! Enable Shadow

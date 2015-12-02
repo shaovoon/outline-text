@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "IOutlineText.h"
 #include "PngOutlineText.h"
 
@@ -141,9 +142,9 @@ public:
 		UINT& nOutlineX, UINT& nOutlineY, UINT& nOutlineWidth, UINT& nOutlineHeight);
 
 	//void SetPngImage(Gdiplus::Bitmap* pPngResult) { m_pbmpResult = pPngResult; }
-	Gdiplus::Bitmap* GetInternalMaskImage() { return m_pbmpMask; }
-	Gdiplus::Bitmap* GetResultImage() { return m_pbmpResult; }
-	Gdiplus::Bitmap* GetShadowImage() { return m_pbmpShadow; }
+	std::shared_ptr<Gdiplus::Bitmap> GetInternalMaskImage() { return m_pbmpMask; }
+	std::shared_ptr<Gdiplus::Bitmap> GetResultImage() { return m_pbmpResult; }
+	std::shared_ptr<Gdiplus::Bitmap> GetShadowImage() { return m_pbmpShadow; }
 
 	//! Save to PNG file format
 	bool SavePngFile(const wchar_t* pszFile);
@@ -159,9 +160,9 @@ private:
 			return val; 
 	}
 
-	Gdiplus::Bitmap* m_pbmpResult;
-	Gdiplus::Bitmap* m_pbmpMask;
-	Gdiplus::Bitmap* m_pbmpShadow;
+	std::shared_ptr<Gdiplus::Bitmap> m_pbmpResult;
+	std::shared_ptr<Gdiplus::Bitmap> m_pbmpMask;
+	std::shared_ptr<Gdiplus::Bitmap> m_pbmpShadow;
 	Gdiplus::Color m_clrBkgd;
 	Gdiplus::Color m_clrOutline;
 	Gdiplus::Color m_clrText;

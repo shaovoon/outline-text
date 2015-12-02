@@ -45,11 +45,6 @@ PngOutlineText& PngOutlineText::operator=(PngOutlineText& rhs)
 
 void PngOutlineText::Init(PngOutlineText* rhs)
 {
-	if(m_pReflectionPngBitmap)
-	{
-		delete m_pReflectionPngBitmap;
-		m_pReflectionPngBitmap = NULL;
-	}
 	m_pTextStrategy = std::shared_ptr<ITextStrategy>(rhs->m_pTextStrategy->Clone());
 	m_pShadowStrategy = std::shared_ptr<ITextStrategy>(rhs->m_pShadowStrategy->Clone());
 	m_pShadowStrategyMask = std::shared_ptr<ITextStrategy>(rhs->m_pShadowStrategyMask->Clone());
@@ -58,8 +53,8 @@ void PngOutlineText::Init(PngOutlineText* rhs)
 	m_pBkgdBitmap = rhs->m_pBkgdBitmap;
 	if(rhs->m_pPngBitmap!=NULL)
 	{
-    	m_pPngBitmap = dynamic_cast<Gdiplus::Bitmap*>(rhs->m_pPngBitmap->Clone
-		(0,0,rhs->m_pPngBitmap->GetWidth(),rhs->m_pPngBitmap->GetHeight(),PixelFormat32bppARGB));
+		m_pPngBitmap = std::shared_ptr<Gdiplus::Bitmap>(dynamic_cast<Gdiplus::Bitmap*>(rhs->m_pPngBitmap->Clone
+		(0,0,rhs->m_pPngBitmap->GetWidth(),rhs->m_pPngBitmap->GetHeight(),PixelFormat32bppARGB)));
 	}
 	m_clrShadow = rhs->m_clrShadow;
 	m_bEnableShadow = rhs->m_bEnableShadow;
@@ -68,8 +63,8 @@ void PngOutlineText::Init(PngOutlineText* rhs)
 
 	if(rhs->m_pReflectionPngBitmap!=NULL)
 	{
-    	m_pReflectionPngBitmap = dynamic_cast<Gdiplus::Bitmap*>(rhs->m_pReflectionPngBitmap->Clone
-		(0,0,rhs->m_pReflectionPngBitmap->GetWidth(),rhs->m_pReflectionPngBitmap->GetHeight(),PixelFormat32bppARGB));
+    	m_pReflectionPngBitmap = std::shared_ptr<Gdiplus::Bitmap>(dynamic_cast<Gdiplus::Bitmap*>(rhs->m_pReflectionPngBitmap->Clone
+		(0,0,rhs->m_pReflectionPngBitmap->GetWidth(),rhs->m_pReflectionPngBitmap->GetHeight(),PixelFormat32bppARGB)));
 	}
     m_bEnableReflection = rhs->m_bEnableReflection;
     m_fBegAlpha = rhs->m_fBegAlpha;
@@ -80,16 +75,6 @@ void PngOutlineText::Init(PngOutlineText* rhs)
 
 PngOutlineText::~PngOutlineText(void)
 {
-	if(m_pReflectionPngBitmap)
-	{
-		delete m_pReflectionPngBitmap;
-		m_pReflectionPngBitmap = NULL;
-	}
-	if(m_pBkgdBitmap)
-	{
-		delete m_pBkgdBitmap;
-		m_pBkgdBitmap = NULL;
-	}
 }
 
 void PngOutlineText::TextGlow(
@@ -104,12 +89,12 @@ void PngOutlineText::TextGlow(
 }
 
 void PngOutlineText::TextGlow(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextGlowStrategy> pStrat = std::make_shared<TextGlowStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -126,12 +111,12 @@ void PngOutlineText::TextOutline(
 }
 
 void PngOutlineText::TextOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline, 
 	int nThickness)
 {
 	std::shared_ptr<TextOutlineStrategy> pStrat = std::make_shared<TextOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline,nThickness);
+	pStrat->Init(&brushText,clrOutline,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -150,14 +135,14 @@ void PngOutlineText::TextDblOutline(
 }
 
 void PngOutlineText::TextDblOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness1, 
 	int nThickness2)
 {
 	std::shared_ptr<TextDblOutlineStrategy> pStrat = std::make_shared<TextDblOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
 
 	m_pTextStrategy = pStrat;
 }
@@ -176,14 +161,14 @@ void PngOutlineText::TextDblGlow(
 }
 
 void PngOutlineText::TextDblGlow(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness1, 
 	int nThickness2)
 {
 	std::shared_ptr<TextDblGlowStrategy> pStrat = std::make_shared<TextDblGlowStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness1,nThickness2);
 
 	m_pTextStrategy = pStrat;
 }
@@ -201,13 +186,13 @@ void PngOutlineText::TextGradOutline(
 }
 
 void PngOutlineText::TextGradOutline(
-	Gdiplus::Brush* pbrushText, 
+	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(pbrushText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
 
 	m_pTextStrategy = pStrat;
 }
@@ -222,10 +207,10 @@ void PngOutlineText::TextNoOutline(
 }
 
 void PngOutlineText::TextNoOutline(
-	Gdiplus::Brush* pbrushText)
+	Gdiplus::Brush& brushText)
 {
 	std::shared_ptr<TextNoOutlineStrategy> pStrat = std::make_shared<TextNoOutlineStrategy>();
-	pStrat->Init(pbrushText);
+	pStrat->Init(&brushText);
 
 	m_pTextStrategy = pStrat;
 }
@@ -346,34 +331,28 @@ void PngOutlineText::Extrude(
 	m_nShadowThickness = nThickness;
 }
 
-void PngOutlineText::SetPngImage(Gdiplus::Bitmap* pBitmap)
+void PngOutlineText::SetPngImage(std::shared_ptr<Gdiplus::Bitmap>& pBitmap)
 {
 	m_pPngBitmap = pBitmap;
 }
 
-Gdiplus::Bitmap* PngOutlineText::GetPngImage()
+std::shared_ptr<Gdiplus::Bitmap> PngOutlineText::GetPngImage()
 {
 	return m_pPngBitmap;
 }
 
-void PngOutlineText::SetShadowBkgd(Gdiplus::Bitmap* pBitmap)
+void PngOutlineText::SetShadowBkgd(std::shared_ptr<Gdiplus::Bitmap>& pBitmap)
 {
-	if(m_pBkgdBitmap&&pBitmap!=m_pBkgdBitmap)
-		delete m_pBkgdBitmap;
-
 	m_pBkgdBitmap = pBitmap;
 }
 
 void PngOutlineText::SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight)
 {
-	if(m_pBkgdBitmap)
-		delete m_pBkgdBitmap;
-
-	m_pBkgdBitmap = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
+	m_pBkgdBitmap = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB));
 
 	using namespace Gdiplus;
 
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(m_pBkgdBitmap));
+	Gdiplus::Graphics graphics((Gdiplus::Image*)(m_pBkgdBitmap.get()));
 	Gdiplus::SolidBrush brush(clrBkgd);
 	graphics.FillRectangle(&brush, 0, 0, m_pBkgdBitmap->GetWidth(), m_pBkgdBitmap->GetHeight() );
 }
@@ -1042,7 +1021,7 @@ bool PngOutlineText::DrawString(
 
 	if(m_pTextStrategy)
 	{
-		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap));
+		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap.get()));
 
 		pGraphicsPng->SetCompositingMode(pGraphics->GetCompositingMode());
 		pGraphicsPng->SetCompositingQuality(pGraphics->GetCompositingQuality());
@@ -1127,7 +1106,7 @@ bool PngOutlineText::DrawString(
 
 	if(m_pTextStrategy)
 	{
-		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap));
+		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap.get()));
 
 		pGraphicsPng->SetCompositingMode(pGraphics->GetCompositingMode());
 		pGraphicsPng->SetCompositingQuality(pGraphics->GetCompositingQuality());
@@ -1204,7 +1183,7 @@ bool PngOutlineText::GdiDrawString(
 
 	if(m_pTextStrategy)
 	{
-		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap));
+		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap.get()));
 
 		pGraphicsPng->SetCompositingMode(pGraphics->GetCompositingMode());
 		pGraphicsPng->SetCompositingQuality(pGraphics->GetCompositingQuality());
@@ -1279,7 +1258,7 @@ bool PngOutlineText::GdiDrawString(
 
 	if(m_pTextStrategy)
 	{
-		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap));
+		Gdiplus::Graphics* pGraphicsPng = new Gdiplus::Graphics((Gdiplus::Image*)(m_pPngBitmap.get()));
 
 		pGraphicsPng->SetCompositingMode(pGraphics->GetCompositingMode());
 		pGraphicsPng->SetCompositingQuality(pGraphics->GetCompositingQuality());
@@ -2086,13 +2065,7 @@ bool PngOutlineText::ProcessReflection()
 	using namespace Gdiplus;
 	if(m_pPngBitmap)
 	{
-		if(m_pReflectionPngBitmap)
-		{
-			delete m_pReflectionPngBitmap;
-			m_pReflectionPngBitmap = NULL;
-		}
-
-		m_pReflectionPngBitmap = m_pPngBitmap->Clone(0, 0, m_pPngBitmap->GetWidth(), m_pPngBitmap->GetHeight(), PixelFormat32bppARGB);
+		m_pReflectionPngBitmap = std::shared_ptr<Gdiplus::Bitmap>(m_pPngBitmap->Clone(0, 0, m_pPngBitmap->GetWidth(), m_pPngBitmap->GetHeight(), PixelFormat32bppARGB));
 		m_pReflectionPngBitmap->RotateFlip(RotateNoneFlipY);
 
 		UINT* pixels = NULL;

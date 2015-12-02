@@ -174,7 +174,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	UINT bottom = 0;
 	UINT left = 0;
 	UINT right = 0;
-	Canvas::MeasureMaskLength(maskOutlineAll.get(), MaskColor::Blue(), top, left, bottom, right);
+	Canvas::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
 	right += 2;
 	bottom += 2;
 
@@ -196,7 +196,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 
 	graphgradBlitted.DrawImage(gradImage.get(), (int)left, (int)top, (int)(gradImage->GetWidth()), (int)(gradImage->GetHeight()));
 
-	Canvas::ApplyImageToMask(gradBlitted.get(), maskOutlineAll.get(), canvas.get(), MaskColor::Blue(), false);
+	Canvas::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
 
 	// Create strategy and mask image for the text body
 	//===================================================
@@ -209,7 +209,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	bottom = 0;
 	left = 0;
 	right = 0;
-	Canvas::MeasureMaskLength(maskText.get(), MaskColor::Blue(), top, left, bottom, right);
+	Canvas::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
 	top -= 2;
 	left -= 2;
 
@@ -220,10 +220,10 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	LinearGradientBrush gradTextbrush(Gdiplus::Rect((int)left, (int)top, (int)right, (int)bottom), Color::DeepPink, Color::LightPink, 90.0f);
 
 	// Create the actual strategy for the text body used for rendering, with the gradient brush
-	auto strategyText2 = Canvas::TextNoOutline(&gradTextbrush);
+	auto strategyText2 = Canvas::TextNoOutline(gradTextbrush);
 
 	// Draw the newly created strategy onto the canvas
-	Canvas::DrawTextImage(strategyText2, canvas.get(), Point(0,0), context, mat);
+	Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context, mat);
 
 	// Finally blit the rendered canvas onto the window
 	graphics.DrawImage(canvas.get(), x_offset, 0, rect.Width(), rect.Height());

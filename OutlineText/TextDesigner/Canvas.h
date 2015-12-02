@@ -81,7 +81,7 @@ public:
 	@return valid ITextStrategy pointer if successful
 	*/
 	static std::shared_ptr<ITextStrategy> TextGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -105,7 +105,7 @@ public:
 	@return valid ITextStrategy pointer if successful
 	*/
 	static std::shared_ptr<ITextStrategy> TextOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -130,7 +130,7 @@ public:
 	@param[in]		nThickness is the outline thickness
 	*/
 	static std::shared_ptr<ITextStrategy> TextGradOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness);
@@ -145,7 +145,7 @@ public:
 	
 	@param[in]		pbrushText is the text brush
 	*/
-	static std::shared_ptr<ITextStrategy> TextNoOutline(Gdiplus::Brush* pbrushText);
+	static std::shared_ptr<ITextStrategy> TextNoOutline(Gdiplus::Brush& pbrushText);
 
 	/** Setting Outlined Text effect with no text fill
 	
@@ -240,7 +240,7 @@ public:
 	@return true if successful
 	*/
 	static bool MeasureMaskLength( 
-		Gdiplus::Bitmap* pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
 		Gdiplus::Color maskColor,
 		UINT& top,
 		UINT& left,
@@ -256,9 +256,9 @@ public:
 	@return true if successful
 	*/
 	static bool ApplyImageToMask(
-		Gdiplus::Bitmap* pImage, 
-		Gdiplus::Bitmap* pMask, 
-		Gdiplus::Bitmap* pCanvas, 
+		std::shared_ptr<Gdiplus::Bitmap>& pImage, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 		Gdiplus::Color maskColor,
 		bool NoAlphaAtBoundary);
 
@@ -272,8 +272,8 @@ public:
 	*/
 	static bool ApplyColorToMask(
 		Gdiplus::Color clr, 
-		Gdiplus::Bitmap* pMask, 
-		Gdiplus::Bitmap* pCanvas, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 		Gdiplus::Color maskColor);
 
 
@@ -288,8 +288,8 @@ public:
 	*/
 	static bool ApplyColorToMask(
 		Gdiplus::Color clr, 
-		Gdiplus::Bitmap* pMask, 
-		Gdiplus::Bitmap* pCanvas, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 		Gdiplus::Color maskColor,
 		Gdiplus::Point offset);
 
@@ -303,8 +303,8 @@ public:
 	*/
 	static bool ApplyShadowToMask(
 		Gdiplus::Color clrShadow, 
-		Gdiplus::Bitmap* pMask, 
-		Gdiplus::Bitmap* pCanvas, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 		Gdiplus::Color maskColor);
 
 
@@ -319,8 +319,8 @@ public:
 	*/
 	static bool ApplyShadowToMask(
 		Gdiplus::Color clrShadow, 
-		Gdiplus::Bitmap* pMask, 
-		Gdiplus::Bitmap* pCanvas, 
+		std::shared_ptr<Gdiplus::Bitmap>& pMask, 
+		std::shared_ptr<Gdiplus::Bitmap>& pCanvas, 
 		Gdiplus::Color maskColor,
 		Gdiplus::Point offset);
 
@@ -335,7 +335,7 @@ public:
 	*/
 	static bool DrawTextImage(
 		std::shared_ptr<ITextStrategy>& pStrategy, 
-		Gdiplus::Bitmap* pImage, 
+		std::shared_ptr<Gdiplus::Bitmap>& pImage, 
 		Gdiplus::Point offset,
 		TextContext& textContext);
 
@@ -350,7 +350,7 @@ public:
 	*/
 	static bool DrawTextImage(
 		std::shared_ptr<ITextStrategy>& pStrategy, 
-		Gdiplus::Bitmap* pImage, 
+		std::shared_ptr<Gdiplus::Bitmap>& pImage, 
 		Gdiplus::Point offset,
 		TextContext& textContext,
 		Gdiplus::Matrix& mat);

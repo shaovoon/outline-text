@@ -52,7 +52,7 @@ public:
 		int nThickness);
 
 	void TextGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -68,7 +68,7 @@ public:
 		int nThickness);
 
 	void TextOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline, 
 		int nThickness);
 
@@ -88,7 +88,7 @@ public:
 		int nThickness2);
 
 	void TextDblOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -110,7 +110,7 @@ public:
 		int nThickness2);
 
 	void TextDblGlow(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness1, 
@@ -130,7 +130,7 @@ public:
 		int nThickness);
 
 	void TextGradOutline(
-		Gdiplus::Brush* pbrushText, 
+		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness);
@@ -140,7 +140,7 @@ public:
 	@param[in]		clrText is the text color
 	*/
 	void TextNoOutline(Gdiplus::Color clrText);
-	void TextNoOutline(Gdiplus::Brush* pbrushText);
+	void TextNoOutline(Gdiplus::Brush& pbrushText);
 
 	/** Setting Outlined Text effect with no text fill
 	
@@ -154,7 +154,7 @@ public:
 		bool bRoundedEdge);
 
 	//! Set the shadow bitmap with a bitmap
-	void SetShadowBkgd(Gdiplus::Bitmap* pBitmap);
+	void SetShadowBkgd(std::shared_ptr<Gdiplus::Bitmap>& pBitmap);
 
 	//! Set the shadow bitmap with a color, width and height
 	void SetShadowBkgd(Gdiplus::Color clrBkgd, int nWidth, int nHeight);
@@ -484,7 +484,7 @@ protected:
 	//! Shadow color
 	Gdiplus::Color m_clrShadow;
 	//! Background Bitmap for the shadow because shadow is transparent.
-	Gdiplus::Bitmap* m_pBkgdBitmap;
+	std::shared_ptr<Gdiplus::Bitmap> m_pBkgdBitmap;
 	//! Enable Shadow
 	bool m_bEnableShadow;
 	//! DiffuseShadow
