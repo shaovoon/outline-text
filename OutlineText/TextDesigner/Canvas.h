@@ -23,6 +23,7 @@ http://www.codeproject.com/info/cpol10.aspx
 #include "TextOnlyOutlineStrategy.h"
 #include "TextNoOutlineStrategy.h"
 #include "TextDblGlowStrategy.h"
+#include "TextGradOutlineLastStrategy.h"
 
 namespace TextDesigner
 {
@@ -130,6 +131,32 @@ public:
 	@param[in]		nThickness is the outline thickness
 	*/
 	static std::shared_ptr<ITextStrategy> TextGradOutline(
+		Gdiplus::Brush& pbrushText, 
+		Gdiplus::Color clrOutline1, 
+		Gdiplus::Color clrOutline2, 
+		int nThickness);
+
+   	/** Setting Gradient Outlined Text effect with outline done last
+	
+	@param[in]		clrText is the text color
+	@param[in]		clrOutline1 is the inner outline color
+	@param[in]		clrOutline2 is the outer outline color
+	@param[in]		nThickness is the outline thickness
+	*/
+	static std::shared_ptr<ITextStrategy> TextGradOutlineLast(
+		Gdiplus::Color clrText, 
+		Gdiplus::Color clrOutline1, 
+		Gdiplus::Color clrOutline2, 
+		int nThickness);
+
+	/** Setting Gradient Outlined Text effect with outline done last
+	
+	@param[in]		pbrushText is the text brush
+	@param[in]		clrOutline1 is the inner outline color
+	@param[in]		clrOutline2 is the outer outline color
+	@param[in]		nThickness is the outline thickness
+	*/
+	static std::shared_ptr<ITextStrategy> TextGradOutlineLast(
 		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 

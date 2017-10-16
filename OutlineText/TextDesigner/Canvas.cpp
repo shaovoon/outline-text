@@ -74,6 +74,30 @@ std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 	return pStrat;
 }
 
+std::shared_ptr<ITextStrategy> Canvas::TextGradOutlineLast(
+	Gdiplus::Color clrText, 
+	Gdiplus::Color clrOutline1, 
+	Gdiplus::Color clrOutline2, 
+	int nThickness)
+{
+	std::shared_ptr<TextGradOutlineLastStrategy> pStrat = std::make_shared<TextGradOutlineLastStrategy>();
+	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness);
+
+	return pStrat;
+}
+
+std::shared_ptr<ITextStrategy> Canvas::TextGradOutlineLast(
+	Gdiplus::Brush& brushText, 
+	Gdiplus::Color clrOutline1, 
+	Gdiplus::Color clrOutline2, 
+	int nThickness)
+{
+	std::shared_ptr<TextGradOutlineLastStrategy> pStrat = std::make_shared<TextGradOutlineLastStrategy>();
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
+
+	return pStrat;
+}
+
 std::shared_ptr<ITextStrategy> Canvas::TextNoOutline(
 	Gdiplus::Color clrText)
 {

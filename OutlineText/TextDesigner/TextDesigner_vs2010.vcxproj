@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -15,16 +15,19 @@
     <ProjectGuid>{F21CE92F-240D-48FE-8B73-56A63D4536B0}</ProjectGuid>
     <RootNamespace>TextDesigner</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -84,6 +87,7 @@
     <ClCompile Include="TextDblGlowStrategy.cpp" />
     <ClCompile Include="TextDblOutlineStrategy.cpp" />
     <ClCompile Include="TextGlowStrategy.cpp" />
+    <ClCompile Include="TextGradOutlineLastStrategy.cpp" />
     <ClCompile Include="TextGradOutlineStrategy.cpp" />
     <ClCompile Include="TextImplGetHeight.cpp" />
     <ClCompile Include="TextNoOutlineStrategy.cpp" />
@@ -107,6 +111,7 @@
     <ClInclude Include="TextDblGlowStrategy.h" />
     <ClInclude Include="TextDblOutlineStrategy.h" />
     <ClInclude Include="TextGlowStrategy.h" />
+    <ClInclude Include="TextGradOutlineLastStrategy.h" />
     <ClInclude Include="TextGradOutlineStrategy.h" />
     <ClInclude Include="TextImplGetHeight.h" />
     <ClInclude Include="TextNoOutlineStrategy.h" />

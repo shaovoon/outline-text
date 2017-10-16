@@ -73,6 +73,7 @@
     <Compile Include="TextDblGlowStrategy.cs" />
     <Compile Include="TextDblOutlineStrategy.cs" />
     <Compile Include="TextGlowStrategy.cs" />
+    <Compile Include="TextGradOutlineLastStrategy.cs" />
     <Compile Include="TextGradOutlineStrategy.cs" />
     <Compile Include="TextImplGetHeight.cs" />
     <Compile Include="TextNoOutlineStrategy.cs" />

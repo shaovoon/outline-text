@@ -11,6 +11,11 @@
 *.sdf
 *.opensdf
 *.db
+*.ipch
+*.ide
+*.db-wal
+*.db-shm
+*.config
 
 */[dD]ebug/
 */[rR]elease/

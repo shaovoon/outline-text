@@ -166,6 +166,46 @@ namespace TextDesignerCSLibrary
         }
 
         /// <summary>
+        /// Setting Gradient Outlined Text effect: Outline will be done after rendering text body
+        /// </summary>
+        /// <param name="clrText">is the text color</param>
+        /// <param name="clrOutline1">is the inner outline color</param>
+        /// <param name="clrOutline2">is the outer outline color</param>
+        /// <param name="nThickness">is the outline thickness</param>
+        /// <returns>valid ITextStrategy pointer if successful</returns>
+        public static ITextStrategy TextGradOutlineLast(
+            System.Drawing.Color clrText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness)
+        {
+            TextGradOutlineLastStrategy strat = new TextGradOutlineLastStrategy();
+            strat.Init(clrText, clrOutline1, clrOutline2, nThickness);
+
+            return strat;
+        }
+
+        /// <summary>
+        /// Setting Gradient Outlined Text effect: Outline will be done after rendering text body
+        /// </summary>
+        /// <param name="brushText">is the text brush</param>
+        /// <param name="clrOutline1">is the inner outline color</param>
+        /// <param name="clrOutline2">is the outer outline color</param>
+        /// <param name="nThickness">is the outline thickness</param>
+        /// <returns>valid ITextStrategy pointer if successful</returns>
+        public static ITextStrategy TextGradOutlineLast(
+            System.Drawing.Brush brushText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness)
+        {
+            TextGradOutlineLastStrategy strat = new TextGradOutlineLastStrategy();
+            strat.Init(brushText, clrOutline1, clrOutline2, nThickness);
+
+            return strat;
+        }
+
+        /// <summary>
         /// Setting just Text effect with no outline
         /// </summary>
         /// <param name="clrText">is the text color</param>

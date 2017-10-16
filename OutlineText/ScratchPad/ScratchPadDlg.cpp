@@ -69,12 +69,14 @@ void CScratchPadDlg::OnPaint()
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
 	graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
+	graphics.DrawImage(m_pSrcBitmap, 0, 0, m_pSrcBitmap->GetWidth(), m_pSrcBitmap->GetHeight());
+
 	//Drawing the back ground color
 	CRect rect;
 	GetClientRect(&rect);
 	Color m_clrBkgd(255, 255, 255);
 	SolidBrush brushBkgnd(m_clrBkgd);
-	graphics.FillRectangle(&brushBkgnd,0,0,rect.Width(),rect.Height());
+	//graphics.FillRectangle(&brushBkgnd,0,0,rect.Width(),rect.Height());
 
 	PngOutlineText m_PngOutlineText;
 	m_PngOutlineText.TextGradOutline(
@@ -86,8 +88,8 @@ void CScratchPadDlg::OnPaint()
 
 	m_PngOutlineText.EnableShadow(true);
 	m_PngOutlineText.Shadow(
-		Gdiplus::Color(128,0,0,0), 8, 
-		Gdiplus::Point(4,4));
+		Gdiplus::Color(90,0,0,0), 8, 
+		Gdiplus::Point(8,8));
 	LOGFONTW m_LogFont;
 	memset(&m_LogFont, 0, sizeof(m_LogFont));
 	wcscpy_s(m_LogFont.lfFaceName, L"Arial Black");
@@ -132,7 +134,7 @@ void CScratchPadDlg::OnPaint()
 		10);
 	m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, L"TEXT DESIGNER", 
 		Gdiplus::Point(10, 10));
-	graphics.DrawImage(m_pPngImage.get(), 0, 0, m_pPngImage->GetWidth(), m_pPngImage->GetHeight());
+	graphics.DrawImage(m_pPngImage.get(), 50, 200, m_pPngImage->GetWidth(), m_pPngImage->GetHeight());
 
 }
 // The system calls this function to obtain the cursor to display while the user drags
