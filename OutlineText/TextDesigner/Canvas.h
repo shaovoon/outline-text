@@ -224,6 +224,16 @@ public:
 	*/
 	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height, Gdiplus::Color clr, BYTE alpha=0xff);
 
+	/** Generate a canvas image based on gradient, width and height
+
+	@param width is the image width
+	@param height is the image height
+	@param clr is the color to paint the image
+	@param alpha is alpha of the color to paint the image
+	@return a valid canvas image if successful
+	*/
+	static std::shared_ptr<Gdiplus::Bitmap> GenImage(int width, int height, Gdiplus::LinearGradientBrush& brush, BYTE alpha = 0xff);
+
 	/** Generate mask image of the text strategy.
 
 	@param pStrategy is text strategy

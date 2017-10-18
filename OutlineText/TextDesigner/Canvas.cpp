@@ -221,6 +221,49 @@ std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus
 	return bmp;
 }
 
+std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus::LinearGradientBrush& brush , BYTE alpha)
+{
+	std::shared_ptr<Gdiplus::Bitmap> bmp = std::shared_ptr<Gdiplus::Bitmap>(new Gdiplus::Bitmap(width, height, PixelFormat32bppARGB));
+	Gdiplus::Graphics graph(bmp.get());
+	graph.FillRectangle(&brush, Gdiplus::Rect(0, 0, width, height));
+
+	UINT* pixels = NULL;
+
+	using namespace Gdiplus;
+
+	BitmapData bitmapData;
+	Rect rect(0, 0, bmp->GetWidth(), bmp->GetHeight());
+
+	bmp->LockBits(
+		&rect,
+		ImageLockModeWrite,
+		PixelFormat32bppARGB,
+		&bitmapData);
+
+	pixels = (UINT*)bitmapData.Scan0;
+
+	if (!pixels)
+		return NULL;
+
+	UINT col = 0;
+	int stride = bitmapData.Stride >> 2;
+	for (UINT row = 0; row < bitmapData.Height; ++row)
+	{
+		for (col = 0; col < bitmapData.Width; ++col)
+		{
+			UINT index = row * stride + col;
+
+			UINT color = pixels[index] & 0xFFFFFF;
+
+			pixels[index] = color;
+		}
+	}
+
+	bmp->UnlockBits(&bitmapData);
+
+	return bmp;
+}
+
 std::shared_ptr<Gdiplus::Bitmap> Canvas::GenMask(
 	std::shared_ptr<ITextStrategy>& pStrategy, 
 	int width, 
