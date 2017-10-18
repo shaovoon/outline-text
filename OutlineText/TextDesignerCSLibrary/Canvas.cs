@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
@@ -362,6 +363,46 @@ namespace TextDesignerCSLibrary
                     for (col = 0; col < bitmapData.Width; ++col)
                     {
                         uint index = (uint)(row * stride + col);
+
+                        pixels[index] = color;
+                    }
+                }
+            }
+            bmp.UnlockBits(bitmapData);
+
+            return bmp;
+        }
+        public static System.Drawing.Bitmap GenImage(int width, int height, System.Drawing.Drawing2D.LinearGradientBrush brush, byte alpha)
+        {
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height, PixelFormat.Format32bppArgb);
+            Graphics graph = Graphics.FromImage(bmp);
+            graph.FillRectangle(brush, new Rectangle(0, 0, width, height));
+
+            BitmapData bitmapData = new BitmapData();
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+
+            bmp.LockBits(
+                rect,
+                ImageLockMode.WriteOnly,
+                PixelFormat.Format32bppArgb,
+                bitmapData);
+
+            unsafe
+            {
+                uint* pixels = (uint*)bitmapData.Scan0;
+
+                if (pixels == null)
+                    return null;
+
+                uint col = 0;
+                int stride = bitmapData.Stride >> 2;
+                for (uint row = 0; row < bitmapData.Height; ++row)
+                {
+                    for (col = 0; col < bitmapData.Width; ++col)
+                    {
+                        uint index = (uint)(row * stride + col);
+
+                        uint color = pixels[index] & 0xFFFFFF;
 
                         pixels[index] = color;
                     }
@@ -956,6 +997,7 @@ namespace TextDesignerCSLibrary
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(image))
             {
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
                 bRet = strategy.DrawString(graphics,
@@ -985,6 +1027,7 @@ namespace TextDesignerCSLibrary
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(image))
             {
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
                 graphics.Transform = mat;
