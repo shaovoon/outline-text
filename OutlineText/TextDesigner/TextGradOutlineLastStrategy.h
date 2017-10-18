@@ -39,7 +39,8 @@ public:
 		Gdiplus::Color clrText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
-		int nThickness);
+		int nThickness,
+		bool useCurveGradient);
 
 	/** Initialize the strategy
 	
@@ -53,7 +54,8 @@ public:
 		Gdiplus::Brush* pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
-		int nThickness);
+		int nThickness,
+		bool useCurveGradient);
 
 	/** Draw String, using a point as the starting point
 	
@@ -123,8 +125,16 @@ public:
 		const wchar_t*pszText, 
 		Gdiplus::Rect rtDraw);
 
+	static unsigned char Clamp(int comp);
+	static double GetRadians(double degrees);
+
 private:
 	void CalculateGradient(
+		Gdiplus::Color clr1,
+		Gdiplus::Color clr2,
+		int nThickness,
+		std::vector<Gdiplus::Color>& vec);
+	void CalculateCurvedGradient(
 		Gdiplus::Color clr1,
 		Gdiplus::Color clr2,
 		int nThickness,
@@ -141,7 +151,8 @@ protected:
 	Gdiplus::Brush* m_pbrushText; 
 	//! Using color or brush for text
 	bool m_bClrText;
-
+	//! Using Curved Gradient or Normal Gradient
+	bool m_bUseCurvedGradient;
 };
 
 } // namespace TextDesigner

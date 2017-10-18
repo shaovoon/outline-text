@@ -54,11 +54,11 @@ namespace InnerOutlineWinForm
             right += 2;
 
             Color light_purple = Color.FromArgb(192, 201, 250);
-            Color dark_purple = Color.FromArgb(136, 137, 196);
+            Color dark_purple = Color.FromArgb(122, 125, 172);
 
             using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_purple))
             {
-                using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 7))
+                using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, true))
                 {
                     Canvas.DrawTextImage(strategyText2, text, new Point(0, 0), context);
                     Canvas.ApplyImageToMask(text, maskOutline2, canvas, MaskColor.Blue, true);

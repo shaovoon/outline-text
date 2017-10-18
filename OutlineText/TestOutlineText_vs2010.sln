@@ -125,6 +125,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnerOutlineWinForm", "Inne
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InnerOutlineMFC", "InnerOutlineMFC\InnerOutlineMFC.vcxproj", "{440BC375-33CD-4020-9BE7-78ECC74042D3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F21CE92F-240D-48FE-8B73-56A63D4536B0} = {F21CE92F-240D-48FE-8B73-56A63D4536B0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

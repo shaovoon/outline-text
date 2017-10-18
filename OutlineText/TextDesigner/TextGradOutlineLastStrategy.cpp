@@ -16,7 +16,8 @@ using namespace TextDesigner;
 TextGradOutlineLastStrategy::TextGradOutlineLastStrategy(void)
 :
 m_pbrushText(NULL),
-m_bClrText(true)
+m_bClrText(true),
+m_bUseCurvedGradient(false)
 {
 }
 
@@ -28,9 +29,9 @@ ITextStrategy* TextGradOutlineLastStrategy::Clone()
 {
 	TextGradOutlineLastStrategy* p = new TextGradOutlineLastStrategy();
 	if(m_bClrText)
-		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness);
+		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
 	else
-		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness);
+		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
 
 	return static_cast<ITextStrategy*>(p);
 }
@@ -39,7 +40,8 @@ void TextGradOutlineLastStrategy::Init(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	m_clrText = clrText; 
 	m_bClrText = true;
@@ -54,13 +56,15 @@ void TextGradOutlineLastStrategy::Init(
 		m_clrOutline2 = clrOutline2; 
 
 	m_nThickness = nThickness; 
+	m_bUseCurvedGradient = useCurveGradient;
 }
 
 void TextGradOutlineLastStrategy::Init(
 	Gdiplus::Brush* pbrushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	if(m_pbrushText&&m_pbrushText!=pbrushText)
 		delete m_pbrushText;
@@ -77,7 +81,8 @@ void TextGradOutlineLastStrategy::Init(
 	else
 		m_clrOutline2 = clrOutline2; 
 
-	m_nThickness = nThickness; 
+	m_nThickness = nThickness;
+	m_bUseCurvedGradient = useCurveGradient;
 }
 
 bool TextGradOutlineLastStrategy::DrawString(
@@ -96,11 +101,10 @@ bool TextGradOutlineLastStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if(m_bUseCurvedGradient)
+		CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec );
+	else
+		CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 
 	Status status2 = Ok;
 	if(m_bClrText)
@@ -140,11 +144,10 @@ bool TextGradOutlineLastStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 
     Status status2 = Ok;
 	if(m_bClrText)
@@ -194,11 +197,10 @@ bool TextGradOutlineLastStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 
 	Status status2 = Ok;
 	if(m_bClrText)
@@ -254,11 +256,10 @@ bool TextGradOutlineLastStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 
     Status status2 = Ok;
 	if(m_bClrText)
@@ -346,4 +347,48 @@ void TextGradOutlineLastStrategy::CalculateGradient(
 	delete pImage;
 	pImage = NULL;
 }
+
+void TextGradOutlineLastStrategy::CalculateCurvedGradient(
+	Gdiplus::Color clr1,
+	Gdiplus::Color clr2,
+	int nThickness,
+	std::vector<Gdiplus::Color>& vec)
+{
+	vec.clear();
+	if (nThickness == 0)
+		return;
+	for (int i = 0; i < nThickness; ++i)
+	{
+		double degree = i / (double)nThickness * 90.0;
+		double percent = 1.0 - sin(GetRadians(degree));
+		double inv_percent = 1.0 - percent;
+		int r = (int)((clr1.GetR() * percent) + (clr2.GetR() * inv_percent));
+		unsigned char rb = Clamp(r);
+		int g = (int)((clr1.GetG() * percent) + (clr2.GetG() * inv_percent));
+		unsigned char gb = Clamp(g);
+		int b = (int)((clr1.GetB() * percent) + (clr2.GetB() * inv_percent));
+		unsigned char bb = Clamp(b);
+		vec.push_back(Gdiplus::Color(rb, gb, bb));
+	}
+}
+
+unsigned char TextGradOutlineLastStrategy::Clamp(int comp)
+{
+	unsigned char val = 0;
+	if (comp < 0)
+		val = 0;
+	else if (comp > 255)
+		val = 255;
+	else
+		val = (unsigned char)comp;
+
+	return val;
+}
+
+double TextGradOutlineLastStrategy::GetRadians(double degrees)
+{
+	static const double PI = 3.14159265358979323846;
+	return PI * degrees / 180.0;
+}
+
 
