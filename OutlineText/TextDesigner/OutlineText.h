@@ -21,6 +21,7 @@ http://www.codeproject.com/info/cpol10.aspx
 #include "DiffusedShadowStrategy.h"
 #include "ExtrudeStrategy.h"
 #include "TextGradOutlineStrategy.h"
+#include "TextGradOutlineLastStrategy.h"
 #include "TextOnlyOutlineStrategy.h"
 #include "TextNoOutlineStrategy.h"
 #include "TextDblGlowStrategy.h"
@@ -127,13 +128,29 @@ public:
 		Gdiplus::Color clrText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
-		int nThickness);
+		int nThickness,
+		bool useCurveGradient);
 
 	void TextGradOutline(
 		Gdiplus::Brush& pbrushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
-		int nThickness);
+		int nThickness,
+		bool useCurveGradient);
+
+	void TextGradOutlineLast(
+		Gdiplus::Color clrText,
+		Gdiplus::Color clrOutline1,
+		Gdiplus::Color clrOutline2,
+		int nThickness,
+		bool useCurveGradient);
+
+	void TextGradOutlineLast(
+		Gdiplus::Brush& pbrushText,
+		Gdiplus::Color clrOutline1,
+		Gdiplus::Color clrOutline2,
+		int nThickness,
+		bool useCurveGradient);
 
 	/** Setting just Text effect with no outline
 	

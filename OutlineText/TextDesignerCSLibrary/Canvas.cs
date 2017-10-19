@@ -138,10 +138,11 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrText,
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
-            int nThickness)
+            int nThickness,
+            bool useCurveGradient)
         {
             TextGradOutlineStrategy strat = new TextGradOutlineStrategy();
-            strat.Init(clrText, clrOutline1, clrOutline2, nThickness);
+            strat.Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
 
             return strat;
         }
@@ -158,10 +159,11 @@ namespace TextDesignerCSLibrary
             System.Drawing.Brush brushText,
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
-            int nThickness)
+            int nThickness,
+            bool useCurveGradient)
         {
             TextGradOutlineStrategy strat = new TextGradOutlineStrategy();
-            strat.Init(brushText, clrOutline1, clrOutline2, nThickness);
+            strat.Init(brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
 
             return strat;
         }

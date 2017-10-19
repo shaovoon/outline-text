@@ -54,6 +54,34 @@ namespace TextDesignerCSLibrary
         int nThickness1,
         int nThickness2);
 
+    void TextGradOutline(
+        System.Drawing.Color clrText,
+        System.Drawing.Color clrOutline1,
+        System.Drawing.Color clrOutline2,
+        int nThickness1,
+        bool useCurveGradient);
+
+    void TextGradOutline(
+        System.Drawing.Brush brushText,
+        System.Drawing.Color clrOutline1,
+        System.Drawing.Color clrOutline2,
+        int nThickness1,
+        bool useCurveGradient);
+
+    void TextGradOutlineLast(
+        System.Drawing.Color clrText,
+        System.Drawing.Color clrOutline1,
+        System.Drawing.Color clrOutline2,
+        int nThickness1,
+        bool useCurveGradient);
+
+    void TextGradOutlineLast(
+        System.Drawing.Brush brushText,
+        System.Drawing.Color clrOutline1,
+        System.Drawing.Color clrOutline2,
+        int nThickness1,
+        bool useCurveGradient);
+
     void TextNoOutline(System.Drawing.Color clrText);
 
     void TextNoOutline(System.Drawing.Brush brushText);

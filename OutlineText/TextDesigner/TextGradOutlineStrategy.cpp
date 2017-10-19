@@ -9,6 +9,7 @@ http://www.codeproject.com/info/cpol10.aspx
 
 #include "StdAfx.h"
 #include "TextGradOutlineStrategy.h"
+#include "TextGradOutlineLastStrategy.h"
 #include "GDIPath.h"
 
 using namespace TextDesigner;
@@ -16,7 +17,8 @@ using namespace TextDesigner;
 TextGradOutlineStrategy::TextGradOutlineStrategy(void)
 :
 m_pbrushText(NULL),
-m_bClrText(true)
+m_bClrText(true),
+m_bUseCurvedGradient(false)
 {
 }
 
@@ -28,9 +30,9 @@ ITextStrategy* TextGradOutlineStrategy::Clone()
 {
 	TextGradOutlineStrategy* p = new TextGradOutlineStrategy();
 	if(m_bClrText)
-		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness);
+		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
 	else
-		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness);
+		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
 
 	return static_cast<ITextStrategy*>(p);
 }
@@ -39,7 +41,8 @@ void TextGradOutlineStrategy::Init(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	m_clrText = clrText; 
 	m_bClrText = true;
@@ -54,13 +57,15 @@ void TextGradOutlineStrategy::Init(
 		m_clrOutline2 = clrOutline2; 
 
 	m_nThickness = nThickness; 
+	m_bUseCurvedGradient = useCurveGradient;
 }
 
 void TextGradOutlineStrategy::Init(
 	Gdiplus::Brush* pbrushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	if(m_pbrushText&&m_pbrushText!=pbrushText)
 		delete m_pbrushText;
@@ -78,6 +83,7 @@ void TextGradOutlineStrategy::Init(
 		m_clrOutline2 = clrOutline2; 
 
 	m_nThickness = nThickness; 
+	m_bUseCurvedGradient = useCurveGradient;
 }
 
 bool TextGradOutlineStrategy::DrawString(
@@ -96,11 +102,10 @@ bool TextGradOutlineStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	for(int i=m_nThickness; i>=1; --i)
 	{
 		Gdiplus::Color clr = vec.at(i-1);
@@ -139,11 +144,10 @@ bool TextGradOutlineStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	for(int i=m_nThickness; i>=1; --i)
 	{
 		Gdiplus::Color clr = vec.at(i-1);
@@ -192,11 +196,10 @@ bool TextGradOutlineStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	for(int i=m_nThickness; i>=1; --i)
 	{
 		Gdiplus::Color clr = vec.at(i-1);
@@ -251,11 +254,10 @@ bool TextGradOutlineStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	CalculateGradient(
-		m_clrOutline1,
-		m_clrOutline2,
-		m_nThickness,
-		vec );
+	if (m_bUseCurvedGradient)
+		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
+	else
+		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	for(int i=m_nThickness; i>=1; --i)
 	{
 		Gdiplus::Color clr = vec.at(i-1);
@@ -281,65 +283,5 @@ bool TextGradOutlineStrategy::GdiDrawString(
 		pPath = NULL;
 	}
 	return status2 == Ok;
-}
-
-void TextGradOutlineStrategy::CalculateGradient(
-	Gdiplus::Color clr1,
-	Gdiplus::Color clr2,
-	int nThickness,
-	std::vector<Gdiplus::Color>& vec )
-{
-	using namespace Gdiplus;
-	vec.clear();
-	int nWidth = nThickness;
-	int nHeight = 1;
-	Gdiplus::Rect rect(0, 0, nWidth, nHeight);
-	LinearGradientBrush brush(rect, 
-		clr1, clr2, LinearGradientModeHorizontal);
-
-	Gdiplus::Bitmap* pImage = new Gdiplus::Bitmap(nWidth, nHeight, PixelFormat32bppARGB);
-
-	Gdiplus::Graphics graphics((Gdiplus::Image*)(pImage));
-	graphics.FillRectangle(&brush, 0, 0, pImage->GetWidth(), pImage->GetHeight() );
-
-	BitmapData bitmapData;
-
-	pImage->LockBits(
-		&rect,
-		ImageLockModeWrite,
-		PixelFormat32bppARGB,
-		&bitmapData );
-
-	UINT* pixels = (UINT*)bitmapData.Scan0;
-
-	if( !pixels )
-	{
-		pImage->UnlockBits(&bitmapData);
-		delete pImage;
-		pImage = NULL;
-		return;
-	}
-
-	UINT col = 0;
-	int stride = bitmapData.Stride >> 2;
-	for(UINT row = 0; row < bitmapData.Height; ++row)
-	{
-		for(col = 0; col < bitmapData.Width; ++col)
-		{
-			using namespace Gdiplus;
-			UINT index = row * stride + col;
-			UINT color = pixels[index];
-			// if use color directly, instead of a colorref conversion, the colors sometimes appear incorrectly.
-			// That's why this conversion is here! Do not remove!
-			COLORREF colorref = RGB((color & 0xff0000)>>16, (color & 0xff00)>>8, color & 0xff);
-			Gdiplus::Color gdiColor;
-			gdiColor.SetFromCOLORREF(colorref);
-			vec.push_back(gdiColor);
-		}
-	}
-
-	pImage->UnlockBits(&bitmapData);
-	delete pImage;
-	pImage = NULL;
 }
 

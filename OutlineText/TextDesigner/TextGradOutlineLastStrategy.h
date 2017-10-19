@@ -125,16 +125,15 @@ public:
 		const wchar_t*pszText, 
 		Gdiplus::Rect rtDraw);
 
+public:
 	static unsigned char Clamp(int comp);
 	static double GetRadians(double degrees);
-
-private:
-	void CalculateGradient(
+	static void CalculateGradient(
 		Gdiplus::Color clr1,
 		Gdiplus::Color clr2,
 		int nThickness,
 		std::vector<Gdiplus::Color>& vec);
-	void CalculateCurvedGradient(
+	static void CalculateCurvedGradient(
 		Gdiplus::Color clr1,
 		Gdiplus::Color clr2,
 		int nThickness,

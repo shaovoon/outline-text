@@ -91,7 +91,7 @@ void CHollowTextMFCDlg::OnPaint()
 		graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
 		// Generating the outline strategy for displaying inside the hollow
-		auto strategyOutline = Canvas::TextGradOutline(Color(255,255,255), Color(230,230,230), Color(100,100,100), 9);
+		auto strategyOutline = Canvas::TextGradOutline(Color(255,255,255), Color(230,230,230), Color(100,100,100), 9, false);
 
 		CRect rect;
 		GetClientRect(&rect);

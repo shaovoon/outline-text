@@ -164,10 +164,11 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrText,
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
-            int nThickness)
+            int nThickness,
+            bool useCurveGradient)
         {
             TextGradOutlineStrategy pStrat = new TextGradOutlineStrategy();
-            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness);
+            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
 
             m_pTextStrategy = pStrat;
         }
@@ -176,10 +177,37 @@ namespace TextDesignerCSLibrary
             System.Drawing.Brush brushText,
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
-            int nThickness)
+            int nThickness,
+            bool useCurveGradient)
         {
             TextGradOutlineStrategy pStrat = new TextGradOutlineStrategy();
-            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness);
+            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+
+            m_pTextStrategy = pStrat;
+        }
+
+        public void TextGradOutlineLast(
+            System.Drawing.Color clrText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness,
+            bool useCurveGradient)
+        {
+            TextGradOutlineLastStrategy pStrat = new TextGradOutlineLastStrategy();
+            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+
+            m_pTextStrategy = pStrat;
+        }
+
+        public void TextGradOutlineLast(
+            System.Drawing.Brush brushText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness,
+            bool useCurveGradient)
+        {
+            TextGradOutlineLastStrategy pStrat = new TextGradOutlineLastStrategy();
+            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
 
             m_pTextStrategy = pStrat;
         }

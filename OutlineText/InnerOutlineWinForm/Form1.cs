@@ -38,7 +38,10 @@ namespace InnerOutlineWinForm
             context.pszText = "VACATION";
             context.ptDraw = new Point(0, 0);
 
-            var strategyOutline3 = Canvas.TextOutline(Color.Black, Color.Black, 4);
+            //var strategyOutline3 = Canvas.TextOutline(Color.Black, Color.Black, 4);
+            Color light_purple1 = Color.FromArgb(102, 159, 206);
+            Color dark_purple1 = Color.FromArgb(35, 68, 95);
+            var strategyOutline3 = Canvas.TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, false);
             Canvas.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
 
             // Generate the mask image for measuring the size of the text image required
@@ -52,10 +55,12 @@ namespace InnerOutlineWinForm
             Canvas.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             bottom += 2;
             right += 2;
-
+            /*
             Color light_purple = Color.FromArgb(192, 201, 250);
             Color dark_purple = Color.FromArgb(122, 125, 172);
-
+            */
+            Color light_purple = Color.FromArgb(255, 227, 85);
+            Color dark_purple = Color.FromArgb(243, 163, 73);
             using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_purple))
             {
                 using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, true))

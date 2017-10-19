@@ -1375,7 +1375,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 				Color(m_clrText.GetR(),m_clrText.GetG(),m_clrText.GetB()),
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				Color(m_nOutlineAlpha2, m_clrOutline2.GetR(),m_clrOutline2.GetG(),m_clrOutline2.GetB()),
-				m_nOutlineThickness1+m_nOutlineThickness2);
+				m_nOutlineThickness1+m_nOutlineThickness2, false);
 		}
 		else if(m_TextEffect==NoOutline)
 		{
@@ -1454,7 +1454,7 @@ bool CMyScrollView::SetTextEffect(TextDesigner::IOutlineText* pOutlineText, Gdip
 				*pBrush,
 				Color(m_nOutlineAlpha1, m_clrOutline1.GetR(),m_clrOutline1.GetG(),m_clrOutline1.GetB()),
 				Color(m_nOutlineAlpha2, m_clrOutline2.GetR(),m_clrOutline2.GetG(),m_clrOutline2.GetB()),
-				m_nOutlineThickness1+m_nOutlineThickness2);
+				m_nOutlineThickness1+m_nOutlineThickness2, false);
 		}
 		else if(m_TextEffect==NoOutline)
 		{

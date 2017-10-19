@@ -269,7 +269,7 @@ namespace TextDesignerCSLibrary
 			return true;
 		}
 
-		void CalculateGradient(
+        public static void CalculateGradient(
 			Color clr1,
 			Color clr2,
 			int nThickness,
@@ -325,7 +325,7 @@ namespace TextDesignerCSLibrary
 			}
 		}
 
-        void CalculateCurvedGradient(
+        public static void CalculateCurvedGradient(
             Color clr1,
             Color clr2,
             int nThickness,
@@ -336,7 +336,7 @@ namespace TextDesignerCSLibrary
                 return;
             for (int i = 0; i < nThickness; ++i)
             {
-                double degree = i / (double)nThickness * 90.0;
+                double degree = i / (double)(nThickness) * 90.0;
                 double percent = 1.0 - Math.Sin(GetRadians(degree));
                 double inv_percent = 1.0 - percent;
                 int r = (int)((clr1.R * percent) + (clr2.R * inv_percent));
@@ -349,7 +349,7 @@ namespace TextDesignerCSLibrary
             }
         }
 
-        static byte Clamp(int comp)
+        public static byte Clamp(int comp)
         {
             byte val = 0;
             if (comp < 0)
@@ -362,7 +362,7 @@ namespace TextDesignerCSLibrary
             return val;
         }
 
-        static double GetRadians(double degrees)
+        public static double GetRadians(double degrees)
         {
             return Math.PI * degrees / 180.0;
         }

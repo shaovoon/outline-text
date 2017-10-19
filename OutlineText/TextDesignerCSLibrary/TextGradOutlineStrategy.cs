@@ -14,7 +14,8 @@ namespace TextDesignerCSLibrary
 			m_nThickness=2;
 			m_brushText = null;
 			m_bClrText = true;
-			disposed = false;
+            m_bUseCurvedGradient = false;
+            disposed = false;
 		}
         public override void Dispose()
 		{
@@ -44,38 +45,42 @@ namespace TextDesignerCSLibrary
 		{
 			TextGradOutlineStrategy p = new TextGradOutlineStrategy();
 			if (m_bClrText)
-				p.Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness);
-			else
-				p.Init(m_brushText, m_clrOutline1, m_clrOutline2, m_nThickness);
+                p.Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
+            else
+                p.Init(m_brushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
 
-			return (ITextStrategy)(p);
+            return (ITextStrategy)(p);
 		}
 
-		public void Init(
-			System.Drawing.Color clrText, 
-			System.Drawing.Color clrOutline1, 
-			System.Drawing.Color clrOutline2, 
-			int nThickness )
-		{
-			m_clrText = clrText;
-			m_bClrText = true;
-			m_clrOutline1 = clrOutline1;
-			m_clrOutline2 = clrOutline2;
-			m_nThickness = nThickness; 
-		}
+        public void Init(
+            System.Drawing.Color clrText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness,
+            bool useCurveGradient)
+        {
+            m_clrText = clrText;
+            m_bClrText = true;
+            m_clrOutline1 = clrOutline1;
+            m_clrOutline2 = clrOutline2;
+            m_nThickness = nThickness;
+            m_bUseCurvedGradient = useCurveGradient;
+        }
 
-		public void Init(
-			System.Drawing.Brush brushText,
-			System.Drawing.Color clrOutline1,
-			System.Drawing.Color clrOutline2,
-			int nThickness)
-		{
-			m_brushText = brushText;
-			m_bClrText = false;
-			m_clrOutline1 = clrOutline1;
-			m_clrOutline2 = clrOutline2;
-			m_nThickness = nThickness;
-		}
+        public void Init(
+            System.Drawing.Brush brushText,
+            System.Drawing.Color clrOutline1,
+            System.Drawing.Color clrOutline2,
+            int nThickness,
+            bool useCurveGradient)
+        {
+            m_brushText = brushText;
+            m_bClrText = false;
+            m_clrOutline1 = clrOutline1;
+            m_clrOutline2 = clrOutline2;
+            m_nThickness = nThickness;
+            m_bUseCurvedGradient = useCurveGradient;
+        }
 
         public override bool DrawString(
 			System.Drawing.Graphics graphics,
@@ -91,13 +96,12 @@ namespace TextDesignerCSLibrary
 				path.AddString(strText, fontFamily, (int)fontStyle, fontSize, ptDraw, strFormat);
 
 				List<Color> list = new List<Color>();
-				CalculateGradient(
-					m_clrOutline1,
-					m_clrOutline2,
-					m_nThickness,
-					list);
+                if (m_bUseCurvedGradient)
+                    TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+                else
+                    TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
 
-				for (int i = m_nThickness; i >= 1; --i)
+                for (int i = m_nThickness; i >= 1; --i)
 				{
 					using (Pen pen1 = new Pen(list[i - 1], i))
 					{
@@ -134,13 +138,12 @@ namespace TextDesignerCSLibrary
 				path.AddString(strText, fontFamily, (int)fontStyle, fontSize, rtDraw, strFormat);
 
 				List<Color> list = new List<Color>();
-				CalculateGradient(
-						m_clrOutline1,
-						m_clrOutline2,
-						m_nThickness,
-						list);
+                if (m_bUseCurvedGradient)
+                    TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+                else
+                    TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
 
-				for (int i = m_nThickness; i >= 1; --i)
+                for (int i = m_nThickness; i >= 1; --i)
 				{
 					using (Pen pen1 = new Pen(list[i - 1], i))
 					{
@@ -183,11 +186,11 @@ namespace TextDesignerCSLibrary
                 }
 
                 List<Color> list = new List<Color>();
-                CalculateGradient(
-                    m_clrOutline1,
-                    m_clrOutline2,
-                    m_nThickness,
-                    list);
+                if (m_bUseCurvedGradient)
+                    TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+                else
+                    TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+
                 for (int i = m_nThickness; i >= 1; --i)
                 {
                     System.Drawing.Color clr = list[i - 1];
@@ -234,11 +237,11 @@ namespace TextDesignerCSLibrary
                 }
 
                 List<Color> list = new List<Color>();
-                CalculateGradient(
-                    m_clrOutline1,
-                    m_clrOutline2,
-                    m_nThickness,
-                    list);
+                if (m_bUseCurvedGradient)
+                    TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+                else
+                    TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
+
                 for (int i = m_nThickness; i >= 1; --i)
                 {
                     System.Drawing.Color clr = list[i - 1];
@@ -264,67 +267,12 @@ namespace TextDesignerCSLibrary
 			return true;
 		}
 
-		void CalculateGradient(
-			Color clr1,
-			Color clr2,
-			int nThickness,
-			List<Color> list)
-		{
-			list.Clear();
-			int nWidth = nThickness;
-			int nHeight = 1;
-			Rectangle rect = new Rectangle(0, 0, nWidth, nHeight);
-			LinearGradientBrush brush = new LinearGradientBrush(rect,
-				clr1, clr2, LinearGradientMode.Horizontal);
-
-			using (Bitmap pImage = new Bitmap(nWidth, nHeight, PixelFormat.Format32bppArgb))
-			{
-				using (Graphics graphics = System.Drawing.Graphics.FromImage(pImage))
-				{
-					graphics.FillRectangle(brush, 0, 0, pImage.Width, pImage.Height);
-
-					BitmapData bitmapData = new BitmapData();
-
-
-					pImage.LockBits(
-						rect,
-						ImageLockMode.ReadOnly,
-						PixelFormat.Format32bppArgb,
-						bitmapData);
-
-					unsafe
-					{
-						uint* pixels = (uint*)bitmapData.Scan0;
-
-						if (pixels == null)
-						{
-							pImage.UnlockBits(bitmapData);
-							return;
-						}
-
-						uint col = 0;
-						int stride = bitmapData.Stride >> 2;
-						for (uint row = 0; row < bitmapData.Height; ++row)
-						{
-							for (col = 0; col < bitmapData.Width; ++col)
-							{
-								uint index = (uint)(row * stride + col);
-								uint color = pixels[index];
-								Color gdiColor = Color.FromArgb((int)((color & 0xff0000) >> 16), (int)((color & 0xff00) >> 8), (int)(color & 0xff));
-								list.Add(gdiColor);
-							}
-						}
-					}
-					pImage.UnlockBits(bitmapData);
-				}
-			}
-		}
-
 		protected System.Drawing.Color m_clrText;
 		protected System.Drawing.Color m_clrOutline1;
 		protected System.Drawing.Color m_clrOutline2;
 		protected System.Drawing.Brush m_brushText;
 		protected bool m_bClrText;
-		protected bool disposed;
+        protected bool m_bUseCurvedGradient;
+        protected bool disposed;
 	}
 }

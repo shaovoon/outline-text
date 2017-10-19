@@ -177,10 +177,11 @@ void PngOutlineText::TextGradOutline(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness, useCurveGradient);
 
 	m_pTextStrategy = pStrat;
 }
@@ -189,10 +190,37 @@ void PngOutlineText::TextGradOutline(
 	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness, useCurveGradient);
+
+	m_pTextStrategy = pStrat;
+}
+
+void PngOutlineText::TextGradOutlineLast(
+	Gdiplus::Color clrText,
+	Gdiplus::Color clrOutline1,
+	Gdiplus::Color clrOutline2,
+	int nThickness,
+	bool useCurveGradient)
+{
+	std::shared_ptr<TextGradOutlineLastStrategy> pStrat = std::make_shared<TextGradOutlineLastStrategy>();
+	pStrat->Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+
+	m_pTextStrategy = pStrat;
+}
+
+void PngOutlineText::TextGradOutlineLast(
+	Gdiplus::Brush& brushText,
+	Gdiplus::Color clrOutline1,
+	Gdiplus::Color clrOutline2,
+	int nThickness,
+	bool useCurveGradient)
+{
+	std::shared_ptr<TextGradOutlineLastStrategy> pStrat = std::make_shared<TextGradOutlineLastStrategy>();
+	pStrat->Init(&brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
 
 	m_pTextStrategy = pStrat;
 }

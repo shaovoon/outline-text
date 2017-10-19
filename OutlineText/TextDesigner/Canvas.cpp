@@ -54,10 +54,11 @@ std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 	Gdiplus::Color clrText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(clrText,clrOutline1,clrOutline2,nThickness, useCurveGradient);
 
 	return pStrat;
 }
@@ -66,10 +67,11 @@ std::shared_ptr<ITextStrategy> Canvas::TextGradOutline(
 	Gdiplus::Brush& brushText, 
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
-	int nThickness)
+	int nThickness,
+	bool useCurveGradient)
 {
 	std::shared_ptr<TextGradOutlineStrategy> pStrat = std::make_shared<TextGradOutlineStrategy>();
-	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness);
+	pStrat->Init(&brushText,clrOutline1,clrOutline2,nThickness, useCurveGradient);
 
 	return pStrat;
 }

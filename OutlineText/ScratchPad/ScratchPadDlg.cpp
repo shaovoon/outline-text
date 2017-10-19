@@ -83,7 +83,7 @@ void CScratchPadDlg::OnPaint()
 		Color(255,128,64), 
 		Color(255,64,0,64), 
 		Color(255,255,128,255), 
-		10);
+		10, false);
 	m_PngOutlineText.EnableReflection(false);
 
 	m_PngOutlineText.EnableShadow(true);
@@ -131,7 +131,7 @@ void CScratchPadDlg::OnPaint()
 		gradientBrush, 
 		Color(255,64,0,64), 
 		Color(255,255,128,255), 
-		10);
+		10, false);
 	m_PngOutlineText.GdiDrawString(&graphics, &m_LogFont, L"TEXT DESIGNER", 
 		Gdiplus::Point(10, 10));
 	graphics.DrawImage(m_pPngImage.get(), 50, 200, m_pPngImage->GetWidth(), m_pPngImage->GetHeight());
