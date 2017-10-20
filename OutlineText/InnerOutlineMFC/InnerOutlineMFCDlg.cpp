@@ -87,9 +87,6 @@ void CInnerOutlineMFCDlg::OnPaint()
 		graphics.SetSmoothingMode(SmoothingModeAntiAlias);
 		graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
-		// Create the outline strategy which is used later on for measuring 
-		// the size of text in order to generate a correct sized gradient image
-		auto strategyOutline2 = Canvas::TextNoOutline(MaskColor::Blue());
 
 		CRect rect;
 		GetClientRect(&rect);
@@ -108,6 +105,7 @@ void CInnerOutlineMFCDlg::OnPaint()
 
 		// Generate the mask image for measuring the size of the text image required
 		//============================================================================
+		auto strategyOutline2 = Canvas::TextNoOutline(MaskColor::Blue());
 		auto maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0, 0), context);
 
 		UINT top = 0;
@@ -118,21 +116,16 @@ void CInnerOutlineMFCDlg::OnPaint()
 		right += 2;
 		bottom += 2;
 
-		//auto strategyOutline3 = Canvas::TextOutline(Color::Black, Color::Black, 4);
-		Color light_purple1(102, 159, 206);
-		Color dark_purple1(35, 68, 95);
-		auto strategyOutline3 = Canvas::TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, GradientType::Linear);
+		Color light_purple(102, 159, 206);
+		Color dark_purple(35, 68, 95);
+		auto strategyOutline3 = Canvas::TextGradOutline(light_purple, dark_purple, light_purple, 9, GradientType::Linear);
 		Canvas::DrawTextImage(strategyOutline3, canvas, Point(0, 0), context);
 
-		/*
-		Color light_purple(192, 201, 250);
-		Color dark_purple(122, 125, 172);
-		*/
-		Color light_purple(255, 227, 85);
-		Color dark_purple(243, 163, 73);
+		Color light_yellow(255, 227, 85);
+		Color dark_yellow(243, 163, 73);
 
-		auto text = Canvas::GenImage(rect.Width(), rect.Height(), dark_purple, 0);
-		auto strategyText2 = Canvas::TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, GradientType::Sinusoid);
+		auto text = Canvas::GenImage(rect.Width(), rect.Height(), dark_yellow, 0);
+		auto strategyText2 = Canvas::TextGradOutlineLast(light_yellow, dark_yellow, light_yellow, 9, GradientType::Sinusoid);
 		Canvas::DrawTextImage(strategyText2, text, Point(0, 0), context);
 		Canvas::ApplyImageToMask(text, maskOutline2, canvas, MaskColor::Blue(), true);
 

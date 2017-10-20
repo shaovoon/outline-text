@@ -21,10 +21,6 @@ namespace InnerOutlineWinForm
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            // Create the outline strategy which is used later on for measuring 
-            // the size of text in order to generate a correct sized gradient image
-            var strategyOutline2 = Canvas.TextNoOutline(MaskColor.Blue);
-
             Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
@@ -38,16 +34,18 @@ namespace InnerOutlineWinForm
             context.pszText = "VACATION";
             context.ptDraw = new Point(0, 0);
 
-            //var strategyOutline3 = Canvas.TextOutline(Color.Black, Color.Black, 4);
-            Color light_purple1 = Color.FromArgb(102, 159, 206);
-            Color dark_purple1 = Color.FromArgb(35, 68, 95);
-            var strategyOutline3 = Canvas.TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, GradientType.Linear);
-            Canvas.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
+            Color light_purple = Color.FromArgb(102, 159, 206);
+            Color dark_purple = Color.FromArgb(35, 68, 95);
+            using (var strategyOutline3 = Canvas.TextGradOutline(light_purple, dark_purple, light_purple, 9, GradientType.Linear))
+            {
+                Canvas.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
+            }
 
-            // Generate the mask image for measuring the size of the text image required
-            //============================================================================
-            Bitmap maskOutline2 = Canvas.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
-
+            Bitmap maskOutline2;
+            using (var strategyOutline2 = Canvas.TextNoOutline(MaskColor.Blue))
+            {
+                maskOutline2 = Canvas.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
+            }
             uint top = 0;
             uint bottom = 0;
             uint left = 0;
@@ -55,15 +53,11 @@ namespace InnerOutlineWinForm
             Canvas.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             bottom += 2;
             right += 2;
-            /*
-            Color light_purple = Color.FromArgb(192, 201, 250);
-            Color dark_purple = Color.FromArgb(122, 125, 172);
-            */
-            Color light_purple = Color.FromArgb(255, 227, 85);
-            Color dark_purple = Color.FromArgb(243, 163, 73);
-            using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_purple))
+            Color light_yellow = Color.FromArgb(255, 227, 85);
+            Color dark_yellow = Color.FromArgb(243, 163, 73);
+            using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_yellow))
             {
-                using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, GradientType.Sinusoid))
+                using (var strategyText2 = Canvas.TextGradOutlineLast(light_yellow, dark_yellow, light_yellow, 9, GradientType.Sinusoid))
                 {
                     Canvas.DrawTextImage(strategyText2, text, new Point(0, 0), context);
                     Canvas.ApplyImageToMask(text, maskOutline2, canvas, MaskColor.Blue, true);
@@ -80,9 +74,6 @@ namespace InnerOutlineWinForm
             canvas.Dispose();
 
             maskOutline2.Dispose();
-            strategyOutline2.Dispose();
-            strategyOutline3.Dispose();
-
         }
     }
 }
