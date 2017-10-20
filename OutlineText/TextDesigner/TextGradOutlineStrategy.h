@@ -12,6 +12,7 @@ http://www.codeproject.com/info/cpol10.aspx
 
 #include <Gdiplus.h>
 #include <vector>
+#include "TextGradOutlineLastStrategy.h"
 #include "TextImplGetHeight.h"
 
 namespace TextDesigner
@@ -40,7 +41,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Initialize the strategy
 	
@@ -55,7 +56,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Draw String, using a point as the starting point
 	
@@ -136,8 +137,8 @@ protected:
 	Gdiplus::Brush* m_pbrushText; 
 	//! Using color or brush for text
 	bool m_bClrText;
-	//! Using Curved Gradient or Normal Gradient
-	bool m_bUseCurvedGradient;
+	//! Using Linear or Curved Gradient
+	GradientType m_GradientType;
 };
 
 } // namespace TextDesigner

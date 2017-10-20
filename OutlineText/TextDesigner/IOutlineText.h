@@ -13,6 +13,7 @@ http://www.codeproject.com/info/cpol10.aspx
 
 #include <memory>
 #include <Gdiplus.h>
+#include "TextGradOutlineLastStrategy.h"
 
 namespace TextDesigner
 {
@@ -113,28 +114,28 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient) = 0;
+		GradientType gradType) = 0;
 
 	virtual void TextGradOutline(
 		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient) = 0;
+		GradientType gradType) = 0;
 
 	virtual void TextGradOutlineLast(
 		Gdiplus::Color clrText,
 		Gdiplus::Color clrOutline1,
 		Gdiplus::Color clrOutline2,
 		int nThickness,
-		bool useCurveGradient) = 0;
+		GradientType gradType) = 0;
 
 	virtual void TextGradOutlineLast(
 		Gdiplus::Brush& brushText,
 		Gdiplus::Color clrOutline1,
 		Gdiplus::Color clrOutline2,
 		int nThickness,
-		bool useCurveGradient) = 0;
+		GradientType gradType) = 0;
 
 	/** Setting just Text effect with no outline
 	

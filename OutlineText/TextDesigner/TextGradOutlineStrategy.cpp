@@ -9,7 +9,6 @@ http://www.codeproject.com/info/cpol10.aspx
 
 #include "StdAfx.h"
 #include "TextGradOutlineStrategy.h"
-#include "TextGradOutlineLastStrategy.h"
 #include "GDIPath.h"
 
 using namespace TextDesigner;
@@ -18,7 +17,7 @@ TextGradOutlineStrategy::TextGradOutlineStrategy(void)
 :
 m_pbrushText(NULL),
 m_bClrText(true),
-m_bUseCurvedGradient(false)
+m_GradientType(GradientType::Linear)
 {
 }
 
@@ -30,9 +29,9 @@ ITextStrategy* TextGradOutlineStrategy::Clone()
 {
 	TextGradOutlineStrategy* p = new TextGradOutlineStrategy();
 	if(m_bClrText)
-		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
+		p->Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_GradientType);
 	else
-		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
+		p->Init(m_pbrushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_GradientType);
 
 	return static_cast<ITextStrategy*>(p);
 }
@@ -42,7 +41,7 @@ void TextGradOutlineStrategy::Init(
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness,
-	bool useCurveGradient)
+	GradientType gradType)
 {
 	m_clrText = clrText; 
 	m_bClrText = true;
@@ -57,7 +56,7 @@ void TextGradOutlineStrategy::Init(
 		m_clrOutline2 = clrOutline2; 
 
 	m_nThickness = nThickness; 
-	m_bUseCurvedGradient = useCurveGradient;
+	m_GradientType = gradType;
 }
 
 void TextGradOutlineStrategy::Init(
@@ -65,7 +64,7 @@ void TextGradOutlineStrategy::Init(
 	Gdiplus::Color clrOutline1, 
 	Gdiplus::Color clrOutline2, 
 	int nThickness,
-	bool useCurveGradient)
+	GradientType gradType)
 {
 	if(m_pbrushText&&m_pbrushText!=pbrushText)
 		delete m_pbrushText;
@@ -83,7 +82,7 @@ void TextGradOutlineStrategy::Init(
 		m_clrOutline2 = clrOutline2; 
 
 	m_nThickness = nThickness; 
-	m_bUseCurvedGradient = useCurveGradient;
+	m_GradientType = gradType;
 }
 
 bool TextGradOutlineStrategy::DrawString(
@@ -102,7 +101,7 @@ bool TextGradOutlineStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	if (m_bUseCurvedGradient)
+	if (m_GradientType==GradientType::Sinusoid)
 		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	else
 		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
@@ -144,7 +143,7 @@ bool TextGradOutlineStrategy::DrawString(
 		return false;
 
 	std::vector<Gdiplus::Color> vec;
-	if (m_bUseCurvedGradient)
+	if (m_GradientType == GradientType::Sinusoid)
 		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	else
 		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
@@ -196,7 +195,7 @@ bool TextGradOutlineStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	if (m_bUseCurvedGradient)
+	if (m_GradientType == GradientType::Sinusoid)
 		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	else
 		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
@@ -254,7 +253,7 @@ bool TextGradOutlineStrategy::GdiDrawString(
 	}
 
 	std::vector<Gdiplus::Color> vec;
-	if (m_bUseCurvedGradient)
+	if (m_GradientType == GradientType::Sinusoid)
 		TextGradOutlineLastStrategy::CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);
 	else
 		TextGradOutlineLastStrategy::CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, vec);

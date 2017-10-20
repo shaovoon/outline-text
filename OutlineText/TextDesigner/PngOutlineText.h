@@ -128,28 +128,28 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	void TextGradOutline(
 		Gdiplus::Brush& brushText, 
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	void TextGradOutlineLast(
 		Gdiplus::Color clrText,
 		Gdiplus::Color clrOutline1,
 		Gdiplus::Color clrOutline2,
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	void TextGradOutlineLast(
 		Gdiplus::Brush& pbrushText,
 		Gdiplus::Color clrOutline1,
 		Gdiplus::Color clrOutline2,
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Setting just Text effect with no outline
 	

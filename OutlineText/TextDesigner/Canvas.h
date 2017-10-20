@@ -122,7 +122,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Setting Gradient Outlined Text effect
 	
@@ -136,7 +136,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
    	/** Setting Gradient Outlined Text effect with outline done last
 	
@@ -150,7 +150,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Setting Gradient Outlined Text effect with outline done last
 	
@@ -164,7 +164,7 @@ public:
 		Gdiplus::Color clrOutline1, 
 		Gdiplus::Color clrOutline2, 
 		int nThickness,
-		bool useCurveGradient);
+		GradientType gradType);
 
 	/** Setting just Text effect with no outline
 	

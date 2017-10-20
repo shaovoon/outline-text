@@ -14,7 +14,7 @@ namespace TextDesignerCSLibrary
 			m_nThickness=2;
 			m_brushText = null;
 			m_bClrText = true;
-            m_bUseCurvedGradient = false;
+            m_GradientType = GradientType.Linear;
             disposed = false;
 		}
         public override void Dispose()
@@ -45,9 +45,9 @@ namespace TextDesignerCSLibrary
 		{
 			TextGradOutlineStrategy p = new TextGradOutlineStrategy();
 			if (m_bClrText)
-                p.Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
+                p.Init(m_clrText, m_clrOutline1, m_clrOutline2, m_nThickness, m_GradientType);
             else
-                p.Init(m_brushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_bUseCurvedGradient);
+                p.Init(m_brushText, m_clrOutline1, m_clrOutline2, m_nThickness, m_GradientType);
 
             return (ITextStrategy)(p);
 		}
@@ -57,14 +57,14 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType useCurveGradient)
         {
             m_clrText = clrText;
             m_bClrText = true;
             m_clrOutline1 = clrOutline1;
             m_clrOutline2 = clrOutline2;
             m_nThickness = nThickness;
-            m_bUseCurvedGradient = useCurveGradient;
+            m_GradientType = useCurveGradient;
         }
 
         public void Init(
@@ -72,14 +72,14 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType useCurveGradient)
         {
             m_brushText = brushText;
             m_bClrText = false;
             m_clrOutline1 = clrOutline1;
             m_clrOutline2 = clrOutline2;
             m_nThickness = nThickness;
-            m_bUseCurvedGradient = useCurveGradient;
+            m_GradientType = useCurveGradient;
         }
 
         public override bool DrawString(
@@ -96,7 +96,7 @@ namespace TextDesignerCSLibrary
 				path.AddString(strText, fontFamily, (int)fontStyle, fontSize, ptDraw, strFormat);
 
 				List<Color> list = new List<Color>();
-                if (m_bUseCurvedGradient)
+                if (m_GradientType == GradientType.Sinusoid)
                     TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
                 else
                     TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
@@ -138,7 +138,7 @@ namespace TextDesignerCSLibrary
 				path.AddString(strText, fontFamily, (int)fontStyle, fontSize, rtDraw, strFormat);
 
 				List<Color> list = new List<Color>();
-                if (m_bUseCurvedGradient)
+                if (m_GradientType == GradientType.Sinusoid)
                     TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
                 else
                     TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
@@ -186,7 +186,7 @@ namespace TextDesignerCSLibrary
                 }
 
                 List<Color> list = new List<Color>();
-                if (m_bUseCurvedGradient)
+                if (m_GradientType == GradientType.Sinusoid)
                     TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
                 else
                     TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
@@ -237,7 +237,7 @@ namespace TextDesignerCSLibrary
                 }
 
                 List<Color> list = new List<Color>();
-                if (m_bUseCurvedGradient)
+                if (m_GradientType == GradientType.Sinusoid)
                     TextGradOutlineLastStrategy.CalculateCurvedGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
                 else
                     TextGradOutlineLastStrategy.CalculateGradient(m_clrOutline1, m_clrOutline2, m_nThickness, list);
@@ -272,7 +272,7 @@ namespace TextDesignerCSLibrary
 		protected System.Drawing.Color m_clrOutline2;
 		protected System.Drawing.Brush m_brushText;
 		protected bool m_bClrText;
-        protected bool m_bUseCurvedGradient;
+        protected GradientType m_GradientType;
         protected bool disposed;
 	}
 }

@@ -121,7 +121,7 @@ void CInnerOutlineMFCDlg::OnPaint()
 		//auto strategyOutline3 = Canvas::TextOutline(Color::Black, Color::Black, 4);
 		Color light_purple1(102, 159, 206);
 		Color dark_purple1(35, 68, 95);
-		auto strategyOutline3 = Canvas::TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, false);
+		auto strategyOutline3 = Canvas::TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, GradientType::Linear);
 		Canvas::DrawTextImage(strategyOutline3, canvas, Point(0, 0), context);
 
 		/*
@@ -132,7 +132,7 @@ void CInnerOutlineMFCDlg::OnPaint()
 		Color dark_purple(243, 163, 73);
 
 		auto text = Canvas::GenImage(rect.Width(), rect.Height(), dark_purple, 0);
-		auto strategyText2 = Canvas::TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, true);
+		auto strategyText2 = Canvas::TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, GradientType::Sinusoid);
 		Canvas::DrawTextImage(strategyText2, text, Point(0, 0), context);
 		Canvas::ApplyImageToMask(text, maskOutline2, canvas, MaskColor::Blue(), true);
 

@@ -41,7 +41,7 @@ namespace InnerOutlineWinForm
             //var strategyOutline3 = Canvas.TextOutline(Color.Black, Color.Black, 4);
             Color light_purple1 = Color.FromArgb(102, 159, 206);
             Color dark_purple1 = Color.FromArgb(35, 68, 95);
-            var strategyOutline3 = Canvas.TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, false);
+            var strategyOutline3 = Canvas.TextGradOutline(light_purple1, dark_purple1, light_purple1, 9, GradientType.Linear);
             Canvas.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
 
             // Generate the mask image for measuring the size of the text image required
@@ -63,7 +63,7 @@ namespace InnerOutlineWinForm
             Color dark_purple = Color.FromArgb(243, 163, 73);
             using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_purple))
             {
-                using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, true))
+                using (var strategyText2 = Canvas.TextGradOutlineLast(light_purple, dark_purple, light_purple, 9, GradientType.Sinusoid))
                 {
                     Canvas.DrawTextImage(strategyText2, text, new Point(0, 0), context);
                     Canvas.ApplyImageToMask(text, maskOutline2, canvas, MaskColor.Blue, true);

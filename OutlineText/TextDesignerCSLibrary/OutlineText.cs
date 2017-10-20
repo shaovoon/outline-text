@@ -165,10 +165,10 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType gradType)
         {
             TextGradOutlineStrategy pStrat = new TextGradOutlineStrategy();
-            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, gradType);
 
             m_pTextStrategy = pStrat;
         }
@@ -178,10 +178,10 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType gradType)
         {
             TextGradOutlineStrategy pStrat = new TextGradOutlineStrategy();
-            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, gradType);
 
             m_pTextStrategy = pStrat;
         }
@@ -191,10 +191,10 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType gradType)
         {
             TextGradOutlineLastStrategy pStrat = new TextGradOutlineLastStrategy();
-            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+            pStrat.Init(clrText, clrOutline1, clrOutline2, nThickness, gradType);
 
             m_pTextStrategy = pStrat;
         }
@@ -204,10 +204,10 @@ namespace TextDesignerCSLibrary
             System.Drawing.Color clrOutline1,
             System.Drawing.Color clrOutline2,
             int nThickness,
-            bool useCurveGradient)
+            GradientType gradType)
         {
             TextGradOutlineLastStrategy pStrat = new TextGradOutlineLastStrategy();
-            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, useCurveGradient);
+            pStrat.Init(brushText, clrOutline1, clrOutline2, nThickness, gradType);
 
             m_pTextStrategy = pStrat;
         }
