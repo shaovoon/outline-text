@@ -1,3 +1,6 @@
+Version 2.1.0 Beta
++ Added Inner Gradient Outline effect
+
 Version 2 Preview 6
 + Added GDI path to C# library
 
