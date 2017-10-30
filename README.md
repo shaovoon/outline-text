@@ -4,7 +4,7 @@ This is GDI/GDI+ library for drawing text with outline in C++ MFC and C# Windows
 
 [Version 1 Tutorial](https://www.codeproject.com/Articles/42529/Outline-Text)
 
-When using C++ library, you need to initialize/destroy GDI+
+When using C++ library, you need to startup/shutdown GDI+, preferably in main class constructor and destructor.
 
 ```
 // class declaration
