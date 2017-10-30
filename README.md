@@ -71,7 +71,6 @@ using TextDesignerCSLibrary;
 
 private void Form1_Paint(object sender, PaintEventArgs e)
 {
-
     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
     e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
@@ -88,7 +87,7 @@ private void Form1_Paint(object sender, PaintEventArgs e)
         FontStyle.Italic, 48, szbuf, new Point(10, 10), strformat);
 
     fontFamily.Dispose();
-	e.Graphics.Dispose();
+    e.Graphics.Dispose();
 }
 ```
 
