@@ -72,22 +72,22 @@ using TextDesignerCSLibrary;
 private void Form1_Paint(object sender, PaintEventArgs e)
 {
 
-	e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-	e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+    e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-	FontFamily fontFamily = new FontFamily("Arial Black");
-	StringFormat strformat = new StringFormat();
-	string szbuf = "Text Designer";
+    FontFamily fontFamily = new FontFamily("Arial Black");
+    StringFormat strformat = new StringFormat();
+    string szbuf = "Text Designer";
 
-	OutlineText text = new OutlineText();
-	text.TextOutline(Color.FromArgb(255, 128, 64), Color.FromArgb(200, 0, 0), 8);
-	text.EnableShadow(true);
-	text.SetShadowBkgd(Color.FromArgb(255, 255, 0), this.Size.Width, this.Size.Height);
-	text.Shadow(Color.FromArgb(128, 0, 0, 0), 4, new Point(4, 8));
-	text.DrawString(e.Graphics, fontFamily,
-		FontStyle.Italic, 48, szbuf, new Point(10, 10), strformat);
+    OutlineText text = new OutlineText();
+    text.TextOutline(Color.FromArgb(255, 128, 64), Color.FromArgb(200, 0, 0), 8);
+    text.EnableShadow(true);
+    text.SetShadowBkgd(Color.FromArgb(255, 255, 0), this.Size.Width, this.Size.Height);
+    text.Shadow(Color.FromArgb(128, 0, 0, 0), 4, new Point(4, 8));
+    text.DrawString(e.Graphics, fontFamily,
+        FontStyle.Italic, 48, szbuf, new Point(10, 10), strformat);
 
-	fontFamily.Dispose();
+    fontFamily.Dispose();
 	e.Graphics.Dispose();
 }
 ```
