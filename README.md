@@ -30,7 +30,7 @@ CTestOutlineTextApp::~CTestOutlineTextApp()
 }
 ```
 
-# Version 1 Example
+# Version 1 Example for Single Outline with Shadow
 
 ![GitHub Logo](/images/singleoutline.png)
 
