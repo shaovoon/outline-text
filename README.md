@@ -1,4 +1,7 @@
-# outline-text
+# Outline-Text
+
+This is GDI+ library for drawing text with outline in C++ MFC and C# Windows Form.
+
 Outline Text
 
 [Version 1 Tutorial](https://www.codeproject.com/Articles/42529/Outline-Text)
@@ -28,6 +31,8 @@ CTestOutlineTextApp::~CTestOutlineTextApp()
     Gdiplus::GdiplusShutdown(m_gdiplusToken);
 }
 ```
+
+# Version 1 Example
 
 ![GitHub Logo](/images/singleoutline.png)
 
