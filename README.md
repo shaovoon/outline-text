@@ -32,7 +32,7 @@ CTestOutlineTextApp::~CTestOutlineTextApp()
 
 # Version 1 Example for Single Outline with Shadow
 
-![GitHub Logo](/images/singleoutline.png)
+![Single Outline](/images/singleoutline.png)
 
 C++ code for doing the above outline outline, using GDI+
 
