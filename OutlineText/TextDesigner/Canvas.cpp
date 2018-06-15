@@ -172,9 +172,10 @@ std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus
 	UINT color = clr.GetAlpha() << 24 | clr.GetRed() << 16 | clr.GetGreen() << 8 | clr.GetBlue();
 	for(UINT row = 0; row < bitmapData.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapData.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			pixels[index] = color;
 		}
 	}
@@ -211,9 +212,10 @@ std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus
 	UINT color = alpha << 24 | clr.GetRed() << 16 | clr.GetGreen() << 8 | clr.GetBlue();
 	for(UINT row = 0; row < bitmapData.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapData.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			pixels[index] = color;
 		}
 	}
@@ -251,9 +253,10 @@ std::shared_ptr<Gdiplus::Bitmap> Canvas::GenImage(int width, int height, Gdiplus
 	int stride = bitmapData.Stride >> 2;
 	for (UINT row = 0; row < bitmapData.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for (col = 0; col < bitmapData.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 
 			UINT color = pixels[index] & 0xFFFFFF;
 
@@ -356,9 +359,10 @@ bool Canvas::MeasureMaskLength(
 	int stride = bitmapDataMask.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataMask.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapDataMask.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = 0;
 
 			if(MaskColor::IsEqual(maskColor, MaskColor::Red()))
@@ -441,6 +445,9 @@ bool Canvas::ApplyImageToMask(
 	int stride = bitmapDataCanvas.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataCanvas.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
+		UINT total_row_mask_len = row * (bitmapDataMask.Stride >> 2);
+		UINT total_row_image_len = row * (bitmapDataImage.Stride >> 2);
 		for(col = 0; col < bitmapDataCanvas.Width; ++col)
 		{
 			if(row >= bitmapDataImage.Height || col >= bitmapDataImage.Width)
@@ -448,9 +455,9 @@ bool Canvas::ApplyImageToMask(
 			if(row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
 				continue;
 
-			UINT index = row * stride + col;
-			UINT indexMask = row * (bitmapDataMask.Stride>>2) + col;
-			UINT indexImage = row * (bitmapDataImage.Stride>>2) + col;
+			UINT index = total_row_len + col;
+			UINT indexMask = total_row_mask_len + col;
+			UINT indexImage = total_row_image_len + col;
 
 			BYTE mask = 0;
 			
@@ -523,13 +530,15 @@ bool Canvas::ApplyColorToMask(
 	int stride = bitmapDataCanvas.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataCanvas.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
+		UINT total_row_mask_len = row * (bitmapDataMask.Stride >> 2);
 		for(col = 0; col < bitmapDataCanvas.Width; ++col)
 		{
 			if(row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
 				continue;
 
-			UINT index = row * stride + col;
-			UINT indexMask = row * (bitmapDataMask.Stride>>2) + col;
+			UINT index = total_row_len + col;
+			UINT indexMask = total_row_mask_len + col;
 
 			BYTE nAlpha = 0;
 
@@ -595,14 +604,16 @@ bool Canvas::ApplyColorToMask(
 	int stride = bitmapDataCanvas.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataCanvas.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
+		UINT total_row_mask_len = (row - offset.Y) * (bitmapDataMask.Stride >> 2);
 		for(col = 0; col < bitmapDataCanvas.Width; ++col)
 		{
 			if(row-offset.Y >= bitmapDataMask.Height || col-offset.X >= bitmapDataMask.Width||
 				row-offset.Y < 0 || col-offset.X < 0)
 				continue;
 
-			UINT index = row * stride + col;
-			UINT indexMask = (row-offset.Y) * (bitmapDataMask.Stride>>2) + (col-offset.X);
+			UINT index = total_row_len + col;
+			UINT indexMask = total_row_mask_len + (col-offset.X);
 
 			BYTE nAlpha = 0;
 
@@ -667,13 +678,15 @@ bool Canvas::ApplyShadowToMask(
 	int stride = bitmapDataCanvas.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataCanvas.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
+		UINT total_row_mask_len = row * (bitmapDataMask.Stride >> 2);
 		for(col = 0; col < bitmapDataCanvas.Width; ++col)
 		{
 			if(row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
 				continue;
 
-			UINT index = row * stride + col;
-			UINT indexMask = row * (bitmapDataMask.Stride>>2) + col;
+			UINT index = total_row_len + col;
+			UINT indexMask = total_row_mask_len + col;
 
 			BYTE nAlpha = 0;
 
@@ -743,14 +756,16 @@ bool Canvas::ApplyShadowToMask(
 	int stride = bitmapDataCanvas.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataCanvas.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
+		UINT total_row_mask_len = (row - offset.Y) * (bitmapDataMask.Stride >> 2);
 		for(col = 0; col < bitmapDataCanvas.Width; ++col)
 		{
 			if(row-offset.Y >= bitmapDataMask.Height || col-offset.X >= bitmapDataMask.Width||
 				row-offset.Y < 0 || col-offset.X < 0)
 				continue;
 
-			UINT index = row * stride + col;
-			UINT indexMask = (row-offset.Y) * (bitmapDataMask.Stride>>2) + (col-offset.X);
+			UINT index = total_row_len + col;
+			UINT indexMask = total_row_mask_len + (col-offset.X);
 
 			BYTE nAlpha = 0;
 

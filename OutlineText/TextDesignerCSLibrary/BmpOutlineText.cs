@@ -466,9 +466,10 @@ namespace TextDesignerCSLibrary
 	            nOutlineHeight = 0;
 	            for(uint row = 0; row < bitmapData.Height; ++row)
 	            {
-		            for(col = 0; col < bitmapData.Width; ++col)
+                    uint total_row_len = (uint)(row * stride);
+                    for (col = 0; col < bitmapData.Width; ++col)
 		            {
-			            uint index = (uint)(row * stride + col);
+			            uint index = total_row_len + col;
 			            byte red = (byte)((pixels[index] & 0xff0000) >> 16);
 			            byte blue = (byte)(pixels[index] & 0xff);
 

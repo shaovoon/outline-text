@@ -316,9 +316,10 @@ namespace TextDesignerCSLibrary
                 uint color = (uint)(clr.A << 24 | clr.R << 16 | clr.G << 8 | clr.G);
                 for (uint row = 0; row < bitmapData.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < bitmapData.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
 
                         pixels[index] = color;
                     }
@@ -362,9 +363,10 @@ namespace TextDesignerCSLibrary
                 uint color = (uint)(alpha << 24 | clr.R << 16 | clr.G << 8 | clr.G);
                 for (uint row = 0; row < bitmapData.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < bitmapData.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
 
                         pixels[index] = color;
                     }
@@ -400,9 +402,10 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapData.Stride >> 2;
                 for (uint row = 0; row < bitmapData.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < bitmapData.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
 
                         uint color = pixels[index] & 0xFFFFFF;
 
@@ -533,9 +536,10 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataMask.Stride >> 2;
                 for (uint row = 0; row < bitmapDataMask.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < bitmapDataMask.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
                         byte nAlpha = 0;
 
                         if (MaskColor.IsEqual(maskColor, MaskColor.Red))
@@ -621,6 +625,9 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataCanvas.Stride >> 2;
                 for (uint row = 0; row < bitmapDataCanvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (bitmapDataMask.Stride >> 2));
+                    uint total_row_image_len = (uint)(row * (bitmapDataImage.Stride >> 2));
                     for (col = 0; col < bitmapDataCanvas.Width; ++col)
                     {
                         if (row >= bitmapDataImage.Height || col >= bitmapDataImage.Width)
@@ -628,9 +635,9 @@ namespace TextDesignerCSLibrary
                         if (row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (bitmapDataMask.Stride >> 2) + col);
-                        uint indexImage = (uint)(row * (bitmapDataImage.Stride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
+                        uint indexImage = total_row_image_len + col;
 
                         byte maskByte = 0;
 
@@ -708,13 +715,15 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataCanvas.Stride >> 2;
                 for (uint row = 0; row < bitmapDataCanvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (bitmapDataMask.Stride >> 2));
                     for (col = 0; col < bitmapDataCanvas.Width; ++col)
                     {
                         if (row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (bitmapDataMask.Stride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
 
                         byte maskByte = 0;
 
@@ -786,14 +795,16 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataCanvas.Stride >> 2;
                 for (uint row = 0; row < bitmapDataCanvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)((row - offset.Y) * (bitmapDataMask.Stride >> 2));
                     for (col = 0; col < bitmapDataCanvas.Width; ++col)
                     {
                         if ((row - offset.Y) >= bitmapDataMask.Height || (col - offset.X) >= bitmapDataMask.Width ||
                             (row - offset.Y) < 0 || (col - offset.X) < 0)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)((row - offset.Y) * (bitmapDataMask.Stride >> 2) + (col - offset.X));
+                        uint index = total_row_len + col;
+                        uint indexMask = (uint)(total_row_mask_len + (col - offset.X));
 
                         byte maskByte = 0;
 
@@ -863,13 +874,15 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataCanvas.Stride >> 2;
                 for (uint row = 0; row < bitmapDataCanvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (bitmapDataMask.Stride >> 2));
                     for (col = 0; col < bitmapDataCanvas.Width; ++col)
                     {
                         if (row >= bitmapDataMask.Height || col >= bitmapDataMask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (bitmapDataMask.Stride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
 
                         byte maskByte = 0;
 
@@ -944,14 +957,16 @@ namespace TextDesignerCSLibrary
                 int stride = bitmapDataCanvas.Stride >> 2;
                 for (uint row = 0; row < bitmapDataCanvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)((row - offset.Y) * (bitmapDataMask.Stride >> 2));
                     for (col = 0; col < bitmapDataCanvas.Width; ++col)
                     {
                         if ((row - offset.Y) >= bitmapDataMask.Height || (col - offset.X) >= bitmapDataMask.Width ||
                             (row - offset.Y) < 0 || (col - offset.X) < 0)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)((row - offset.Y) * (bitmapDataMask.Stride >> 2) + (col - offset.X));
+                        uint index = total_row_len + col;
+                        uint indexMask = (uint)(total_row_mask_len + (col - offset.X));
 
                         byte maskByte = 0;
 

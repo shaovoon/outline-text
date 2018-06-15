@@ -505,10 +505,11 @@ bool PngOutlineText::RenderFontShadow(
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapDataDest.Width; ++col)
 		{
 			using namespace Gdiplus;
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = pixelsMask[index] & 0xff;
 			BYTE nAlphaShadow = pixelsShadowMask[index] & 0xff;
 			if(nAlpha>0&&nAlpha>nAlphaShadow)
@@ -659,10 +660,11 @@ bool PngOutlineText::RenderFontShadow(
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
-		for(col = 0; col < bitmapDataDest.Width; ++col)
+		UINT total_row_len = row * stride;
+		for (col = 0; col < bitmapDataDest.Width; ++col)
 		{
 			using namespace Gdiplus;
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = pixelsMask[index] & 0xff;
 			BYTE nAlphaShadow = pixelsShadowMask[index] & 0xff;
 			if(nAlpha>0&&nAlpha>nAlphaShadow)
@@ -796,10 +798,11 @@ bool PngOutlineText::GdiRenderFontShadow(
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
-		for(col = 0; col < bitmapDataDest.Width; ++col)
+		UINT total_row_len = row * stride;
+		for (col = 0; col < bitmapDataDest.Width; ++col)
 		{
 			using namespace Gdiplus;
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = pixelsMask[index] & 0xff;
 			BYTE nAlphaShadow = pixelsShadowMask[index] & 0xff;
 			if(nAlpha>0&&nAlpha>nAlphaShadow)
@@ -933,10 +936,11 @@ bool PngOutlineText::GdiRenderFontShadow(
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
-		for(col = 0; col < bitmapDataDest.Width; ++col)
+		UINT total_row_len = row * stride;
+		for (col = 0; col < bitmapDataDest.Width; ++col)
 		{
 			using namespace Gdiplus;
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = pixelsMask[index] & 0xff;
 			BYTE nAlphaShadow = pixelsShadowMask[index] & 0xff;
 			if(nAlpha>0&&nAlpha>nAlphaShadow)
@@ -1410,10 +1414,11 @@ bool PngOutlineText::RenderTransShadowB(
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
-		for(col = 0; col < bitmapDataDest.Width; ++col)
+		UINT total_row_len = row * stride;
+		for (col = 0; col < bitmapDataDest.Width; ++col)
 		{
 			using namespace Gdiplus;
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE nAlpha = pixelsMask[index] & 0xff;
 			if(nAlpha>0)
 			{
@@ -1528,9 +1533,10 @@ bool PngOutlineText::MultiplyAlpha(BYTE nMultiplyAlpha)
 	int stride = bitmapDataDest.Stride >> 2;
 	for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapDataDest.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			UINT nOrigAlpha = pixelsDest[index] & 0xff000000;
 			nOrigAlpha = nOrigAlpha>>24;
 			UINT nDestAlpha = (nMultiplyAlpha*nOrigAlpha)>>8;
@@ -2136,9 +2142,10 @@ bool PngOutlineText::ProcessReflection()
 			else
 				nMultiplyAlpha = 0;
 
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapData.Width; ++col)
 			{
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = (pixels[index] & 0xff000000) >> 24;
 
 				nAlpha = nAlpha * nMultiplyAlpha / 255;

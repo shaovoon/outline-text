@@ -654,9 +654,10 @@ bool BmpOutlineText::Measure(
 	nOutlineHeight = 0;
 	for(UINT row = 0; row < bitmapData.Height; ++row)
 	{
+		UINT total_row_len = row * stride;
 		for(col = 0; col < bitmapData.Width; ++col)
 		{
-			UINT index = row * stride + col;
+			UINT index = total_row_len + col;
 			BYTE red = (pixels[index] & 0xff0000) >> 16;
 			BYTE blue = pixels[index] & 0xff;
 

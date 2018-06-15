@@ -40,7 +40,7 @@ namespace TestOutlineTextForm
                 Color.FromArgb(255, 128, 64),
                 Color.FromArgb(255, 64, 0, 64),
                 Color.FromArgb(255, 255, 128, 255),
-                10);
+                10, GradientType.Linear);
             m_PngOutlineText.EnableReflection(false);
 
             m_PngOutlineText.EnableShadow(true);
@@ -76,7 +76,7 @@ namespace TestOutlineTextForm
                 gradientBrush,
                 Color.FromArgb(255, 64, 0, 64),
                 Color.FromArgb(255, 255, 128, 255),
-                10);
+                10, GradientType.Linear);
 
             m_PngOutlineText.GdiDrawString(
                 e.Graphics,

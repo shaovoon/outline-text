@@ -793,9 +793,10 @@ namespace TextDesignerCSLibrary
                                     {
                                         for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                         {
+                                            UInt32 total_row_len = (UInt32)(row * stride);
                                             for (col = 0; col < bitmapDataDest.Width; ++col)
                                             {
-                                                UInt32 index = (UInt32)(row * stride + col);
+                                                UInt32 index = total_row_len + col;
                                                 Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                 UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                 if (nAlpha > 0)
@@ -813,9 +814,10 @@ namespace TextDesignerCSLibrary
                                     {
                                         for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                         {
+                                            UInt32 total_row_len = (UInt32)(row * stride);
                                             for (col = 0; col < bitmapDataDest.Width; ++col)
                                             {
-                                                UInt32 index = (UInt32)(row * stride + col);
+                                                UInt32 index = total_row_len + col;
                                                 Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                 UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                 if (nAlpha > 0)
@@ -947,9 +949,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)
@@ -967,9 +970,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)
@@ -1089,9 +1093,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)
@@ -1109,9 +1114,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)
@@ -1230,9 +1236,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)
@@ -1250,9 +1257,10 @@ namespace TextDesignerCSLibrary
                                         {
                                             for (UInt32 row = 0; row < bitmapDataDest.Height; ++row)
                                             {
+                                                UInt32 total_row_len = (UInt32)(row * stride);
                                                 for (col = 0; col < bitmapDataDest.Width; ++col)
                                                 {
-                                                    UInt32 index = (UInt32)(row * stride + col);
+                                                    UInt32 index = total_row_len + col;
                                                     Byte nAlpha = (Byte)(pixelsMask[index] & 0xff);
                                                     UInt32 clrShadow = (UInt32)(0xff000000 | m_clrShadow.R << 16 | m_clrShadow.G << 8 | m_clrShadow.B);
                                                     if (nAlpha > 0)

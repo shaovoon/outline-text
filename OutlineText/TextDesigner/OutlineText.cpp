@@ -581,10 +581,11 @@ void OutlineText::RenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -602,10 +603,11 @@ void OutlineText::RenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -739,10 +741,11 @@ void OutlineText::RenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -760,10 +763,11 @@ void OutlineText::RenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -887,10 +891,11 @@ void OutlineText::GdiRenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -908,10 +913,11 @@ void OutlineText::GdiRenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -1034,10 +1040,11 @@ void OutlineText::GdiRenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
@@ -1055,10 +1062,11 @@ void OutlineText::GdiRenderFontShadow(
 	{
 		for(UINT row = 0; row < bitmapDataDest.Height; ++row)
 		{
+			UINT total_row_len = row * stride;
 			for(col = 0; col < bitmapDataDest.Width; ++col)
 			{
 				using namespace Gdiplus;
-				UINT index = row * stride + col;
+				UINT index = total_row_len + col;
 				BYTE nAlpha = pixelsMask[index] & 0xff;
 				UINT clrShadow = 0xff000000 | m_clrShadow.GetR()<<16 | m_clrShadow.GetG()<<8 | m_clrShadow.GetB();
 				if(nAlpha>0)
