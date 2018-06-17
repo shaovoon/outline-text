@@ -279,9 +279,11 @@ namespace TextDesignerWpf
                 uint color = (uint)(clr.A << 24 | clr.R << 16 | clr.G << 8 | clr.B);
                 for (uint row = 0; row < bmp.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+
                     for (col = 0; col < bmp.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
 
                         pixels[index] = color;
                     }
@@ -321,9 +323,10 @@ namespace TextDesignerWpf
                 uint color = (uint)(alpha << 24 | clr.R << 16 | clr.G << 8 | clr.B);
                 for (uint row = 0; row < bmp.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < bmp.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
 
                         pixels[index] = color;
                     }
@@ -463,9 +466,10 @@ namespace TextDesignerWpf
                 int stride = mask.BackBufferStride >> 2;
                 for (uint row = 0; row < mask.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
                     for (col = 0; col < mask.Width; ++col)
                     {
-                        uint index = (uint)(row * stride + col);
+                        uint index = total_row_len + col;
                         byte nAlpha = 0;
 
                         if (MaskColor.IsEqual(maskColor, MaskColor.Red))
@@ -532,6 +536,9 @@ namespace TextDesignerWpf
                 int stride = canvas.BackBufferStride >> 2;
                 for (uint row = 0; row < canvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (mask.BackBufferStride >> 2));
+                    uint total_row_image_len = (uint)(row * (image.BackBufferStride >> 2));
                     for (col = 0; col < canvas.Width; ++col)
                     {
                         if (row >= image.Height || col >= image.Width)
@@ -539,9 +546,9 @@ namespace TextDesignerWpf
                         if (row >= mask.Height || col >= mask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (mask.BackBufferStride >> 2) + col);
-                        uint indexImage = (uint)(row * (image.BackBufferStride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
+                        uint indexImage = total_row_image_len + col;
 
                         byte maskByte = 0;
 
@@ -607,13 +614,15 @@ namespace TextDesignerWpf
                 int stride = canvas.BackBufferStride >> 2;
                 for (uint row = 0; row < canvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (mask.BackBufferStride >> 2));
                     for (col = 0; col < canvas.Width; ++col)
                     {
                         if (row >= mask.Height || col >= mask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (mask.BackBufferStride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
 
                         byte maskByte = 0;
 
@@ -669,18 +678,20 @@ namespace TextDesignerWpf
                 if (pixelsMask == null || pixelsCanvas == null)
                     return false;
 
-                int col = 0;
+                uint col = 0;
                 int stride = canvas.BackBufferStride >> 2;
-                for (int row = 0; row < canvas.Height; ++row)
+                for (uint row = 0; row < canvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)((row - (int)offset.Y) * (mask.BackBufferStride >> 2));
                     for (col = 0; col < canvas.Width; ++col)
                     {
                         if (row - (int)offset.Y >= mask.Height || col - (int)offset.X >= mask.Width ||
                             row - (int)offset.Y < 0 || col - (int)offset.X < 0)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)((row - (int)offset.Y) * (mask.BackBufferStride >> 2) + (col- (int)offset.X));
+                        uint index = total_row_len + col;
+                        uint indexMask = (uint)(total_row_mask_len + (col- (int)offset.X));
 
                         byte maskByte = 0;
 
@@ -740,13 +751,15 @@ namespace TextDesignerWpf
                 int stride = canvas.BackBufferStride >> 2;
                 for (uint row = 0; row < canvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)(row * (mask.BackBufferStride >> 2));
                     for (col = 0; col < canvas.Width; ++col)
                     {
                         if (row >= mask.Height || col >= mask.Width)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)(row * (mask.BackBufferStride >> 2) + col);
+                        uint index = total_row_len + col;
+                        uint indexMask = total_row_mask_len + col;
 
                         byte maskByte = 0;
 
@@ -805,18 +818,20 @@ namespace TextDesignerWpf
                 if (pixelsMask == null || pixelsCanvas == null)
                     return false;
 
-                int col = 0;
+                uint col = 0;
                 int stride = canvas.BackBufferStride >> 2;
                 for (int row = 0; row < canvas.Height; ++row)
                 {
+                    uint total_row_len = (uint)(row * stride);
+                    uint total_row_mask_len = (uint)((row - (int)offset.Y) * (mask.BackBufferStride >> 2));
                     for (col = 0; col < canvas.Width; ++col)
                     {
                         if (row - (int)offset.Y >= mask.Height || col - (int)offset.X >= mask.Width ||
                             row - (int)offset.Y < 0 || col - (int)offset.X < 0)
                             continue;
 
-                        uint index = (uint)(row * stride + col);
-                        uint indexMask = (uint)((row - (int)offset.Y) * (mask.BackBufferStride >> 2) + (col - (int)offset.X));
+                        uint index = total_row_len + col;
+                        uint indexMask = (uint)(total_row_mask_len + (col - (int)offset.X));
 
                         byte maskByte = 0;
 
