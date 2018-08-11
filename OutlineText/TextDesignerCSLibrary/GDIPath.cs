@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 
 namespace TextDesignerCSLibrary
 {
-	public enum FontWeight : int
+    public enum FontWeight : int
 	{
 		FW_DONTCARE = 0,
 		FW_THIN = 100,

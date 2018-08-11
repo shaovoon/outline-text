@@ -29,7 +29,7 @@ namespace HollowTextWinForm
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             // Generating the outline strategy for displaying inside the hollow
-            var strategyOutline = Canvas.TextGradOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(230, 230, 230), Color.FromArgb(100, 100, 100), 9);
+            var strategyOutline = Canvas.TextGradOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(230, 230, 230), Color.FromArgb(100, 100, 100), 9, GradientType.Linear);
 
             Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
             // Text context to store string and font info to be sent as parameter to Canvas methods

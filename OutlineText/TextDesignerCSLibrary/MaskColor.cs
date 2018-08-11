@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-
-namespace TextDesignerCSLibrary
+﻿namespace TextDesignerCSLibrary
 {
     /// <summary>
     /// Simple helper class to use mask color
