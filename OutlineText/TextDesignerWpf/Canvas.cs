@@ -960,13 +960,9 @@ namespace TextDesignerWpf
 
             Byte nInvAlpha = (Byte)(~nAlpha);
 
-            Byte nSrcRed = (Byte)((source & 0xff0000) >> 16);
-            Byte nSrcGreen = (Byte)((source & 0xff00) >> 8);
-            Byte nSrcBlue = (Byte)((source & 0xff));
-
-            Byte nRed = (Byte)(nSrcRed );
-            Byte nGreen = (Byte)(nSrcGreen );
-            Byte nBlue = (Byte)(nSrcBlue );
+            Byte nRed = (Byte)((source & 0xff0000) >> 16);
+            Byte nGreen = (Byte)((source & 0xff00) >> 8);
+            Byte nBlue = (Byte)((source & 0xff));
 
             return (UInt32)(nAlpha << 24 | nRed << 16 | nGreen << 8 | nBlue);
         }

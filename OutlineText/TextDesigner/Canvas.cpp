@@ -853,13 +853,9 @@ inline UINT Canvas::AddAlpha(UINT dest, UINT source, BYTE nAlpha)
 	if( 255 == nAlpha )
 		return source;
 
-	BYTE nSrcRed   = (source & 0xff0000) >> 16; 
-	BYTE nSrcGreen = (source & 0xff00) >> 8; 
-	BYTE nSrcBlue  = (source & 0xff); 
-
-	BYTE nRed  = nSrcRed;
-	BYTE nGreen= nSrcGreen;
-	BYTE nBlue = nSrcBlue;
+	BYTE nRed   = (source & 0xff0000) >> 16; 
+	BYTE nGreen = (source & 0xff00) >> 8; 
+	BYTE nBlue  = (source & 0xff); 
 
 	return nAlpha << 24 | nRed << 16 | nGreen << 8 | nBlue;
 }
