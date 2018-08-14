@@ -21,7 +21,7 @@ namespace InnerOutlineWinForm
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -36,31 +36,31 @@ namespace InnerOutlineWinForm
 
             Color light_purple = Color.FromArgb(102, 159, 206);
             Color dark_purple = Color.FromArgb(35, 68, 95);
-            using (var strategyOutline3 = Canvas.TextGradOutline(light_purple, dark_purple, light_purple, 9, GradientType.Linear))
+            using (var strategyOutline3 = CanvasHelper.TextGradOutline(light_purple, dark_purple, light_purple, 9, GradientType.Linear))
             {
-                Canvas.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
+                CanvasHelper.DrawTextImage(strategyOutline3, canvas, new Point(0, 0), context);
             }
 
             Bitmap maskOutline2;
-            using (var strategyOutline2 = Canvas.TextNoOutline(MaskColor.Blue))
+            using (var strategyOutline2 = CanvasHelper.TextNoOutline(MaskColor.Blue))
             {
-                maskOutline2 = Canvas.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
+                maskOutline2 = CanvasHelper.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
             }
             uint top = 0;
             uint bottom = 0;
             uint left = 0;
             uint right = 0;
-            Canvas.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+            CanvasHelper.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             bottom += 2;
             right += 2;
             Color light_yellow = Color.FromArgb(255, 227, 85);
             Color dark_yellow = Color.FromArgb(243, 163, 73);
-            using (Bitmap text = Canvas.GenImage(ClientSize.Width, ClientSize.Height, dark_yellow))
+            using (Bitmap text = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height, dark_yellow))
             {
-                using (var strategyText2 = Canvas.TextGradOutlineLast(light_yellow, dark_yellow, light_yellow, 9, GradientType.Sinusoid))
+                using (var strategyText2 = CanvasHelper.TextGradOutlineLast(light_yellow, dark_yellow, light_yellow, 9, GradientType.Sinusoid))
                 {
-                    Canvas.DrawTextImage(strategyText2, text, new Point(0, 0), context);
-                    Canvas.ApplyImageToMask(text, maskOutline2, canvas, MaskColor.Blue, true);
+                    CanvasHelper.DrawTextImage(strategyText2, text, new Point(0, 0), context);
+                    CanvasHelper.ApplyImageToMask(text, maskOutline2, canvas, MaskColor.Blue, true);
                 }
             }
 

@@ -45,7 +45,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Canvas.cs" />
+    <Compile Include="CanvasHelper.cs" />
     <Compile Include="DiffusedShadowStrategy.cs" />
     <Compile Include="DrawGradient.cs" />
     <Compile Include="ExtrudeStrategy.cs" />

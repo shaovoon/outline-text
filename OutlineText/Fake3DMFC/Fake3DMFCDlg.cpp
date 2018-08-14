@@ -7,7 +7,7 @@
 #include "Fake3DMFCDlg.h"
 #include "afxdialogex.h"
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 #include "../TextDesigner/DrawGradient.h"
 #include <vector>
 
@@ -90,13 +90,13 @@ void CFake3DMFCDlg::OnPaint()
 		graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
 		// Create the outline strategy which is going to shift blit diagonally
-		auto strategyOutline = Canvas::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
+		auto strategyOutline = CanvasHelper::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
 
 		CRect rect;
 		GetClientRect(&rect);
-		auto canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
+		auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height(), Color::White, 0);
 
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		FontFamily fontFamily(L"Arial Black");
@@ -109,9 +109,9 @@ void CFake3DMFCDlg::OnPaint()
 		context.ptDraw = Point(0, 0);
 
 		// the single mask outline
-		auto maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context);
+		auto maskOutline = CanvasHelper::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context);
 		// the mask to store all the single mask blitted diagonally
-		auto maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
+		auto maskOutlineAll = CanvasHelper::GenImage(rect.Width()+10, rect.Height()+10);
 
 		Graphics graphMaskAll(maskOutlineAll.get());
 
@@ -125,34 +125,34 @@ void CFake3DMFCDlg::OnPaint()
 		UINT bottom = 0;
 		UINT left = 0;
 		UINT right = 0;
-		Canvas::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
+		CanvasHelper::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
 		right += 2;
 		bottom += 2;
 
 		// Generate the gradient image for the diagonal outline
 		//=======================================================
-		auto gradImage = Canvas::GenImage(right-left, bottom-top);
+		auto gradImage = CanvasHelper::GenImage(right-left, bottom-top);
 
 		std::vector<Color> vecColors;
 		vecColors.push_back(Color::DarkGreen);
 		vecColors.push_back(Color::YellowGreen);
 		DrawGradient::Draw(*gradImage, vecColors, false);
 
-		// Because Canvas::ApplyImageToMask requires all image to have same dimensions,
+		// Because CanvasHelper::ApplyImageToMask requires all image to have same dimensions,
 		// we have to blit our small gradient image onto a temp image as big as the canvas
 		//===================================================================================
-		auto gradBlitted = Canvas::GenImage(rect.Width(), rect.Height());
+		auto gradBlitted = CanvasHelper::GenImage(rect.Width(), rect.Height());
 
 		Graphics graphgradBlitted(gradBlitted.get());
 
 		graphgradBlitted.DrawImage(gradImage.get(), (int)left, (int)top, (int)(gradImage->GetWidth()), (int)(gradImage->GetHeight()));
 
-		Canvas::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
+		CanvasHelper::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
 
 		// Create strategy and mask image for the text body
 		//===================================================
-		auto strategyText = Canvas::TextNoOutline(MaskColor::Blue());
-		auto maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context);
+		auto strategyText = CanvasHelper::TextNoOutline(MaskColor::Blue());
+		auto maskText = CanvasHelper::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context);
 
 		// Measure the dimension required for text body using the mask
 		//=============================================================
@@ -160,7 +160,7 @@ void CFake3DMFCDlg::OnPaint()
 		bottom = 0;
 		left = 0;
 		right = 0;
-		Canvas::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
+		CanvasHelper::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
 		top -= 2;
 		left -= 2;
 
@@ -171,10 +171,10 @@ void CFake3DMFCDlg::OnPaint()
 		LinearGradientBrush gradTextbrush(Gdiplus::Rect((int)left, (int)top, (int)right, (int)bottom), Color::Orange, Color::OrangeRed, 90.0f);
 
 		// Create the actual strategy for the text body used for rendering, with the gradient brush
-		auto strategyText2 = Canvas::TextNoOutline(gradTextbrush);
+		auto strategyText2 = CanvasHelper::TextNoOutline(gradTextbrush);
 
 		// Draw the newly created strategy onto the canvas
-		Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyText2, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

@@ -88,14 +88,14 @@ namespace Fake3D2Wpf
 		private WriteableBitmap DrawChar(int x_offset, Rect rect, TextContext context)
 		{
 			// Create the outline strategy which is going to shift blit diagonally
-			var strategyOutline = TextDesignerWpf.Canvas.TextOutline(MaskColor.Blue, MaskColor.Blue, 4);
+			var strategyOutline = TextDesignerWpf.CanvasHelper.TextOutline(MaskColor.Blue, MaskColor.Blue, 4);
 
-			WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height), Colors.White, 0);
+			WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height), Colors.White, 0);
 
 			// the single mask outline
-			WriteableBitmap maskOutline = TextDesignerWpf.Canvas.GenMask(strategyOutline, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
+			WriteableBitmap maskOutline = TextDesignerWpf.CanvasHelper.GenMask(strategyOutline, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
 			// the mask to store all the single mask blitted diagonally
-			WriteableBitmap maskOutlineAll = TextDesignerWpf.Canvas.GenImage((int)(image1.Width) + 10, (int)(image1.Height) + 10);
+			WriteableBitmap maskOutlineAll = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width) + 10, (int)(image1.Height) + 10);
 
 			RenderTargetBitmap bmp = new RenderTargetBitmap((int)(maskOutlineAll.Width), (int)(maskOutlineAll.Height), 96, 96, PixelFormats.Pbgra32);
 			DrawingVisual drawingVisual = new DrawingVisual();
@@ -116,13 +116,13 @@ namespace Fake3D2Wpf
 			uint bottom = 0;
 			uint left = 0;
 			uint right = 0;
-			TextDesignerWpf.Canvas.MeasureMaskLength(maskOutlineAll, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+			TextDesignerWpf.CanvasHelper.MeasureMaskLength(maskOutlineAll, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
 			right += 2;
 			bottom += 2;
 
 			// Generate the gradient image for the diagonal outline
 			//=======================================================
-			WriteableBitmap gradImage = TextDesignerWpf.Canvas.GenImage((int)(right - left), (int)(bottom - top));
+			WriteableBitmap gradImage = TextDesignerWpf.CanvasHelper.GenImage((int)(right - left), (int)(bottom - top));
 
 			List<Color> listColors = new List<Color>();
 			listColors.Add(Colors.Purple);
@@ -132,18 +132,18 @@ namespace Fake3D2Wpf
 			// Because Canvas::ApplyImageToMask requires all image to have same dimensions,
 			// we have to blit our small gradient image onto a temp image as big as the canvas
 			//===================================================================================
-			WriteableBitmap gradBlitted = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+			WriteableBitmap gradBlitted = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
 
 			byte[] pixels2 = new byte[gradImage.PixelHeight * gradImage.PixelWidth * gradImage.Format.BitsPerPixel / 8];
 			gradImage.CopyPixels(pixels2, gradImage.BackBufferStride, 0);
 			gradBlitted.WritePixels(new Int32Rect((int)left, (int)top, (int)(gradImage.Width), (int)(gradImage.Height)), pixels2, gradImage.BackBufferStride, 0);
 
-			TextDesignerWpf.Canvas.ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor.Blue, false);
+			TextDesignerWpf.CanvasHelper.ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor.Blue, false);
 
 			// Create strategy and mask image for the text body
 			//===================================================
-			var strategyText = TextDesignerWpf.Canvas.TextNoOutline(MaskColor.Blue);
-			WriteableBitmap maskText = TextDesignerWpf.Canvas.GenMask(strategyText, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
+			var strategyText = TextDesignerWpf.CanvasHelper.TextNoOutline(MaskColor.Blue);
+			WriteableBitmap maskText = TextDesignerWpf.CanvasHelper.GenMask(strategyText, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
 
 			// Measure the dimension required for text body using the mask
 			//=============================================================
@@ -151,7 +151,7 @@ namespace Fake3D2Wpf
 			bottom = 0;
 			left = 0;
 			right = 0;
-			TextDesignerWpf.Canvas.MeasureMaskLength(maskText, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+			TextDesignerWpf.CanvasHelper.MeasureMaskLength(maskText, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
 			top -= 2;
 			left -= 2;
 
@@ -168,10 +168,10 @@ namespace Fake3D2Wpf
 			LinearGradientBrush gradTextbrush = new LinearGradientBrush(coll, 90.0);
 
 			// Create the actual strategy for the text body used for rendering, with the gradient brush
-			var strategyText2 = TextDesignerWpf.Canvas.TextNoOutline(gradTextbrush);
+			var strategyText2 = TextDesignerWpf.CanvasHelper.TextNoOutline(gradTextbrush);
 
 			// Draw the newly created strategy onto the canvas
-			TextDesignerWpf.Canvas.DrawTextImage(strategyText2, ref canvas, new Point(0, 0), context);
+			TextDesignerWpf.CanvasHelper.DrawTextImage(strategyText2, ref canvas, new Point(0, 0), context);
 
 			return canvas;
 		}

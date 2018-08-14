@@ -27,9 +27,9 @@ namespace AquarionWpf
 
             // Create the outline strategy which is used later on for measuring 
             // the size of text in order to generate a correct sized gradient image
-            var strategyOutline2 = TextDesignerWpf.Canvas.TextOutline(MaskColor.Blue, MaskColor.Blue, 6);
+            var strategyOutline2 = TextDesignerWpf.CanvasHelper.TextOutline(MaskColor.Blue, MaskColor.Blue, 6);
 
-            WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -48,13 +48,13 @@ namespace AquarionWpf
 
             // Generate the mask image for measuring the size of the text image required
             //============================================================================
-            WriteableBitmap maskOutline2 = TextDesignerWpf.Canvas.GenMask(strategyOutline2, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
+            WriteableBitmap maskOutline2 = TextDesignerWpf.CanvasHelper.GenMask(strategyOutline2, (int)(image1.Width), (int)(image1.Height), new Point(0, 0), context);
 
             uint top = 0;
             uint bottom = 0;
             uint left = 0;
             uint right = 0;
-            TextDesignerWpf.Canvas.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+            TextDesignerWpf.CanvasHelper.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             bottom += 2;
             right += 2;
 
@@ -76,12 +76,12 @@ namespace AquarionWpf
             bmpGrad2.WritePixels(new Int32Rect((int)left, (int)top, (int)(right - left), (int)(bottom - top)), pixels, bmpGrad.BackBufferStride, 0);
 
             // Apply the rainbow text against the blue mask onto the canvas
-            TextDesignerWpf.Canvas.ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor.Blue, false);
+            TextDesignerWpf.CanvasHelper.ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor.Blue, false);
 
             // Draw the (white body and black outline) text onto the canvas
             //==============================================================
-            ITextStrategy strategyOutline1 = TextDesignerWpf.Canvas.TextOutline(Color.FromRgb(255, 255, 255), Color.FromRgb(0, 0, 0), 1);
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline1, ref canvas, new Point(0, 0), context);
+            ITextStrategy strategyOutline1 = TextDesignerWpf.CanvasHelper.TextOutline(Color.FromRgb(255, 255, 255), Color.FromRgb(0, 0, 0), 1);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline1, ref canvas, new Point(0, 0), context);
 
             // Finally blit the rendered image onto the window by assigning canvas to the image control
             image1.Source = canvas;

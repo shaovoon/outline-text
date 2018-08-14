@@ -7,7 +7,7 @@
 #include "FakeBeveledMFCDlg.h"
 #include "afxdialogex.h"
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -90,9 +90,9 @@ void CFakeBeveledMFCDlg::OnPaint()
 
 		CRect rect;
 		GetClientRect(&rect);
-		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height());
 
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		// Load a font from its file into private collection, 
@@ -116,23 +116,23 @@ void CFakeBeveledMFCDlg::OnPaint()
 
 		// Draw the main outline
 		//==========================================================
-		auto mainOutline = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 4);
-		Canvas::DrawTextImage(mainOutline, canvas, Point(4,4), context);
+		auto mainOutline = CanvasHelper::TextOutline(Color(235,10,230), Color(235,10,230), 4);
+		CanvasHelper::DrawTextImage(mainOutline, canvas, Point(4,4), context);
 
 		// Draw the small bright outline shifted (-2, -2)
 		//==========================================================
-		auto mainBright = Canvas::TextOutline(Color(252,173,250), Color(252,173,250), 2);
-		Canvas::DrawTextImage(mainBright, canvas, Point(2,2), context);
+		auto mainBright = CanvasHelper::TextOutline(Color(252,173,250), Color(252,173,250), 2);
+		CanvasHelper::DrawTextImage(mainBright, canvas, Point(2,2), context);
 
 		// Draw the small dark outline shifted (+2, +2)
 		//==========================================================
-		auto mainDark = Canvas::TextOutline(Color(126,5,123), Color(126,5,123), 2);
-		Canvas::DrawTextImage(mainDark, canvas, Point(6,6), context);
+		auto mainDark = CanvasHelper::TextOutline(Color(126,5,123), Color(126,5,123), 2);
+		CanvasHelper::DrawTextImage(mainDark, canvas, Point(6,6), context);
 
 		// Draw the smallest outline (color same as main outline)
 		//==========================================================
-		auto mainInner = Canvas::TextOutline(Color(235,10,230), Color(235,10,230), 2);
-		Canvas::DrawTextImage(mainInner, canvas, Point(4,4), context);
+		auto mainInner = CanvasHelper::TextOutline(Color(235,10,230), Color(235,10,230), 2);
+		CanvasHelper::DrawTextImage(mainInner, canvas, Point(4,4), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

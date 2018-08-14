@@ -26,7 +26,7 @@ namespace DirtyWinForm
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Load the dirty image from file
             Bitmap canvasDirty = new Bitmap("..\\..\\..\\CommonImages\\dirty-texture.png");
 
@@ -44,28 +44,28 @@ namespace DirtyWinForm
             // Load the texture image from file
             Bitmap texture = new Bitmap("..\\..\\..\\CommonImages\\texture_blue.jpg");
 
-            Bitmap texture2 = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap texture2 = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Draw the texture against the red dirty mask onto the 2nd texture
-            Canvas.ApplyImageToMask(texture, canvasDirty, texture2, MaskColor.Red, false);
+            CanvasHelper.ApplyImageToMask(texture, canvasDirty, texture2, MaskColor.Red, false);
 		    TextureBrush textureBrush = new TextureBrush(texture2);
 
-		    Bitmap textureShadow = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+		    Bitmap textureShadow = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Draw the gray color against the red dirty mask onto the shadow texture
-            Canvas.ApplyColorToMask(Color.FromArgb(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, textureShadow, MaskColor.Red);
+            CanvasHelper.ApplyColorToMask(Color.FromArgb(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, textureShadow, MaskColor.Red);
             // Create texture brush for the shadow
             TextureBrush shadowBrush = new TextureBrush(textureShadow);
 
             // Create strategy for the shadow with the shadow brush
-            var strategyShadow = Canvas.TextNoOutline(shadowBrush);
+            var strategyShadow = CanvasHelper.TextNoOutline(shadowBrush);
 
-		    Bitmap canvasTemp = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+		    Bitmap canvasTemp = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Draw the shadow image first onto the temp canvas
-            Canvas.DrawTextImage(strategyShadow, canvasTemp, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyShadow, canvasTemp, new Point(0, 0), context);
 
             // Create strategy for the text body
-            var strategy = Canvas.TextNoOutline(textureBrush);
+            var strategy = CanvasHelper.TextNoOutline(textureBrush);
             // Draw text body
-		    Canvas.DrawTextImage(strategy, canvas, new Point(0,0), context);
+		    CanvasHelper.DrawTextImage(strategy, canvas, new Point(0,0), context);
 
             // Draw the shadow image (canvasTemp) shifted -3, -3
             e.Graphics.DrawImage(canvasTemp, 3, 3, ClientSize.Width - 3, ClientSize.Height - 3);

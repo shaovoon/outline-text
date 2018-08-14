@@ -100,7 +100,7 @@ void CFake3D2MFCDlg::OnPaint()
 		CRect rect;
 		GetClientRect(&rect);
 
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		context.pFontFamily = &fontFamily;
@@ -152,15 +152,15 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	using namespace Gdiplus;
 	using namespace TextDesigner;
 
-	auto canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
+	auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height(), Color::White, 0);
 
 	// Create the outline strategy which is going to shift blit diagonally
-	auto strategyOutline = Canvas::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
+	auto strategyOutline = CanvasHelper::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 4);
 
 	// the single mask outline
-	auto maskOutline = Canvas::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context, mat);
+	auto maskOutline = CanvasHelper::GenMask(strategyOutline, rect.Width(), rect.Height(), Point(0,0), context, mat);
 	// the mask to store all the single mask blitted diagonally
-	auto maskOutlineAll = Canvas::GenImage(rect.Width()+10, rect.Height()+10);
+	auto maskOutlineAll = CanvasHelper::GenImage(rect.Width()+10, rect.Height()+10);
 
 	Graphics graphMaskAll(maskOutlineAll.get());
 
@@ -174,34 +174,34 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	UINT bottom = 0;
 	UINT left = 0;
 	UINT right = 0;
-	Canvas::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
+	CanvasHelper::MeasureMaskLength(maskOutlineAll, MaskColor::Blue(), top, left, bottom, right);
 	right += 2;
 	bottom += 2;
 
 	// Generate the gradient image for the diagonal outline
 	//=======================================================
-	auto gradImage = Canvas::GenImage(right-left, bottom-top);
+	auto gradImage = CanvasHelper::GenImage(right-left, bottom-top);
 
 	std::vector<Color> vecColors;
 	vecColors.push_back(Color::Purple);
 	vecColors.push_back(Color::MediumPurple);
 	DrawGradient::Draw(*gradImage, vecColors, false);
 
-	// Because Canvas::ApplyImageToMask requires all image to have same dimensions,
+	// Because CanvasHelper::ApplyImageToMask requires all image to have same dimensions,
 	// we have to blit our small gradient image onto a temp image as big as the canvas
 	//===================================================================================
-	auto gradBlitted = Canvas::GenImage(rect.Width(), rect.Height());
+	auto gradBlitted = CanvasHelper::GenImage(rect.Width(), rect.Height());
 
 	Graphics graphgradBlitted(gradBlitted.get());
 
 	graphgradBlitted.DrawImage(gradImage.get(), (int)left, (int)top, (int)(gradImage->GetWidth()), (int)(gradImage->GetHeight()));
 
-	Canvas::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
+	CanvasHelper::ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor::Blue(), false);
 
 	// Create strategy and mask image for the text body
 	//===================================================
-	auto strategyText = Canvas::TextNoOutline(MaskColor::Blue());
-	auto maskText = Canvas::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context, mat);
+	auto strategyText = CanvasHelper::TextNoOutline(MaskColor::Blue());
+	auto maskText = CanvasHelper::GenMask(strategyText, rect.Width(), rect.Height(), Point(0,0), context, mat);
 
 	// Measure the dimension required for text body using the mask
 	//=============================================================
@@ -209,7 +209,7 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	bottom = 0;
 	left = 0;
 	right = 0;
-	Canvas::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
+	CanvasHelper::MeasureMaskLength(maskText, MaskColor::Blue(), top, left, bottom, right);
 	top -= 2;
 	left -= 2;
 
@@ -220,10 +220,10 @@ void CFake3D2MFCDlg::DrawChar( int x_offset, CRect &rect, TextDesigner::TextCont
 	LinearGradientBrush gradTextbrush(Gdiplus::Rect((int)left, (int)top, (int)right, (int)bottom), Color::DeepPink, Color::LightPink, 90.0f);
 
 	// Create the actual strategy for the text body used for rendering, with the gradient brush
-	auto strategyText2 = Canvas::TextNoOutline(gradTextbrush);
+	auto strategyText2 = CanvasHelper::TextNoOutline(gradTextbrush);
 
 	// Draw the newly created strategy onto the canvas
-	Canvas::DrawTextImage(strategyText2, canvas, Point(0,0), context, mat);
+	CanvasHelper::DrawTextImage(strategyText2, canvas, Point(0,0), context, mat);
 
 	// Finally blit the rendered canvas onto the window
 	graphics.DrawImage(canvas.get(), x_offset, 0, rect.Width(), rect.Height());

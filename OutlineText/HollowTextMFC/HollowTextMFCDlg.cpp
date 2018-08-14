@@ -7,7 +7,7 @@
 #include "HollowTextMFCDlg.h"
 #include "afxdialogex.h"
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 #include "../TextDesigner/DrawGradient.h"
 
 //#ifdef _DEBUG
@@ -91,12 +91,12 @@ void CHollowTextMFCDlg::OnPaint()
 		graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
 		// Generating the outline strategy for displaying inside the hollow
-		auto strategyOutline = Canvas::TextGradOutline(Color(255,255,255), Color(230,230,230), Color(100,100,100), 9, GradientType::Linear);
+		auto strategyOutline = CanvasHelper::TextGradOutline(Color(255,255,255), Color(230,230,230), Color(100,100,100), 9, GradientType::Linear);
 
 		CRect rect;
 		GetClientRect(&rect);
-		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height());
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		FontFamily fontFamily(L"Arial Black");
@@ -108,7 +108,7 @@ void CHollowTextMFCDlg::OnPaint()
 		context.pszText = L"CUTOUT";
 		context.ptDraw = Point(0, 0);
 
-		auto hollowImage = Canvas::GenImage(rect.Width(), rect.Height());
+		auto hollowImage = CanvasHelper::GenImage(rect.Width(), rect.Height());
 		// Algorithm to shift the shadow outline in and then out continuous
 		int shift=0;
 		if(m_nTimerLoop>=0&&m_nTimerLoop<=2)
@@ -117,25 +117,25 @@ void CHollowTextMFCDlg::OnPaint()
 			shift = 2 - (m_nTimerLoop - 2);
 
 		// Draw the hollow (shadow) outline by shifting accordingly
-		Canvas::DrawTextImage(strategyOutline, hollowImage, Point(2+shift,2+shift), context);
+		CanvasHelper::DrawTextImage(strategyOutline, hollowImage, Point(2+shift,2+shift), context);
 
 		// Generate the green mask for the cutout holes in the text
 		//============================================================
-		auto maskImage = Canvas::GenImage(rect.Width(), rect.Height());
-		auto strategyMask = Canvas::TextOutline(MaskColor::Green(), MaskColor::Green(), 0);
-		Canvas::DrawTextImage(strategyMask, maskImage, Point(0,0), context);
+		auto maskImage = CanvasHelper::GenImage(rect.Width(), rect.Height());
+		auto strategyMask = CanvasHelper::TextOutline(MaskColor::Green(), MaskColor::Green(), 0);
+		CanvasHelper::DrawTextImage(strategyMask, maskImage, Point(0,0), context);
 
 		// Apply the hollowed image against the green mask on the canvas
-		Canvas::ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor::Green(), false);
+		CanvasHelper::ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor::Green(), false);
 
 		// Create a double-buffer to blit onto the window for non-flickering, instead of clearing the window
-		auto backBuffer = Canvas::GenImage(rect.Width(), rect.Height(), Color(0,0,0), 255);
+		auto backBuffer = CanvasHelper::GenImage(rect.Width(), rect.Height(), Color(0,0,0), 255);
 
 		// Create a black outline only strategy and blit it onto the canvas to cover 
 		// the unnatural outline from the gradient shadow
 		//=============================================================================
-		auto strategyOutlineOnly = Canvas::TextOnlyOutline(Color(0,0,0), 2, false);
-		Canvas::DrawTextImage(strategyOutlineOnly, canvas, Point(0,0), context);
+		auto strategyOutlineOnly = CanvasHelper::TextOnlyOutline(Color(0,0,0), 2, false);
+		CanvasHelper::DrawTextImage(strategyOutlineOnly, canvas, Point(0,0), context);
 
 		// Draw the transparent canvas onto the back buffer
 		//===================================================

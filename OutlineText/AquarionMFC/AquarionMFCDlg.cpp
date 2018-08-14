@@ -7,7 +7,7 @@
 #include "AquarionMFCDlg.h"
 #include "afxdialogex.h"
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 #include "../TextDesigner/DrawGradient.h"
 #include <vector>
 
@@ -91,13 +91,13 @@ void CAquarionMFCDlg::OnPaint()
 
 		// Create the outline strategy which is used later on for measuring 
 		// the size of text in order to generate a correct sized gradient image
-		auto strategyOutline2 = Canvas::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 8);
+		auto strategyOutline2 = CanvasHelper::TextOutline(MaskColor::Blue(), MaskColor::Blue(), 8);
 
 		CRect rect;
 		GetClientRect(&rect);
-		auto canvas = Canvas::GenImage(rect.Width(), rect.Height(), Color::White, 0);
+		auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height(), Color::White, 0);
 
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		// Load a font from its file into private collection, 
@@ -121,13 +121,13 @@ void CAquarionMFCDlg::OnPaint()
 
 		// Generate the mask image for measuring the size of the text image required
 		//============================================================================
-		auto maskOutline2 = Canvas::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), context);
+		auto maskOutline2 = CanvasHelper::GenMask(strategyOutline2, rect.Width(), rect.Height(), Point(0,0), context);
 
 		UINT top = 0;
 		UINT bottom = 0;
 		UINT left = 0;
 		UINT right = 0;
-		Canvas::MeasureMaskLength(maskOutline2, MaskColor::Blue(), top, left, bottom, right);
+		CanvasHelper::MeasureMaskLength(maskOutline2, MaskColor::Blue(), top, left, bottom, right);
 		right += 2;
 		bottom += 2;
 
@@ -142,7 +142,7 @@ void CAquarionMFCDlg::OnPaint()
 		vec.push_back(Color(0,255,0)); // Green
 		grad.Draw(*bmpGrad, vec, true);
 
-		// Because Canvas::ApplyImageToMask requires the all images to have equal dimension,
+		// Because CanvasHelper::ApplyImageToMask requires the all images to have equal dimension,
 		// we need to blit our new gradient image onto a larger image to be same size as canvas image
 		//==============================================================================================
 		auto bmpGrad2 = std::shared_ptr<Bitmap>(new Bitmap(rect.Width(), rect.Height(), PixelFormat32bppARGB));
@@ -152,12 +152,12 @@ void CAquarionMFCDlg::OnPaint()
 		graphGrad.DrawImage(bmpGrad.get(), (int)left, (int)top, (int)(right - left), (int)(bottom - top));
 
 		// Apply the rainbow text against the blue mask onto the canvas
-		Canvas::ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor::Blue(), false);
+		CanvasHelper::ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor::Blue(), false);
 
 		// Draw the (white body and black outline) text onto the canvas
 		//==============================================================
-		auto strategyOutline1 = Canvas::TextOutline(Color(255,255,255), Color(0,0,0), 4);
-		Canvas::DrawTextImage(strategyOutline1, canvas, Point(0,0), context);
+		auto strategyOutline1 = CanvasHelper::TextOutline(Color(255,255,255), Color(0,0,0), 4);
+		CanvasHelper::DrawTextImage(strategyOutline1, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

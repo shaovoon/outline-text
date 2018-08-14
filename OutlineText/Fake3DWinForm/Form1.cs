@@ -25,9 +25,9 @@ namespace Fake3DWinForm
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             // Create the outline strategy which is going to shift blit diagonally
-            var strategyOutline = Canvas.TextOutline(MaskColor.Blue, MaskColor.Blue, 4);
+            var strategyOutline = CanvasHelper.TextOutline(MaskColor.Blue, MaskColor.Blue, 4);
 
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -42,9 +42,9 @@ namespace Fake3DWinForm
             context.ptDraw = new Point(0, 0);
 
             // the single mask outline
-            Bitmap maskOutline = Canvas.GenMask(strategyOutline, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
+            Bitmap maskOutline = CanvasHelper.GenMask(strategyOutline, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
             // the mask to store all the single mask blitted diagonally
-            Bitmap maskOutlineAll = Canvas.GenImage(ClientSize.Width + 10, ClientSize.Height + 10);
+            Bitmap maskOutlineAll = CanvasHelper.GenImage(ClientSize.Width + 10, ClientSize.Height + 10);
 
             Graphics graphMaskAll = Graphics.FromImage(maskOutlineAll);
 
@@ -58,13 +58,13 @@ namespace Fake3DWinForm
             uint bottom = 0;
             uint left = 0;
             uint right = 0;
-            Canvas.MeasureMaskLength(maskOutlineAll, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+            CanvasHelper.MeasureMaskLength(maskOutlineAll, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             right += 2;
             bottom += 2;
 
             // Generate the gradient image for the diagonal outline
             //=======================================================
-            Bitmap gradImage = Canvas.GenImage((int)(right - left), (int)(bottom - top));
+            Bitmap gradImage = CanvasHelper.GenImage((int)(right - left), (int)(bottom - top));
 
             List<Color> listColors = new List<Color>();
             listColors.Add(Color.DarkGreen);
@@ -74,18 +74,18 @@ namespace Fake3DWinForm
             // Because Canvas::ApplyImageToMask requires all image to have same dimensions,
             // we have to blit our small gradient image onto a temp image as big as the canvas
             //===================================================================================
-            Bitmap gradBlitted = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap gradBlitted = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
 
             Graphics graphgradBlitted = Graphics.FromImage(gradBlitted);
 
             graphgradBlitted.DrawImage(gradImage, (int)left, (int)top, (int)(gradImage.Width), (int)(gradImage.Height));
 
-            Canvas.ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor.Blue, false);
+            CanvasHelper.ApplyImageToMask(gradBlitted, maskOutlineAll, canvas, MaskColor.Blue, false);
 
             // Create strategy and mask image for the text body
             //===================================================
-            var strategyText = Canvas.TextNoOutline(MaskColor.Blue);
-            Bitmap maskText = Canvas.GenMask(strategyText, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
+            var strategyText = CanvasHelper.TextNoOutline(MaskColor.Blue);
+            Bitmap maskText = CanvasHelper.GenMask(strategyText, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
 
             // Measure the dimension required for text body using the mask
             //=============================================================
@@ -93,7 +93,7 @@ namespace Fake3DWinForm
             bottom = 0;
             left = 0;
             right = 0;
-            Canvas.MeasureMaskLength(maskText, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+            CanvasHelper.MeasureMaskLength(maskText, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             top -= 2;
             left -= 2;
 
@@ -103,9 +103,9 @@ namespace Fake3DWinForm
             // Create the gradient brush for the text body
             LinearGradientBrush gradTextbrush = new LinearGradientBrush(new Rectangle((int)left, (int)top, (int)right, (int)bottom), Color.Orange, Color.OrangeRed, 90.0f);
             // Create the actual strategy for the text body used for rendering, with the gradient brush
-            var strategyText2 = Canvas.TextNoOutline(gradTextbrush);
+            var strategyText2 = CanvasHelper.TextNoOutline(gradTextbrush);
             // Draw the newly created strategy onto the canvas
-            Canvas.DrawTextImage(strategyText2, canvas, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyText2, canvas, new Point(0, 0), context);
 
             // Finally blit the rendered canvas onto the window
             e.Graphics.DrawImage(canvas, 0, 0, ClientSize.Width, ClientSize.Height);

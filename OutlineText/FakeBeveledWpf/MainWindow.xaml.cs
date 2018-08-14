@@ -25,7 +25,7 @@ namespace FakeBeveledWpf
         {
             InitializeComponent();
 
-            WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -44,23 +44,23 @@ namespace FakeBeveledWpf
 
             // Draw the main outline
             //==========================================================
-            ITextStrategy mainOutline = TextDesignerWpf.Canvas.TextOutline(Color.FromRgb(235, 10, 230), Color.FromRgb(235, 10, 230), 4);
-            TextDesignerWpf.Canvas.DrawTextImage(mainOutline, ref canvas, new Point(4, 4), context);
+            ITextStrategy mainOutline = TextDesignerWpf.CanvasHelper.TextOutline(Color.FromRgb(235, 10, 230), Color.FromRgb(235, 10, 230), 4);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(mainOutline, ref canvas, new Point(4, 4), context);
 
             // Draw the small bright outline shifted (-2, -2)
             //==========================================================
-            ITextStrategy mainBright = TextDesignerWpf.Canvas.TextOutline(Color.FromRgb(252, 173, 250), Color.FromRgb(252, 173, 250), 2);
-            TextDesignerWpf.Canvas.DrawTextImage(mainBright, ref canvas, new Point(2, 2), context);
+            ITextStrategy mainBright = TextDesignerWpf.CanvasHelper.TextOutline(Color.FromRgb(252, 173, 250), Color.FromRgb(252, 173, 250), 2);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(mainBright, ref canvas, new Point(2, 2), context);
 
             // Draw the small dark outline shifted (+2, +2)
             //==========================================================
-            ITextStrategy mainDark = TextDesignerWpf.Canvas.TextOutline(Color.FromRgb(126, 5, 123), Color.FromRgb(126, 5, 123), 2);
-            TextDesignerWpf.Canvas.DrawTextImage(mainDark, ref canvas, new Point(6, 6), context);
+            ITextStrategy mainDark = TextDesignerWpf.CanvasHelper.TextOutline(Color.FromRgb(126, 5, 123), Color.FromRgb(126, 5, 123), 2);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(mainDark, ref canvas, new Point(6, 6), context);
 
             // Draw the smallest outline (color same as main outline)
             //==========================================================
-            ITextStrategy mainInner = TextDesignerWpf.Canvas.TextOutline(Color.FromRgb(235, 10, 230), Color.FromRgb(235, 10, 230), 2);
-            TextDesignerWpf.Canvas.DrawTextImage(mainInner, ref canvas, new Point(4, 4), context);
+            ITextStrategy mainInner = TextDesignerWpf.CanvasHelper.TextOutline(Color.FromRgb(235, 10, 230), Color.FromRgb(235, 10, 230), 2);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(mainInner, ref canvas, new Point(4, 4), context);
 
             // Finally blit the rendered canvas onto the window by assigning the canvas to the image control
             image1.Source = canvas;

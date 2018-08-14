@@ -7,7 +7,7 @@
 #include "BeHappyMFCDlg.h"
 #include "afxdialogex.h"
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 #include "../TextDesigner/DrawGradient.h"
 
 #ifdef _DEBUG
@@ -92,13 +92,13 @@ void CBeHappyMFCDlg::OnPaint()
 		CRect rect;
 		GetClientRect(&rect);
 		// Create canvas to be rendered
-		auto canvas = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvas = CanvasHelper::GenImage(rect.Width(), rect.Height());
 		// Create canvas for the green outermost outline
-		auto canvasOuter = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvasOuter = CanvasHelper::GenImage(rect.Width(), rect.Height());
 		// Create canvas for the white inner outline
-		auto canvasInner = Canvas::GenImage(rect.Width(), rect.Height());
+		auto canvasInner = CanvasHelper::GenImage(rect.Width(), rect.Height());
 
-		// Text context to store string and font info to be sent as parameter to Canvas methods
+		// Text context to store string and font info to be sent as parameter to CanvasHelper methods
 		TextContext context;
 
 		// Load a font from its file into private collection, 
@@ -121,13 +121,13 @@ void CBeHappyMFCDlg::OnPaint()
 		context.ptDraw = Point(55, 0);
 
 		// Create the outer strategy
-		auto strategyOutline2 = Canvas::TextOutline(Color::LightSeaGreen, Color::LightSeaGreen, 16);
+		auto strategyOutline2 = CanvasHelper::TextOutline(Color::LightSeaGreen, Color::LightSeaGreen, 16);
 		// Draw the bE text (outer green outline)
-		Canvas::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (outer green outline)
-		Canvas::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline2, canvasOuter, Point(0,0), context);
 
 		// blit the canvasOuter all the way down (5 pixels down)
 		//========================================================
@@ -146,13 +146,13 @@ void CBeHappyMFCDlg::OnPaint()
 		context.ptDraw = Point(55, 0);
 
 		// Create the inner white strategy
-		auto strategyOutline1 = Canvas::TextOutline(Color::White, Color::White, 8);
+		auto strategyOutline1 = CanvasHelper::TextOutline(Color::White, Color::White, 8);
 		// Draw the bE text (inner white outline)
-		Canvas::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (inner white outline)
-		Canvas::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline1, canvasInner, Point(0,0), context);
 
 		// blit the canvasInner all the way down (5 pixels down)
 		//========================================================
@@ -165,17 +165,17 @@ void CBeHappyMFCDlg::OnPaint()
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());
 
 		// Create the strategy for green text body
-		auto strategyOutline = Canvas::TextOutline(Color::LightSeaGreen, Color::LightSeaGreen, 1);
+		auto strategyOutline = CanvasHelper::TextOutline(Color::LightSeaGreen, Color::LightSeaGreen, 1);
 
 		context.pszText = L"bE";
 		context.ptDraw = Point(55, 0);
 		// Draw the bE text (text body)
-		Canvas::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
 
 		context.pszText = L"Happy";
 		context.ptDraw = Point(0, 48);
 		// Draw the Happy text (text body)
-		Canvas::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
+		CanvasHelper::DrawTextImage(strategyOutline, canvas, Point(0,0), context);
 
 		// Finally blit the rendered canvas onto the window
 		graphics.DrawImage(canvas.get(), 0, 0, rect.Width(), rect.Height());

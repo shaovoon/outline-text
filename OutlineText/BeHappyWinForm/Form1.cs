@@ -26,11 +26,11 @@ namespace BeHappyWinForm
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             // Create canvas to be rendered
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Create canvas for the green outermost outline
-            Bitmap canvasOuter = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap canvasOuter = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Create canvas for the white inner outline
-            Bitmap canvasInner = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap canvasInner = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -52,13 +52,13 @@ namespace BeHappyWinForm
             context.ptDraw = new Point(55, 0);
 
             // Create the outer strategy to draw the bE text
-            var strategyOutline2 = Canvas.TextOutline(Color.LightSeaGreen, Color.LightSeaGreen, 16);
+            var strategyOutline2 = CanvasHelper.TextOutline(Color.LightSeaGreen, Color.LightSeaGreen, 16);
             // Draw the bE text (outer green outline)
-            Canvas.DrawTextImage(strategyOutline2, canvasOuter, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline2, canvasOuter, new Point(0, 0), context);
             context.pszText = "Happy";
             context.ptDraw = new Point(0, 48);
             // Draw the Happy text (outer green outline)
-            Canvas.DrawTextImage(strategyOutline2, canvasOuter, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline2, canvasOuter, new Point(0, 0), context);
 
             // blit the canvasOuter all the way down (5 pixels down)
             //========================================================
@@ -77,14 +77,14 @@ namespace BeHappyWinForm
             context.ptDraw = new Point(55, 0);
 
             // Create the inner white strategy
-            var strategyOutline1 = Canvas.TextOutline(Color.White, Color.White, 8);
+            var strategyOutline1 = CanvasHelper.TextOutline(Color.White, Color.White, 8);
             // Draw the bE text (inner white outline)
-            Canvas.DrawTextImage(strategyOutline1, canvasInner, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline1, canvasInner, new Point(0, 0), context);
 
             context.pszText = "Happy";
             context.ptDraw = new Point(0, 48);
             // Draw the Happy text (inner white outline)
-            Canvas.DrawTextImage(strategyOutline1, canvasInner, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline1, canvasInner, new Point(0, 0), context);
 
             // blit the canvasInner all the way down (5 pixels down)
             //========================================================
@@ -97,17 +97,17 @@ namespace BeHappyWinForm
             e.Graphics.DrawImage(canvas, 0, 0, ClientSize.Width, ClientSize.Height);
 
             // Create the strategy for green text body
-            var strategyOutline = Canvas.TextOutline(Color.LightSeaGreen, Color.LightSeaGreen, 1);
+            var strategyOutline = CanvasHelper.TextOutline(Color.LightSeaGreen, Color.LightSeaGreen, 1);
 
             context.pszText = "bE";
             context.ptDraw = new Point(55, 0);
             // Draw the bE text (text body)
-            Canvas.DrawTextImage(strategyOutline, canvas, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline, canvas, new Point(0, 0), context);
 
             context.pszText = "Happy";
             context.ptDraw = new Point(0, 48);
             // Draw the Happy text (text body)
-            Canvas.DrawTextImage(strategyOutline, canvas, new Point(0, 0), context);
+            CanvasHelper.DrawTextImage(strategyOutline, canvas, new Point(0, 0), context);
 
             // Finally blit the rendered canvas onto the window
             e.Graphics.DrawImage(canvas, 0, 0, ClientSize.Width, ClientSize.Height);

@@ -41,9 +41,9 @@ namespace HollowTextWpf
                 _TimerLoop = 0;
 
             // Generating the outline strategy for displaying inside the hollow
-            var strategyOutline = TextDesignerWpf.Canvas.TextGradOutline(Color.FromRgb(255, 255, 255), Color.FromRgb(230, 230, 230), Color.FromRgb(100, 100, 100), 9);
+            var strategyOutline = TextDesignerWpf.CanvasHelper.TextGradOutline(Color.FromRgb(255, 255, 255), Color.FromRgb(230, 230, 230), Color.FromRgb(100, 100, 100), 9);
             // Canvas to render the text. Note the canvas should always be transparent
-            WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
 
@@ -57,7 +57,7 @@ namespace HollowTextWpf
             context.pszText = "CUTOUT";
             context.ptDraw = new Point(0, 0);
 
-            WriteableBitmap hollowImage = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap hollowImage = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Algorithm to shift the shadow outline in and then out continuous
             int shift = 0;
             if (_TimerLoop >= 0 && _TimerLoop <= 2)
@@ -66,21 +66,21 @@ namespace HollowTextWpf
                 shift = 2 - (_TimerLoop - 2);
 
             // Draw the hollow (shadow) outline by shifting accordingly
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline, ref hollowImage, new Point(2 + shift, 2 + shift), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline, ref hollowImage, new Point(2 + shift, 2 + shift), context);
 
             // Generate the green mask for the cutout holes in the text
-            WriteableBitmap maskImage = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
-            var strategyMask = TextDesignerWpf.Canvas.TextOutline(MaskColor.Green, MaskColor.Green, 0);
-            TextDesignerWpf.Canvas.DrawTextImage(strategyMask, ref maskImage, new Point(0, 0), context);
+            WriteableBitmap maskImage = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
+            var strategyMask = TextDesignerWpf.CanvasHelper.TextOutline(MaskColor.Green, MaskColor.Green, 0);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyMask, ref maskImage, new Point(0, 0), context);
 
             // Apply the hollowed image against the green mask on the canvas
-            TextDesignerWpf.Canvas.ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor.Green, false);
+            TextDesignerWpf.CanvasHelper.ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor.Green, false);
 
             // Create a black outline only strategy and blit it onto the canvas to cover 
             // the unnatural outline from the gradient shadow
             //=============================================================================
-            var strategyOutlineOnly = TextDesignerWpf.Canvas.TextOnlyOutline(Color.FromRgb(0, 0, 0), 2, false);
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutlineOnly, ref canvas, new Point(0, 0), context);
+            var strategyOutlineOnly = TextDesignerWpf.CanvasHelper.TextOnlyOutline(Color.FromRgb(0, 0, 0), 2, false);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutlineOnly, ref canvas, new Point(0, 0), context);
 
             // Draw the transparent canvas onto the back buffer
             //===================================================

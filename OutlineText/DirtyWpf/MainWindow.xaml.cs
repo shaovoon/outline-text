@@ -55,20 +55,20 @@ namespace DirtyWpf
 
             WriteableBitmap texture = new WriteableBitmap(src2);
 
-            WriteableBitmap mask2 = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap mask2 = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Draw the texture against the red dirty mask onto the 2nd texture
-            TextDesignerWpf.Canvas.ApplyImageToMask(texture, canvasDirty, mask2, MaskColor.Red, false);
+            TextDesignerWpf.CanvasHelper.ApplyImageToMask(texture, canvasDirty, mask2, MaskColor.Red, false);
 
-            WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
-            WriteableBitmap maskShadow = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap maskShadow = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Draw the gray color against the red dirty mask onto the shadow texture
-            TextDesignerWpf.Canvas.ApplyColorToMask(Color.FromArgb(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, maskShadow, MaskColor.Red, new Point(3, 3));
+            TextDesignerWpf.CanvasHelper.ApplyColorToMask(Color.FromArgb(0xaa, 0xcc, 0xcc, 0xcc), canvasDirty, maskShadow, MaskColor.Red, new Point(3, 3));
 
-            WriteableBitmap texture2 = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
-            TextDesignerWpf.Canvas.ApplyImageToMask(texture, mask2, texture2, MaskColor.Red, false);
+            WriteableBitmap texture2 = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
+            TextDesignerWpf.CanvasHelper.ApplyImageToMask(texture, mask2, texture2, MaskColor.Red, false);
             byte[] pixels = new byte[texture2.PixelHeight * texture2.PixelWidth * texture2.Format.BitsPerPixel / 8];
             texture2.CopyPixels(new Int32Rect((int)5, (int)80, (int)(image1.Width - 5), (int)(image1.Height - 80)), pixels, texture2.BackBufferStride, 0);
-            WriteableBitmap texture2Cropped = TextDesignerWpf.Canvas.GenImage((int)(image1.Width-5), (int)(image1.Height-80));
+            WriteableBitmap texture2Cropped = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width-5), (int)(image1.Height-80));
             texture2Cropped.WritePixels(new Int32Rect((int)0, (int)0, (int)(image1.Width - 5), (int)(image1.Height - 80)), pixels, texture2.BackBufferStride, 0);
 
             // Create image brush for the texture
@@ -84,7 +84,7 @@ namespace DirtyWpf
 
             byte[] pixelsShadow = new byte[maskShadow.PixelHeight * maskShadow.PixelWidth * maskShadow.Format.BitsPerPixel / 8];
             maskShadow.CopyPixels(new Int32Rect((int)5+3, (int)80+3, (int)(image1.Width - 5-3), (int)(image1.Height - 80-3)), pixelsShadow, maskShadow.BackBufferStride, 0);
-            WriteableBitmap textureShadowCropped = TextDesignerWpf.Canvas.GenImage((int)(image1.Width - 5-3), (int)(image1.Height - 80-3));
+            WriteableBitmap textureShadowCropped = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width - 5-3), (int)(image1.Height - 80-3));
             textureShadowCropped.WritePixels(new Int32Rect((int)0, (int)0, (int)(image1.Width - 5-3), (int)(image1.Height - 80-3)), pixelsShadow, maskShadow.BackBufferStride, 0);
 
             // Create image brush for the shadow
@@ -99,15 +99,15 @@ namespace DirtyWpf
             shadowBrush.ViewboxUnits = BrushMappingMode.RelativeToBoundingBox;
 
             // Create strategy for the shadow with the shadow brush
-            var strategyShadow = TextDesignerWpf.Canvas.TextNoOutline(shadowBrush);
+            var strategyShadow = TextDesignerWpf.CanvasHelper.TextNoOutline(shadowBrush);
 
             // Draw the shadow image shifted -3, -3
-            TextDesignerWpf.Canvas.DrawTextImage(strategyShadow, ref canvas, new Point(3, 3), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyShadow, ref canvas, new Point(3, 3), context);
 
             // Create strategy for the text body
-            var strategy = TextDesignerWpf.Canvas.TextNoOutline(textureBrush);
+            var strategy = TextDesignerWpf.CanvasHelper.TextNoOutline(textureBrush);
 
-            TextDesignerWpf.Canvas.DrawTextImage(strategy, ref canvas, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategy, ref canvas, new Point(0, 0), context);
 
             // Then draw the rendered image onto window by assigning it to the image control
             image1.Source = canvas;

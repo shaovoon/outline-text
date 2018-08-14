@@ -24,9 +24,9 @@ namespace AquarionWinForm
 
             // Create the outline strategy which is used later on for measuring 
             // the size of text in order to generate a correct sized gradient image
-            var strategyOutline2 = Canvas.TextOutline(MaskColor.Blue, MaskColor.Blue, 8);
+            var strategyOutline2 = CanvasHelper.TextOutline(MaskColor.Blue, MaskColor.Blue, 8);
             
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height, Color.White, 0);
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -50,13 +50,13 @@ namespace AquarionWinForm
 
             // Generate the mask image for measuring the size of the text image required
             //============================================================================
-            Bitmap maskOutline2 = Canvas.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
+            Bitmap maskOutline2 = CanvasHelper.GenMask(strategyOutline2, ClientSize.Width, ClientSize.Height, new Point(0, 0), context);
 
             uint top = 0;
             uint bottom = 0;
             uint left = 0;
             uint right = 0;
-            Canvas.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
+            CanvasHelper.MeasureMaskLength(maskOutline2, MaskColor.Blue, ref top, ref left, ref bottom, ref right);
             bottom += 2;
             right += 2;
 
@@ -79,12 +79,12 @@ namespace AquarionWinForm
             graphGrad.DrawImage(bmpGrad, (int)left, (int)top, (int)(right - left), (int)(bottom - top));
 
             // Apply the rainbow text against the blue mask onto the canvas
-            Canvas.ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor.Blue, false);
+            CanvasHelper.ApplyImageToMask(bmpGrad2, maskOutline2, canvas, MaskColor.Blue, false);
 
             // Draw the (white body and black outline) text onto the canvas
             //==============================================================
-            var strategyOutline1 = Canvas.TextOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(0, 0, 0), 4);
-            Canvas.DrawTextImage(strategyOutline1, canvas, new Point(0, 0), context);
+            var strategyOutline1 = CanvasHelper.TextOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(0, 0, 0), 4);
+            CanvasHelper.DrawTextImage(strategyOutline1, canvas, new Point(0, 0), context);
 
             // Finally blit the rendered image onto the window
             e.Graphics.DrawImage(canvas, 0, 0, ClientSize.Width, ClientSize.Height);

@@ -26,11 +26,11 @@ namespace BeHappyWpf
             InitializeComponent();
 
             // Create canvas to be rendered
-            WriteableBitmap canvas = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvas = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Create canvas for the green outermost outline
-            WriteableBitmap canvasOuter = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvasOuter = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
             // Create canvas for the white inner outline
-            WriteableBitmap canvasInner = TextDesignerWpf.Canvas.GenImage((int)(image1.Width), (int)(image1.Height));
+            WriteableBitmap canvasInner = TextDesignerWpf.CanvasHelper.GenImage((int)(image1.Width), (int)(image1.Height));
 
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
@@ -52,14 +52,14 @@ namespace BeHappyWpf
             DrawingContext drawingContext = drawingVisual.RenderOpen();
 
             // Create the outer strategy
-            var strategyOutline2 = TextDesignerWpf.Canvas.TextOutline(Colors.LightSeaGreen, Colors.LightSeaGreen, 16);
+            var strategyOutline2 = TextDesignerWpf.CanvasHelper.TextOutline(Colors.LightSeaGreen, Colors.LightSeaGreen, 16);
             // Draw the bE text (outer green outline)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline2, ref canvasOuter, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline2, ref canvasOuter, new Point(0, 0), context);
 
             context.pszText = "Happy";
             context.ptDraw = new Point(8, 48);
             // Draw the Happy text (outer green outline)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline2, ref canvasOuter, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline2, ref canvasOuter, new Point(0, 0), context);
 
             // blit the canvasOuter all the way down (5 pixels down)
             //========================================================
@@ -74,13 +74,13 @@ namespace BeHappyWpf
             context.ptDraw = new Point(63, 0);
 
             // Create the inner white strategy
-            var strategyOutline1 = TextDesignerWpf.Canvas.TextOutline(Colors.White, Colors.White, 8);
+            var strategyOutline1 = TextDesignerWpf.CanvasHelper.TextOutline(Colors.White, Colors.White, 8);
             // Draw the bE text (inner white outline)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline1, ref canvasInner, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline1, ref canvasInner, new Point(0, 0), context);
             context.pszText = "Happy";
             context.ptDraw = new Point(8, 48);
             // Draw the Happy text (inner white outline)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline1, ref canvasInner, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline1, ref canvasInner, new Point(0, 0), context);
 
             // blit the canvasInner all the way down (5 pixels down)
             //========================================================
@@ -93,17 +93,17 @@ namespace BeHappyWpf
 
             image1.Source = canvasInner;
             // Create the strategy for green text body
-            var strategyOutline = TextDesignerWpf.Canvas.TextOutline(Colors.LightSeaGreen, Colors.LightSeaGreen, 1);
+            var strategyOutline = TextDesignerWpf.CanvasHelper.TextOutline(Colors.LightSeaGreen, Colors.LightSeaGreen, 1);
 
             context.pszText = "bE";
             context.ptDraw = new Point(63, 0);
             // Draw the bE text (text body)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline, ref canvas, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline, ref canvas, new Point(0, 0), context);
 
             context.pszText = "Happy";
             context.ptDraw = new Point(8, 48);
             // Draw the Happy text (text body)
-            TextDesignerWpf.Canvas.DrawTextImage(strategyOutline, ref canvas, new Point(0, 0), context);
+            TextDesignerWpf.CanvasHelper.DrawTextImage(strategyOutline, ref canvas, new Point(0, 0), context);
 
             drawingContext.DrawImage(canvas, new Rect(0.0, 0.0, canvas.Width, canvas.Height));
 

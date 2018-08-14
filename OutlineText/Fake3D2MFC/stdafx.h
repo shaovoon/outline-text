@@ -38,7 +38,7 @@
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
 #include "../TextDesigner/MaskColor.h"
-#include "../TextDesigner/Canvas.h"
+#include "../TextDesigner/CanvasHelper.h"
 #include "../TextDesigner/DrawGradient.h"
 
 #ifdef _DEBUG

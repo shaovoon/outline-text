@@ -18,6 +18,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextDesignerWpf", "TextDesignerWpf\TextDesignerWpf.csproj", "{FB22BC13-60D4-409D-859D-CCADEF953CB7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AquarionMFC", "AquarionMFC\AquarionMFC.vcxproj", "{ED3F12D1-4F16-4E93-ADE3-323F9BC91A39}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F21CE92F-240D-48FE-8B73-56A63D4536B0} = {F21CE92F-240D-48FE-8B73-56A63D4536B0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquarionWinForm", "AquarionWinForm\AquarionWinForm.csproj", "{DF97087D-1A70-4535-A0CB-5473697DB3F2}"
 	ProjectSection(ProjectDependencies) = postProject

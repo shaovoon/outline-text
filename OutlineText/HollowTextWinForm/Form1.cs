@@ -29,9 +29,9 @@ namespace HollowTextWinForm
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             // Generating the outline strategy for displaying inside the hollow
-            var strategyOutline = Canvas.TextGradOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(230, 230, 230), Color.FromArgb(100, 100, 100), 9, GradientType.Linear);
+            var strategyOutline = CanvasHelper.TextGradOutline(Color.FromArgb(255, 255, 255), Color.FromArgb(230, 230, 230), Color.FromArgb(100, 100, 100), 9, GradientType.Linear);
 
-            Bitmap canvas = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap canvas = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
             // Text context to store string and font info to be sent as parameter to Canvas methods
             TextContext context = new TextContext();
 
@@ -44,7 +44,7 @@ namespace HollowTextWinForm
             context.pszText = "CUTOUT";
             context.ptDraw = new Point(0, 0);
 
-            Bitmap hollowImage = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
+            Bitmap hollowImage = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
 
             // Algorithm to shift the shadow outline in and then out continuous
             int shift = 0;
@@ -54,23 +54,23 @@ namespace HollowTextWinForm
                 shift = 2 - (_TimerLoop - 2);
 
             // Draw the hollow (shadow) outline by shifting accordingly
-            Canvas.DrawTextImage(strategyOutline, hollowImage, new Point(2 + shift, 2 + shift), context);
+            CanvasHelper.DrawTextImage(strategyOutline, hollowImage, new Point(2 + shift, 2 + shift), context);
 
             // Generate the green mask for the cutout holes in the text
-            Bitmap maskImage = Canvas.GenImage(ClientSize.Width, ClientSize.Height);
-            var strategyMask = Canvas.TextOutline(MaskColor.Green, MaskColor.Green, 0);
-            Canvas.DrawTextImage(strategyMask, maskImage, new Point(0, 0), context);
+            Bitmap maskImage = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height);
+            var strategyMask = CanvasHelper.TextOutline(MaskColor.Green, MaskColor.Green, 0);
+            CanvasHelper.DrawTextImage(strategyMask, maskImage, new Point(0, 0), context);
 
             // Apply the hollowed image against the green mask on the canvas
-            Canvas.ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor.Green, false);
+            CanvasHelper.ApplyImageToMask(hollowImage, maskImage, canvas, MaskColor.Green, false);
 
-            Bitmap backBuffer = Canvas.GenImage(ClientSize.Width, ClientSize.Height, Color.FromArgb(0, 0, 0), 255);
+            Bitmap backBuffer = CanvasHelper.GenImage(ClientSize.Width, ClientSize.Height, Color.FromArgb(0, 0, 0), 255);
 
             // Create a black outline only strategy and blit it onto the canvas to cover 
             // the unnatural outline from the gradient shadow
             //=============================================================================
-            var strategyOutlineOnly = Canvas.TextOnlyOutline(Color.FromArgb(0, 0, 0), 2, false);
-            Canvas.DrawTextImage(strategyOutlineOnly, canvas, new Point(0, 0), context);
+            var strategyOutlineOnly = CanvasHelper.TextOnlyOutline(Color.FromArgb(0, 0, 0), 2, false);
+            CanvasHelper.DrawTextImage(strategyOutlineOnly, canvas, new Point(0, 0), context);
 
             // Draw the transparent canvas onto the back buffer
             //===================================================
