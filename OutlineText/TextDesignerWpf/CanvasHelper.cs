@@ -766,7 +766,7 @@ namespace TextDesignerWpf
                         if (maskByte > 0)
                         {
                             uint maskAlpha = (pixelsMask[indexMask] >> 24);
-                            pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, (Byte)(maskAlpha), clrShadow.A);
+                            pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, (Byte)(maskAlpha), (Byte)(maskAlpha * clrShadow.A / 255));
                         }
                     }
                 }
@@ -838,7 +838,7 @@ namespace TextDesignerWpf
                         if (maskByte > 0)
                         {
                             uint maskAlpha = (pixelsMask[indexMask] >> 24);
-                            pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, (Byte)(maskAlpha), clrShadow.A);
+                            pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, (Byte)(maskAlpha), (Byte)(maskAlpha * clrShadow.A / 255));
                         }
                     }
                 }

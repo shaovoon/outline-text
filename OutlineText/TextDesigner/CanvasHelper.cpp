@@ -703,7 +703,7 @@ bool CanvasHelper::ApplyShadowToMask(
 			{
 				UINT maskAlpha = (pixelsMask[indexMask] >> 24);
 
-				pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, maskAlpha, clrShadow.GetAlpha());
+				pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, maskAlpha, maskAlpha * clrShadow.GetAlpha() / 255);
 			}
 		}
 	}
@@ -782,7 +782,7 @@ bool CanvasHelper::ApplyShadowToMask(
 			{
 				UINT maskAlpha = (pixelsMask[indexMask] >> 24);
 
-				pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, maskAlpha, clrShadow.GetAlpha());
+				pixelsCanvas[index] = Alphablend(pixelsCanvas[index], color, maskAlpha, maskAlpha * clrShadow.GetAlpha() / 255);
 			}
 		}
 	}
