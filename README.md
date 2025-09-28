@@ -836,11 +836,9 @@ You can achieve simulated 3D text by using a bigger and opaque shadow which has 
 
 ![fake3dtextsettings.png](/images/fake3dtextsettings.png)
 
-<a name="real3dtext"></a>
-
 ## Real 3D Text (Orthogonal)
 
-![Real3DText.PNG](/images/Real3DText.PNG)
+![Real3DText.png](/images/Real3DText.png)
 
 It&#39;s easy to do real 3D text with `PngOutlineText` class. The extruded part is achieved by rendering the same colored text repeatedly and diagonally. By rendering diagonally, I mean render the text by offsetting the starting draw point by 1 pixel in x and y direction. Finally, we will render the real text at its original point. The sample code below achieves this by using the same `PngOutlineText` object. It sets new `TextOutline` parameters for the final text in `DrawActualText`. You will notice that in `DrawDiagonal` and `DrawActualText` methods, I blit the PNG image in `graphics` object which is created out of a ARGB `Bitmap` object, so that the resultant 3D text will be &#39;saved&#39; in the ARGB `Bitmap` object. Then in the `OnPaint` method, I just blit that ARGB `Bitmap` object without using `PngOutlineText` anymore. To draw outline text, `PngOutlineText` is the way to go; `OutlineText` is just too slow as it has to recalculate and redraw the text each time the client area is invalidated for repainting. By the way, the sample code below is modified from sample code which is pasted from the clipboard, which in turn is copied into the clipboard from the WYSIWYG "Copy C++ Code" button. Talk about eating your own dog food!
 
