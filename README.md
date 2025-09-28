@@ -954,7 +954,7 @@ For the above C++ code sample, I did not supply a C# equivalent code sample, bec
 
 I have also added a method, called `Extrude` to do 3D text easily but this method is still not as fast as the previous "PNG blitting multiple times" method because the `ExtrudeStrategy `class is generic and it does not know whether `OutlineText` or `PngOutlineText` class is using it, so it cannot do any optimizations. __Note__: To `Extrude`, you have to `EnableShadow` because `Extrude` is treated like a type of shadow. Please note to achieve the 3D text effect, the shadow color has to be fully opaque (meaning 255) and the 3D extrude effect looks best when the absolute values of x and y offset are equal (For example, x=4,y=4 or x-4, y=4). Below is the C++ and C# sample code from the WYSIWYG clipboard code copy feature.
 
-![Extrude.PNG](/images/Extrude.PNG)
+![Extrude.png](/images/Extrude.png)
 
 ```Cpp
 #include "TextDesigner/OutlineText.h"
@@ -1032,7 +1032,7 @@ private void OnPaint(object sender, PaintEventArgs e)
 
 Here is the settings to achieve 3D extruded text. You must enable the `Extrude Text` checkbox: (See the red rectangle!)
 
-![ExtrudeSettings.PNG](/images/ExtrudeSettings.PNG)
+![ExtrudeSettings.png](/images/ExtrudeSettings.png)
 
 ## Rotated Italic Text
 
@@ -1085,7 +1085,7 @@ These are the settings to display the rotated text:
 
 I have added diffused shadow to the outline text library. Click the checkbox as indicated by the green rectangle to enable diffuse shadow. __Note:__ You have to tweak the shadow alpha values(ranged from 12 to 32) and shadow thickness (ranged from 8 to 12) to achieve the diffused shadow effect. Diffused shadow is implemented using the text glow effect, so the shadow thickness indicates how many times the shadow color will be rendered. So as a rule of thumb, the higher the shadow thickness, the lower shadow alpha value. I have also implemented WYSIWYG sample code generation. Click the "Copy C++ Code" and "Copy C# Code" buttons, indicated by the red rectangle, to copy the code to clipboard and paste it to your code editor! You may still have to edit the code in your editor to make it suit your requirement, for example, changing a local object to member object of your class. In the event of the sample code crashes, try changing the bitmap sizes to be the same and also please report this crash to me and the steps to reproduce it. __Note:__ The crash, if there is any, is due to the sample code being wrong, not because something is wrong with the Text Designer Outline Library.
 
-![DiffusedShadowSetting2.JPG](/images/DiffusedShadowSetting2.JPG)
+![DiffusedShadowSetting2.jpg](/images/DiffusedShadowSetting2.jpg)
 
 ## PngOutlineText Class
 
